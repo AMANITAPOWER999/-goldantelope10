@@ -3764,38 +3764,38 @@ def _partyhunt_poller():
                 logger.warning('[partyhunt_poller] Cleanup error: %s', e)
 
             try:
-                upcoming_images = []
                 from datetime import datetime as _dt, timezone as _tz
                 now = _dt.now(_tz.utc)
                 sorted_events = []
                 for ev in all_events:
                     start = ev.get('start_date', '')
+                    end = ev.get('end_date', '') or start
                     img = ev.get('image_url', '')
                     if not start or not img:
                         continue
                     try:
-                        ev_dt = _dt.strptime(start, '%Y-%m-%d %H:%M:%S').replace(tzinfo=_tz.utc)
-                        if ev_dt >= now:
-                            sorted_events.append((ev_dt, img))
+                        end_str = end or start
+                        ev_end = _dt.strptime(end_str, '%Y-%m-%d %H:%M:%S').replace(tzinfo=_tz.utc)
+                        ev_start = _dt.strptime(start, '%Y-%m-%d %H:%M:%S').replace(tzinfo=_tz.utc)
+                        if ev_end >= now:
+                            sorted_events.append((ev_start, img))
                     except Exception:
                         pass
                 sorted_events.sort(key=lambda x: x[0])
-                upcoming_images = [img for _, img in sorted_events[:8]]
+                upcoming_images = [img for _, img in sorted_events[:10]]
 
-                if upcoming_images:
-                    try:
-                        banner_cfg = load_banner_config()
-                        if 'india' not in banner_cfg:
-                            banner_cfg['india'] = {'web': [], 'mobile': []}
-                        elif isinstance(banner_cfg['india'], list):
-                            banner_cfg['india'] = {'web': banner_cfg['india'], 'mobile': []}
-                        banner_cfg['india']['mobile'] = upcoming_images
-                        if not banner_cfg['india'].get('web'):
-                            banner_cfg['india']['web'] = upcoming_images
-                        save_banner_config(banner_cfg)
-                        logger.info('[partyhunt_poller] Updated India banners: %d mobile images from upcoming events', len(upcoming_images))
-                    except Exception as e:
-                        logger.warning('[partyhunt_poller] Banner update error: %s', e)
+                try:
+                    banner_cfg = load_banner_config()
+                    if 'india' not in banner_cfg:
+                        banner_cfg['india'] = {'web': [], 'mobile': []}
+                    elif isinstance(banner_cfg['india'], list):
+                        banner_cfg['india'] = {'web': banner_cfg['india'], 'mobile': []}
+                    banner_cfg['india']['mobile'] = upcoming_images
+                    banner_cfg['india']['web'] = upcoming_images
+                    save_banner_config(banner_cfg)
+                    logger.info('[partyhunt_poller] India banners updated: %d images (only future/active events from PartyHunt)', len(upcoming_images))
+                except Exception as e:
+                    logger.warning('[partyhunt_poller] Banner update error: %s', e)
             except Exception as e:
                 logger.warning('[partyhunt_poller] Banner build error: %s', e)
 
