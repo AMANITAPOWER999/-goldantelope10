@@ -1,0 +1,38 @@
+{
+  "vietnam": {
+    "web": [],
+    "mobile": [
+      "/static/images/banners/vietnam_mobile_1775142782_IMG_2691.png",
+      "/static/images/banners/vietnam_mobile_1774782606_IMG_2656.png",
+      "/static/images/banners/vietnam_mobile_1774773620_IMG_2636.png",
+      "/static/images/banners/vietnam_mobile_1774774519_IMG_2643.png",
+      "/static/images/banners/vietnam_mobile_1774774929_IMG_2647.png",
+      "/static/images/banners/vietnam_mobile_1774775038_IMG_2649.png",
+      "/static/images/banners/vietnam_mobile_1774775549_IMG_2652.png",
+      "/static/images/banners/vietnam_mobile_1774784583_IMG_2662.png",
+      "/static/images/banners/vietnam_mobile_1774852367_IMG_2668.png",
+      "/static/images/banners/vietnam_mobile_1774852380_IMG_2667.png",
+      "/static/images/banners/vietnam_mobile_1775142767_IMG_2693.png"
+    ]
+  },
+  "thailand": {
+    "web": [],
+    "mobile": []
+  },
+  "india": {
+    "web": [
+      "/static/images/banners/india_1767258371_ChatGPT_Image_1_._2026_._16_05_27.png"
+    ],
+    "mobile": [
+      "/static/images/banners/india_1767258371_ChatGPT_Image_1_._2026_._16_05_27.png"
+    ]
+  },
+  "indonesia": {
+    "web": [
+      "/static/images/banners/indonesia_1767258646_ChatGPT_Image_1_._2026_._16_10_17.png"
+    ],
+    "mobile": [
+      "/static/images/banners/indonesia_1767258646_ChatGPT_Image_1_._2026_._16_10_17.png"
+    ]
+  }
+}
