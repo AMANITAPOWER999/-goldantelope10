@@ -5299,6 +5299,8 @@ def _run_fetch_empty():
             load_listings as viet_load, save_listings as viet_save,
             get_existing_ids as viet_ids_fn,
             detect_city as viet_detect_city,
+            get_content_fingerprints as viet_fps_fn,
+            _content_fingerprint as viet_fp,
         )
         from thailandparsing_parser import (
             load_listings as thai_load, save_listings as thai_save,
@@ -5418,6 +5420,7 @@ def _run_fetch_empty():
         # ── Vietnam data (BIKE + VIET) ──
         viet_data = viet_load()
         viet_ids = viet_ids_fn(viet_data)
+        viet_fps = viet_fps_fn(viet_data)
         viet_data.setdefault('transport', [])
         viet_data.setdefault('real_estate', [])
 
@@ -5431,8 +5434,12 @@ def _run_fetch_empty():
                 item = build_generic_listing(msg, item_id, ch, 'transport', 'bikes')
                 if item is None:
                     continue
+                fp = viet_fp(item)
+                if fp != '||' and fp in viet_fps:
+                    continue
                 viet_data['transport'].insert(0, item)
                 viet_ids.add(item_id)
+                viet_fps.add(fp)
                 to_forward.append(('BIKE', item))
                 count += 1
             results[ch] = count
@@ -5448,12 +5455,16 @@ def _run_fetch_empty():
                 item = build_generic_listing(msg, item_id, ch, 'real_estate')
                 if item is None:
                     continue
+                fp = viet_fp(item)
+                if fp != '||' and fp in viet_fps:
+                    continue
                 city = viet_detect_city(item.get('text', ''))
                 item['city'] = city or 'Вьетнам'
                 item['city_ru'] = city or 'Вьетнам'
                 item['country'] = 'vietnam'
                 viet_data['real_estate'].insert(0, item)
                 viet_ids.add(item_id)
+                viet_fps.add(fp)
                 to_forward.append(('VIET', item))
                 count += 1
             results[ch] = count
@@ -5464,6 +5475,7 @@ def _run_fetch_empty():
         # ── Thailand data ──
         thai_data = thai_load()
         thai_ids = thai_ids_fn(thai_data)
+        thai_fps = viet_fps_fn(thai_data)
         thai_data.setdefault('real_estate', [])
 
         for ch in EMPTY_THAI:
@@ -5496,8 +5508,12 @@ def _run_fetch_empty():
                     'all_images': photos, 'date': msg.get('date', ''),
                     'source': 'telegram', 'channel': ch, 'country': 'thailand',
                 }
+                fp = viet_fp(thai_item)
+                if fp != '||' and fp in thai_fps:
+                    continue
                 thai_data['real_estate'].insert(0, thai_item)
                 thai_ids.add(item_id)
+                thai_fps.add(fp)
                 to_forward.append(('THAI', thai_item))
                 count += 1
             results[ch] = count
