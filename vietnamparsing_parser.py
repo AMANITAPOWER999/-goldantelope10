@@ -853,10 +853,22 @@ def fetch_arendabay_history(data: dict, existing_ids: set, max_msgs: int = 200) 
     return new_count
 
 
+def _is_link_only(text: str) -> bool:
+    """Return True if text is essentially just links/mentions with no real content."""
+    if not text:
+        return True
+    cleaned = re.sub(r'https?://\S+', '', text)
+    cleaned = re.sub(r'@[\w]+', '', cleaned)
+    cleaned = re.sub(r'[^\w]', '', cleaned)
+    return len(cleaned) < 20
+
+
 def build_generic_listing(msg: dict, item_id: str, channel: str, category: str, subcategory=None) -> dict | None:
     """Build a listing item from any extra channel post."""
     text = msg.get('text', '') or msg.get('caption', '') or ''
     if not text and not msg.get('images'):
+        return None
+    if _is_link_only(text):
         return None
 
     date_str = msg.get('date', datetime.now(timezone.utc).isoformat())
@@ -928,6 +940,7 @@ def build_generic_listing(msg: dict, item_id: str, channel: str, category: str, 
         item['whatsapp'] = ''
     elif category == 'entertainment':
         item['listing_type'] = 'entertainment'
+        item['realestate_city'] = item.get('city', 'Нячанг').lower().replace('нячанг', 'nhatrang').replace('хошимин', 'hochiminh').replace('дананг', 'danang').replace('фукуок', 'phuquoc').replace('хойан', 'hoian').replace('далат', 'dalat').replace('вьетнам', 'nhatrang')
     elif category == 'restaurants':
         item['location'] = ''
         item['source'] = f'https://t.me/{channel}'
@@ -1240,7 +1253,44 @@ def save_listings(data: dict):
                 logger.error(f"Direct save also failed: {e2}")
 
 
+def _text_fingerprint(text):
+    return set(text.lower().split())
+
+def _is_text_duplicate(text_a, text_b, threshold=0.9):
+    if not text_a or not text_b:
+        return False
+    fp_a = _text_fingerprint(text_a)
+    fp_b = _text_fingerprint(text_b)
+    if not fp_a or not fp_b:
+        return False
+    inter = len(fp_a & fp_b)
+    union = len(fp_a | fp_b)
+    jaccard = inter / union if union > 0 else 0.0
+    if jaccard < 0.7:
+        return False
+    from difflib import SequenceMatcher
+    return SequenceMatcher(None, text_a.lower(), text_b.lower()).ratio() >= threshold
+
+def _get_item_text(item):
+    return (item.get('description') or item.get('text') or item.get('title') or '').strip()
+
+def _get_item_price(item):
+    return str(item.get('price') or item.get('price_raw') or '').strip()
+
+def _is_link_only_item(item: dict) -> bool:
+    desc = (item.get('description') or item.get('text') or '').strip()
+    if not desc:
+        return True
+    desc_no_links = re.sub(r'https?://\S+', '', desc).strip()
+    desc_no_links = re.sub(r'@\w+', '', desc_no_links).strip()
+    if len(desc_no_links) < 20:
+        return True
+    return False
+
 def atomic_add_listing(category: str, item: dict) -> bool:
+    if _is_link_only_item(item):
+        logger.info(f"[filter] Отклонено (только ссылка/короткий текст): {item.get('id','')}")
+        return False
     with _listings_lock:
         try:
             with open(LISTINGS_FILE, 'r', encoding='utf-8') as f:
@@ -1255,6 +1305,16 @@ def atomic_add_listing(category: str, item: dict) -> bool:
                         ids.add(it['id'])
         if item.get('id') in ids:
             return False
+        new_text = _get_item_text(item)
+        new_price = _get_item_price(item)
+        if new_text and category in data and isinstance(data[category], list):
+            for existing in data[category][:200]:
+                ex_price = _get_item_price(existing)
+                if new_price != ex_price and (new_price or ex_price):
+                    continue
+                if _is_text_duplicate(new_text, _get_item_text(existing)):
+                    logger.info(f"[dedup] Дубликат отклонён: {item.get('id','')} ~= {existing.get('id','')}")
+                    return False
         if category not in data:
             data[category] = []
         data[category].insert(0, item)
