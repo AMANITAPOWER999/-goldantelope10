@@ -2,17 +2,11 @@
   "vietnam": {
     "web": [],
     "mobile": [
-      "/static/images/banners/vietnam_mobile_1775142782_IMG_2691.png",
-      "/static/images/banners/vietnam_mobile_1774782606_IMG_2656.png",
-      "/static/images/banners/vietnam_mobile_1774773620_IMG_2636.png",
-      "/static/images/banners/vietnam_mobile_1774774519_IMG_2643.png",
-      "/static/images/banners/vietnam_mobile_1774774929_IMG_2647.png",
-      "/static/images/banners/vietnam_mobile_1774775038_IMG_2649.png",
-      "/static/images/banners/vietnam_mobile_1774775549_IMG_2652.png",
-      "/static/images/banners/vietnam_mobile_1774784583_IMG_2662.png",
-      "/static/images/banners/vietnam_mobile_1774852367_IMG_2668.png",
-      "/static/images/banners/vietnam_mobile_1774852380_IMG_2667.png",
-      "/static/images/banners/vietnam_mobile_1775142767_IMG_2693.png"
+      "/tg_img/GAmedia_vn/4",
+      "/tg_img/GAmedia_vn/5",
+      "/tg_img/GAmedia_vn/6",
+      "/tg_img/GAmedia_vn/7",
+      "/tg_img/GAmedia_vn/8"
     ]
   },
   "thailand": {
@@ -21,10 +15,24 @@
   },
   "india": {
     "web": [
-      "/static/images/banners/india_1767258371_ChatGPT_Image_1_._2026_._16_05_27.png"
+      "https://firebasestorage.googleapis.com/v0/b/partyhunt-production.appspot.com/o/eventsPicture%2Ffbb9c104-e2c3-4a8a-8d9b-fc9f9f9202f9%2Ffull_fbb9c104-e2c3-4a8a-8d9b-fc9f9f9202f9?alt=media&token=27dedeae-783e-4458-8b6d-ca3d01c6db67",
+      "https://api.anbocas.com/storage/event/banner/P0EtIO60hzwIKMCwpzd9pdzvfgo2wo9717RfdDzu.jpg",
+      "https://api.anbocas.com/storage/event/banner/b032FkEEQRBUoSf0ZlCiqjI1A2sb9gCeLV8dgIjW.jpg",
+      "https://api.anbocas.com/storage/event/banner/VPIxK5PHjDaOqhHXOfuxrOdYZlRsXsoLwZibz9oG.jpg",
+      "https://api.anbocas.com/storage/event/banner/bSdT6POa6Vq3nwhbJIZ7NDmkXHiOWcanc7MiRO4j.jpg",
+      "https://api.anbocas.com/storage/event/banner/kebeRHFbxt27hhMIMXFy2OaAjehNxdOCfVGuKBvb.jpg",
+      "https://api.anbocas.com/storage/event/banner/9XEnzuptEF8ta2Og7wNHfALKx1J9vUDvY1KcBRcM.png",
+      "https://api.anbocas.com/storage/event/banner/ODj2EFH4ct7eKZM03buR9FNwbZynbYP6fNkGJZH7.jpg"
     ],
     "mobile": [
-      "/static/images/banners/india_1767258371_ChatGPT_Image_1_._2026_._16_05_27.png"
+      "https://firebasestorage.googleapis.com/v0/b/partyhunt-production.appspot.com/o/eventsPicture%2Ffbb9c104-e2c3-4a8a-8d9b-fc9f9f9202f9%2Ffull_fbb9c104-e2c3-4a8a-8d9b-fc9f9f9202f9?alt=media&token=27dedeae-783e-4458-8b6d-ca3d01c6db67",
+      "https://api.anbocas.com/storage/event/banner/P0EtIO60hzwIKMCwpzd9pdzvfgo2wo9717RfdDzu.jpg",
+      "https://api.anbocas.com/storage/event/banner/b032FkEEQRBUoSf0ZlCiqjI1A2sb9gCeLV8dgIjW.jpg",
+      "https://api.anbocas.com/storage/event/banner/VPIxK5PHjDaOqhHXOfuxrOdYZlRsXsoLwZibz9oG.jpg",
+      "https://api.anbocas.com/storage/event/banner/bSdT6POa6Vq3nwhbJIZ7NDmkXHiOWcanc7MiRO4j.jpg",
+      "https://api.anbocas.com/storage/event/banner/kebeRHFbxt27hhMIMXFy2OaAjehNxdOCfVGuKBvb.jpg",
+      "https://api.anbocas.com/storage/event/banner/9XEnzuptEF8ta2Og7wNHfALKx1J9vUDvY1KcBRcM.png",
+      "https://api.anbocas.com/storage/event/banner/ODj2EFH4ct7eKZM03buR9FNwbZynbYP6fNkGJZH7.jpg"
     ]
   },
   "indonesia": {
