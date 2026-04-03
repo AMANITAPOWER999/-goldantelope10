@@ -3726,8 +3726,9 @@ def _partyhunt_poller():
                 logger.debug('[partyhunt_poller] No new events (total checked: %d)', len(all_events))
 
             try:
-                from datetime import datetime as _dt, timezone as _tz
+                from datetime import datetime as _dt, timezone as _tz, timedelta as _td
                 now = _dt.now(_tz.utc)
+                _EVENT_DURATION = _td(days=4)
                 with _ph_lock:
                     try:
                         with open(india_file, 'r', encoding='utf-8') as f:
@@ -3745,7 +3746,8 @@ def _partyhunt_poller():
                                     ev_dt = _dt.fromisoformat(str(date_str).replace('Z', '+00:00'))
                                 else:
                                     ev_dt = _dt.strptime(str(date_str), '%Y-%m-%d %H:%M:%S').replace(tzinfo=_tz.utc)
-                                if ev_dt < now:
+                                ev_end = ev_dt + _EVENT_DURATION
+                                if ev_end < now:
                                     continue
                             except Exception:
                                 pass
@@ -3764,25 +3766,28 @@ def _partyhunt_poller():
                 logger.warning('[partyhunt_poller] Cleanup error: %s', e)
 
             try:
-                from datetime import datetime as _dt, timezone as _tz
+                from datetime import datetime as _dt, timezone as _tz, timedelta as _td
                 now = _dt.now(_tz.utc)
+                _EVENT_DURATION = _td(days=4)
                 sorted_events = []
                 for ev in all_events:
                     start = ev.get('start_date', '')
-                    end = ev.get('end_date', '') or start
+                    end = ev.get('end_date', '')
                     img = ev.get('image_url', '')
                     if not start or not img:
                         continue
                     try:
-                        end_str = end or start
-                        ev_end = _dt.strptime(end_str, '%Y-%m-%d %H:%M:%S').replace(tzinfo=_tz.utc)
                         ev_start = _dt.strptime(start, '%Y-%m-%d %H:%M:%S').replace(tzinfo=_tz.utc)
+                        if end:
+                            ev_end = _dt.strptime(end, '%Y-%m-%d %H:%M:%S').replace(tzinfo=_tz.utc)
+                        else:
+                            ev_end = ev_start + _EVENT_DURATION
                         if ev_end >= now:
                             sorted_events.append((ev_start, img))
                     except Exception:
                         pass
                 sorted_events.sort(key=lambda x: x[0])
-                upcoming_images = [img for _, img in sorted_events[:10]]
+                upcoming_images = [img for _, img in sorted_events]
 
                 try:
                     banner_cfg = load_banner_config()
