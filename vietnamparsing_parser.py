@@ -1333,6 +1333,12 @@ def atomic_add_listing(category: str, item: dict) -> bool:
             return False
 
 
+def _content_fingerprint(item: dict) -> str:
+    title = (item.get('title', '') or '')[:80].strip().lower()
+    price = str(item.get('price', '') or '')
+    return f"{title}||{price}"
+
+
 def get_existing_ids(data: dict) -> set:
     ids = set()
     for cat, items in data.items():
@@ -1341,6 +1347,18 @@ def get_existing_ids(data: dict) -> set:
                 if isinstance(item, dict) and 'id' in item:
                     ids.add(item['id'])
     return ids
+
+
+def get_content_fingerprints(data: dict) -> set:
+    fps = set()
+    for cat, items in data.items():
+        if isinstance(items, list):
+            for item in items:
+                if isinstance(item, dict):
+                    fp = _content_fingerprint(item)
+                    if fp != '||':
+                        fps.add(fp)
+    return fps
 
 
 def poll_bot_for_updates(last_update_id: int = 0) -> tuple[list, int]:
