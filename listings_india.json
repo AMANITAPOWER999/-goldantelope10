@@ -928,23 +928,6 @@
       "telegram_link": "https://tickets.partyhunt.com/events/pop-festival-03-apr-2026-pirates-of-parvati-buy-tickets",
       "price": "1000.00",
       "price_display": "from ₹1000.00"
-    },
-    {
-      "id": "partyhunt_a1688d85-6d1b-48b0-8b18-8a7e460c3931",
-      "title": "Masaya Mornings",
-      "description": "📅 03 Apr 2026, 04:00\n📍 Masaya\n🗺 213/9, Ozran Beach Rd, bardez, Anjuna, Goa 403509, India\n🏷 Entertainment\n🎟 https://tickets.partyhunt.com/events/masaya-mornings-03-apr-2026-masaya-buy-tickets",
-      "photos": [
-        "https://api.anbocas.com/storage/event/banner/DdvXfxP3oRR79o93uiVfRRRu78rxkZJb9vs0T8Hy.jpg"
-      ],
-      "contact": "@partyhuntgoa",
-      "source_group": "partyhuntgoa",
-      "date": "2026-04-03 04:00:00",
-      "city": "Goa",
-      "realestate_city": "goa",
-      "country": "india",
-      "telegram_link": "https://tickets.partyhunt.com/events/masaya-mornings-03-apr-2026-masaya-buy-tickets",
-      "price": "1500.00",
-      "price_display": "from ₹1500.00"
     }
   ],
   "transport": [],
