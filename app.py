@@ -896,6 +896,41 @@ def get_city_counts(category):
                 counts[ru_city] += 1
         return jsonify(counts)
 
+    if country == 'india':
+        india_city_keywords = {
+            'Гоа': ['goa', 'anjuna', 'arambol', 'vagator', 'morjim', 'palolem', 'calangute', 'candolim', 'гоа'],
+            'Мумбаи': ['mumbai', 'мумбаи'],
+            'Дели': ['delhi', 'new delhi', 'gurugram', 'noida', 'дели'],
+            'Бангалор': ['bangalore', 'bengaluru', 'бангалор'],
+            'Хайдарабад': ['hyderabad', 'хайдарабад'],
+            'Керала': ['kerala', 'керала'],
+            'Касол': ['kasol', 'касол'],
+            'Манали': ['manali', 'манали'],
+            'Ришикеш': ['rishikesh', 'ришикеш'],
+            'Дхарамсала': ['dharamshala', 'дхарамсала'],
+            'Бир': ['bir', 'бир'],
+            'Тош': ['tosh', 'тош'],
+            'Ченнаи': ['chennai', 'ченнаи'],
+            'Пуна': ['pune', 'пуна'],
+            'Колката': ['kolkata', 'колката'],
+        }
+        cities = list(india_city_keywords.keys())
+        counts = {city: 0 for city in cities}
+        for item in listings:
+            raw_realestate = str(item.get('realestate_city', '') or '').strip().lower()
+            raw_city = str(item.get('city', '') or '').strip().lower()
+            raw_location = str(item.get('location', '') or '').strip().lower()
+            matched = False
+            for ru_city, keywords in india_city_keywords.items():
+                for kw in keywords:
+                    if kw in raw_realestate or kw in raw_city or kw in raw_location:
+                        counts[ru_city] += 1
+                        matched = True
+                        break
+                if matched:
+                    break
+        return jsonify(counts)
+
     # Vietnam city mapping
     city_name_mapping = {
         # Нячанг
@@ -1205,6 +1240,21 @@ def get_listings(category):
                 'Чиангмай': ['чиангмай', 'chiang mai', 'chiangmai', 'chiang_mai'],
                 'Хуахин': ['хуахин', 'hua hin', 'huahin', 'hua_hin'],
                 'Краби': ['краби', 'krabi'],
+                'Гоа': ['гоа', 'goa', 'anjuna', 'arambol', 'vagator', 'morjim', 'palolem', 'calangute', 'candolim'],
+                'Мумбаи': ['мумбаи', 'mumbai'],
+                'Дели': ['дели', 'delhi', 'new delhi', 'gurugram', 'noida'],
+                'Бангалор': ['бангалор', 'bangalore', 'bengaluru'],
+                'Хайдарабад': ['хайдарабад', 'hyderabad'],
+                'Керала': ['керала', 'kerala'],
+                'Касол': ['касол', 'kasol'],
+                'Манали': ['манали', 'manali'],
+                'Ришикеш': ['ришикеш', 'rishikesh'],
+                'Дхарамсала': ['дхарамсала', 'dharamshala'],
+                'Бир': ['бир', 'bir'],
+                'Тош': ['тош', 'tosh'],
+                'Ченнаи': ['ченнаи', 'chennai'],
+                'Пуна': ['пуна', 'pune'],
+                'Колката': ['колката', 'kolkata'],
             }
             
             targets = city_keywords_map.get(city_filter, [city_filter.lower()])
@@ -1212,15 +1262,16 @@ def get_listings(category):
             def matches_city(item):
                 item_city = str(item.get('city', '')).lower()
                 item_location = str(item.get('location', '')).lower()
+                item_realestate_city = str(item.get('realestate_city', '')).lower()
                 search_text = f"{item.get('title', '')} {item.get('description', '')}".lower()
                 
                 # Если город не указан, считаем что подходит для всех городов (показываем всё)
-                if not item_city and not item_location:
+                if not item_city and not item_location and not item_realestate_city:
                     return True
 
-                # Проверяем поля city и location
+                # Проверяем поля city, location и realestate_city
                 for t in targets:
-                    if t in item_city or t in item_location:
+                    if t in item_city or t in item_location or t in item_realestate_city:
                         return True
                 # Проверяем в тексте
                 for t in targets:
@@ -1666,6 +1717,78 @@ def load_banner_config():
 def save_banner_config(config):
     with open(BANNER_CONFIG_FILE, 'w', encoding='utf-8') as f:
         json.dump(config, f, ensure_ascii=False, indent=2)
+
+_BANNER_TG_GROUP = 'GAmedia_vn'
+_BANNER_TG_CHAT_ID = -1003825420004
+_BANNER_DATA_FILE = 'banner_data.json'
+
+def _load_banner_data():
+    try:
+        if os.path.exists(_BANNER_DATA_FILE):
+            with open(_BANNER_DATA_FILE, 'r') as f:
+                return json.load(f)
+    except Exception:
+        pass
+    return {}
+
+def _save_banner_data(data):
+    with open(_BANNER_DATA_FILE, 'w') as f:
+        json.dump(data, f, ensure_ascii=False, indent=2)
+
+def handle_banner_channel_photo(msg_id, file_id):
+    data = _load_banner_data()
+    data[str(msg_id)] = {'file_id': file_id, 'ts': int(datetime.now().timestamp())}
+    _save_banner_data(data)
+    with _msg_to_file_id_lock:
+        _msg_to_file_id[(_BANNER_TG_GROUP, msg_id)] = file_id
+    _update_banner_config_from_data(data)
+    logger.info(f'[banner_sync] Фото баннер добавлен: msg_id={msg_id}')
+
+def handle_banner_channel_delete(msg_id):
+    data = _load_banner_data()
+    if str(msg_id) in data:
+        del data[str(msg_id)]
+        _save_banner_data(data)
+        _update_banner_config_from_data(data)
+        logger.info(f'[banner_sync] Баннер удалён: msg_id={msg_id}')
+
+def _update_banner_config_from_data(data):
+    if not data:
+        config = load_banner_config()
+        config['vietnam']['mobile'] = []
+        save_banner_config(config)
+        return
+    sorted_ids = sorted(data.keys(), key=lambda x: int(x))
+    new_banners = [f'/tg_img/{_BANNER_TG_GROUP}/{mid}' for mid in sorted_ids]
+    config = load_banner_config()
+    old_mobile = config.get('vietnam', {}).get('mobile', [])
+    if new_banners != old_mobile:
+        config['vietnam']['mobile'] = new_banners
+        save_banner_config(config)
+        logger.info(f'[banner_sync] Обновлено: {len(new_banners)} баннеров')
+
+def _load_banner_file_ids_to_cache():
+    import time as _t
+    _t.sleep(3)
+    data = _load_banner_data()
+    loaded = 0
+    for mid_str, info in data.items():
+        fid = info.get('file_id', '')
+        if fid:
+            try:
+                with _msg_to_file_id_lock:
+                    _msg_to_file_id[(_BANNER_TG_GROUP, int(mid_str))] = fid
+                loaded += 1
+            except NameError:
+                pass
+    if loaded:
+        _update_banner_config_from_data(data)
+        logger.info(f'[banner_sync] Загружено {loaded} баннеров file_id из кеша')
+    else:
+        _update_banner_config_from_data(data)
+
+threading.Thread(target=_load_banner_file_ids_to_cache, daemon=True, name='BannerCacheLoader').start()
+logger.info('[banner_sync] Синхронизация баннеров из @GAmedia_vn (канал) запущена')
 
 @app.route('/api/banners')
 def get_banners():
@@ -3177,7 +3300,7 @@ def _prewarm_restaurant_disk_photos():
         mid = msg_ids[0]
         fid = fids[0]
         disk_path = os.path.join(cached_dir, f'restoranvietnam_{mid}.jpg')
-        if os.path.exists(disk_path) and os.path.getsize(disk_path) > 500:
+        if os.path.exists(disk_path) and os.path.getsize(disk_path) > 0:
             skipped += 1
             continue
         img_data = _bot_api_download(fid, bot_token)
@@ -3363,6 +3486,19 @@ def _gavibeshub_poller():
                     continue
 
                 chat_username = cp.get('chat', {}).get('username', '').lower()
+                chat_id_val = cp.get('chat', {}).get('id', 0)
+
+                if chat_username == 'gamedia_vn' or chat_id_val == _BANNER_TG_CHAT_ID:
+                    if cp.get('photo'):
+                        msg_id = cp.get('message_id', 0)
+                        photo_list = cp.get('photo', [])
+                        if photo_list and msg_id:
+                            largest = max(photo_list, key=lambda p: p.get('file_size', 0))
+                            fid = largest.get('file_id', '')
+                            if fid:
+                                handle_banner_channel_photo(msg_id, fid)
+                    continue
+
                 if chat_username != 'gavibeshub':
                     continue
 
@@ -3416,6 +3552,189 @@ threading.Thread(target=_gavibeshub_poller, daemon=True, name='GAvibeshubPoller'
 logger.info('GAvibeshub background poller started (every %ds)', GAVIBESHUB_POLL_INTERVAL)
 
 
+PARTYHUNT_API_BASE = 'https://api.anbocas.com'
+PARTYHUNT_EVENTS_EP = '/webapp/v1/events'
+PARTYHUNT_SITE = 'https://tickets.partyhunt.com/events'
+PARTYHUNT_POLL_INTERVAL = 600
+_partyhunt_sent_ids = set()
+
+def _partyhunt_poller():
+    """Background poller: fetches events from PartyHunt API and adds to India entertainment."""
+    import time as _time
+    _time.sleep(15)
+    logger.info('[partyhunt_poller] Started (interval %ds)', PARTYHUNT_POLL_INTERVAL)
+
+    india_file = 'listings_india.json'
+    _ph_lock = threading.Lock()
+
+    while True:
+        try:
+            all_events = []
+            page = 1
+            while True:
+                try:
+                    r = requests.get(f'{PARTYHUNT_API_BASE}{PARTYHUNT_EVENTS_EP}', params={
+                        'page': page,
+                        'sortField': 'start_date',
+                        'sortDirection': 'asc',
+                    }, headers={'Accept': 'application/json', 'User-Agent': 'GoldAntelope/1.0'}, timeout=15)
+                    if r.status_code != 200:
+                        break
+                    data = r.json().get('data', {})
+                    events = data.get('data', [])
+                    if not events:
+                        break
+                    all_events.extend(events)
+                    if page >= data.get('last_page', 1):
+                        break
+                    page += 1
+                    _time.sleep(0.5)
+                except Exception as e:
+                    logger.warning('[partyhunt_poller] Fetch error page %d: %s', page, e)
+                    break
+
+            new_count = 0
+            for ev in all_events:
+                ev_id = ev.get('id', '')
+                if not ev_id or ev_id in _partyhunt_sent_ids:
+                    continue
+
+                name = ev.get('name', 'Event')
+                venue = ev.get('venue', '')
+                location = ev.get('location', '')
+                city = ev.get('city', 'Goa')
+                start = ev.get('start_date', '')
+                end = ev.get('end_date', '')
+                slug = ev.get('slug', '')
+                price = ev.get('start_price', '')
+                image_url = ev.get('image_url', '')
+                category_name = ''
+                cat_data = ev.get('category')
+                if isinstance(cat_data, dict):
+                    category_name = cat_data.get('name', '')
+
+                date_str = ''
+                if start:
+                    try:
+                        from datetime import datetime as _dt
+                        dt = _dt.strptime(start, '%Y-%m-%d %H:%M:%S')
+                        date_str = dt.strftime('%d %b %Y, %H:%M')
+                    except:
+                        date_str = start
+
+                desc_parts = []
+                if date_str:
+                    desc_parts.append(f'📅 {date_str}')
+                if venue:
+                    desc_parts.append(f'📍 {venue}')
+                if location:
+                    desc_parts.append(f'🗺 {location}')
+                if category_name:
+                    desc_parts.append(f'🏷 {category_name}')
+                if slug:
+                    desc_parts.append(f'🎟 {PARTYHUNT_SITE}/{slug}')
+                description = '\n'.join(desc_parts)
+
+                price_display = ''
+                price_val = ''
+                if price and str(price) != '0' and str(price) != '0.00':
+                    price_val = str(price)
+                    price_display = f'from ₹{price}'
+
+                photos = []
+                if image_url:
+                    photos.append(image_url)
+
+                city_lower = (city or '').strip().lower()
+                location_lower = (location or '').lower()
+                _INDIA_CITY_MAP = {
+                    'goa': 'goa', 'anjuna': 'goa', 'arambol': 'goa', 'vagator': 'goa',
+                    'palolem': 'goa', 'calangute': 'goa', 'baga': 'goa', 'panjim': 'goa',
+                    'mapusa': 'goa', 'chapora': 'goa', 'morjim': 'goa', 'mandrem': 'goa',
+                    'mumbai': 'mumbai', 'delhi': 'delhi', 'bangalore': 'bangalore',
+                    'bengaluru': 'bangalore', 'chennai': 'chennai', 'kolkata': 'kolkata',
+                    'hyderabad': 'hyderabad', 'pune': 'pune', 'jaipur': 'jaipur',
+                    'kasol': 'kasol', 'manali': 'manali', 'rishikesh': 'rishikesh',
+                    'kerala': 'kerala', 'gurugram': 'delhi', 'noida': 'delhi',
+                    'vashist': 'manali', 'bir': 'bir',
+                }
+                resolved_city = _INDIA_CITY_MAP.get(city_lower, '')
+                if not resolved_city:
+                    for key, val in _INDIA_CITY_MAP.items():
+                        if key in location_lower:
+                            resolved_city = val
+                            break
+                if not resolved_city:
+                    resolved_city = city_lower or 'india'
+
+                ticket_url = f'{PARTYHUNT_SITE}/{slug}' if slug else ''
+
+                item = {
+                    'id': f'partyhunt_{ev_id}',
+                    'title': name,
+                    'description': description,
+                    'photos': photos,
+                    'contact': '@partyhuntgoa',
+                    'source_group': 'partyhuntgoa',
+                    'date': start or datetime.now(timezone.utc).isoformat(),
+                    'city': city or resolved_city.title(),
+                    'realestate_city': resolved_city,
+                    'country': 'india',
+                    'telegram_link': ticket_url,
+                }
+                if price_val:
+                    item['price'] = price_val
+                    item['price_display'] = price_display
+
+                with _ph_lock:
+                    try:
+                        with open(india_file, 'r', encoding='utf-8') as f:
+                            india_data = json.load(f)
+                    except Exception:
+                        india_data = {}
+                    if 'entertainment' not in india_data:
+                        india_data['entertainment'] = []
+
+                    existing_ids = set()
+                    for cat_items in india_data.values():
+                        if isinstance(cat_items, list):
+                            for it in cat_items:
+                                if isinstance(it, dict) and 'id' in it:
+                                    existing_ids.add(it['id'])
+
+                    if item['id'] in existing_ids:
+                        _partyhunt_sent_ids.add(ev_id)
+                        continue
+
+                    india_data['entertainment'].insert(0, item)
+                    try:
+                        tmp = india_file + '.tmp'
+                        with open(tmp, 'w', encoding='utf-8') as f:
+                            json.dump(india_data, f, ensure_ascii=False, indent=2)
+                        os.replace(tmp, india_file)
+                        _partyhunt_sent_ids.add(ev_id)
+                        new_count += 1
+                        logger.info('[partyhunt_poller] Added: %s (₹%s)', name, price_val or '?')
+                    except Exception as e:
+                        logger.error('[partyhunt_poller] Save error: %s', e)
+
+            if new_count:
+                logger.info('[partyhunt_poller] Batch done: %d new events added to India entertainment', new_count)
+                if 'india' in data_cache:
+                    del data_cache['india']
+            else:
+                logger.debug('[partyhunt_poller] No new events (total checked: %d)', len(all_events))
+
+        except Exception as e:
+            logger.warning('[partyhunt_poller] Error: %s', e)
+
+        _time.sleep(PARTYHUNT_POLL_INTERVAL)
+
+
+threading.Thread(target=_partyhunt_poller, daemon=True, name='PartyHuntPoller').start()
+logger.info('PartyHunt Goa poller started (every %ds)', PARTYHUNT_POLL_INTERVAL)
+
+
 def _bot_api_download(file_id: str, bot_token: str) -> bytes | None:
     """Скачивает файл через Bot API напрямую с api.telegram.org (без CDN)."""
     try:
@@ -3433,7 +3752,7 @@ def _bot_api_download(file_id: str, bot_token: str) -> bytes | None:
             f'https://api.telegram.org/file/bot{bot_token}/{file_path}',
             timeout=20
         )
-        if img.status_code == 200 and len(img.content) > 500:
+        if img.status_code == 200 and img.content:
             return img.content
     except Exception as e:
         logger.warning(f'_bot_api_download error: {e}')
@@ -3448,7 +3767,7 @@ def tg_photo_proxy(channel, post_id):
     disk_path = os.path.join(_TG_DISK_CACHE_DIR, f'{safe_ch}_{post_id}.jpg')
 
     # 1. Диск-кэш: если файл уже скачан — отдаём мгновенно, без сети
-    if os.path.exists(disk_path) and os.path.getsize(disk_path) > 500:
+    if os.path.exists(disk_path) and os.path.getsize(disk_path) > 0:
         try:
             with open(disk_path, 'rb') as f:
                 data = f.read()
@@ -3468,7 +3787,7 @@ def tg_photo_proxy(channel, post_id):
         cdn_urls = _scrape_cdn_photos_for_post(channel, post_id)
         if cdn_urls:
             resp = requests.get(cdn_urls[0], timeout=15)
-            if resp.status_code == 200 and len(resp.content) > 500:
+            if resp.status_code == 200 and resp.content:
                 img_data = resp.content
                 logger.debug(f'tg_photo_proxy: CDN OK {channel}/{post_id}')
     except Exception as e:
@@ -3482,7 +3801,7 @@ def tg_photo_proxy(channel, post_id):
         if file_id:
             img_data = _bot_api_download(file_id, bot_token)
 
-    # 4. og:image fallback — превью с одиночного поста
+    # 4. og:image fallback
     if not img_data:
         try:
             og_headers = {'User-Agent': 'TelegramBot (like TwitterBot)'}
@@ -3493,7 +3812,7 @@ def tg_photo_proxy(channel, post_id):
                 if img_m:
                     cdn_url = img_m.group(1)
                     cdn_resp = requests.get(cdn_url, timeout=15)
-                    if cdn_resp.status_code == 200 and len(cdn_resp.content) > 500:
+                    if cdn_resp.status_code == 200 and cdn_resp.content:
                         img_data = cdn_resp.content
                         logger.debug(f'tg_photo_proxy: og:image fallback OK {channel}/{post_id}')
         except Exception as e:
@@ -3523,7 +3842,7 @@ def tg_photo_group_proxy(channel, post_id, idx):
     safe_ch = re.sub(r'[^a-zA-Z0-9_]', '', channel)
     disk_path = os.path.join(_TG_DISK_CACHE_DIR, f'{safe_ch}_{post_id}_grp_{idx}.jpg')
 
-    if os.path.exists(disk_path) and os.path.getsize(disk_path) > 500:
+    if os.path.exists(disk_path) and os.path.getsize(disk_path) > 0:
         try:
             with open(disk_path, 'rb') as f:
                 data = f.read()
@@ -3550,11 +3869,11 @@ def tg_photo_group_proxy(channel, post_id, idx):
     # Сохраняем все фото группы на диск
     for i, cdn_url in enumerate(cdn_urls):
         cache_path = os.path.join(_TG_DISK_CACHE_DIR, f'{safe_ch}_{post_id}_grp_{i}.jpg')
-        if os.path.exists(cache_path) and os.path.getsize(cache_path) > 500:
+        if os.path.exists(cache_path) and os.path.getsize(cache_path) > 0:
             continue
         try:
             resp = requests.get(cdn_url, timeout=15)
-            if resp.status_code == 200 and len(resp.content) > 500:
+            if resp.status_code == 200 and resp.content:
                 tmp = cache_path + '.tmp'
                 with open(tmp, 'wb') as f:
                     f.write(resp.content)
@@ -3573,7 +3892,7 @@ def tg_photo_group_proxy(channel, post_id, idx):
     if idx >= len(cdn_urls):
         return Response(status=404)
 
-    if os.path.exists(disk_path) and os.path.getsize(disk_path) > 500:
+    if os.path.exists(disk_path) and os.path.getsize(disk_path) > 0:
         with open(disk_path, 'rb') as f:
             data = f.read()
         return Response(data, status=200, headers={
@@ -3584,7 +3903,7 @@ def tg_photo_group_proxy(channel, post_id, idx):
     # Последний вариант: отдать CDN URL напрямую
     try:
         resp = requests.get(cdn_urls[idx], timeout=15)
-        if resp.status_code == 200 and len(resp.content) > 500:
+        if resp.status_code == 200 and resp.content:
             return Response(resp.content, status=200, headers={
                 'Content-Type': 'image/jpeg',
                 'Cache-Control': 'public, max-age=86400',
@@ -7275,18 +7594,19 @@ a{{color:#d4af37;}}</style></head>
 </body></html>'''
 
 
+try:
+    import telethon_parser as _tp_init
+    if _tp_init.get_session():
+        logger.info('TELETHON_SESSION найдена — запускаю парсер...')
+        _tp_init.start()
+    else:
+        logger.info('TELETHON_SESSION не задана — авторизуйтесь через /tg-auth')
+except Exception as _e:
+    logger.warning(f'Парсер не запущен: {_e}')
+
 if __name__ == '__main__':
     import threading
     t = threading.Thread(target=run_bot, daemon=True)
     t.start()
-    try:
-        import telethon_parser
-        if telethon_parser.get_session():
-            app.logger.info('TELETHON_SESSION найдена — запускаю парсер...')
-            telethon_parser.start()
-        else:
-            app.logger.info('TELETHON_SESSION не задана — авторизуйтесь через /tg-auth')
-    except Exception as _e:
-        app.logger.warning(f'Парсер не запущен: {_e}')
     port = int(os.environ.get('PORT', 8080))
     app.run(host='0.0.0.0', port=port, debug=False)
