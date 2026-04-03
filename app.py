@@ -3725,6 +3725,80 @@ def _partyhunt_poller():
             else:
                 logger.debug('[partyhunt_poller] No new events (total checked: %d)', len(all_events))
 
+            try:
+                from datetime import datetime as _dt, timezone as _tz
+                now = _dt.now(_tz.utc)
+                with _ph_lock:
+                    try:
+                        with open(india_file, 'r', encoding='utf-8') as f:
+                            india_data = json.load(f)
+                    except Exception:
+                        india_data = {}
+                    ent_list = india_data.get('entertainment', [])
+                    before_count = len(ent_list)
+                    cleaned = []
+                    for item in ent_list:
+                        date_str = item.get('date', '')
+                        if date_str and item.get('id', '').startswith('partyhunt_'):
+                            try:
+                                if 'T' in str(date_str):
+                                    ev_dt = _dt.fromisoformat(str(date_str).replace('Z', '+00:00'))
+                                else:
+                                    ev_dt = _dt.strptime(str(date_str), '%Y-%m-%d %H:%M:%S').replace(tzinfo=_tz.utc)
+                                if ev_dt < now:
+                                    continue
+                            except Exception:
+                                pass
+                        cleaned.append(item)
+                    removed = before_count - len(cleaned)
+                    if removed > 0:
+                        india_data['entertainment'] = cleaned
+                        tmp = india_file + '.tmp'
+                        with open(tmp, 'w', encoding='utf-8') as f:
+                            json.dump(india_data, f, ensure_ascii=False, indent=2)
+                        os.replace(tmp, india_file)
+                        if 'india' in data_cache:
+                            del data_cache['india']
+                        logger.info('[partyhunt_poller] Auto-cleanup: removed %d expired events (%d remaining)', removed, len(cleaned))
+            except Exception as e:
+                logger.warning('[partyhunt_poller] Cleanup error: %s', e)
+
+            try:
+                upcoming_images = []
+                from datetime import datetime as _dt, timezone as _tz
+                now = _dt.now(_tz.utc)
+                sorted_events = []
+                for ev in all_events:
+                    start = ev.get('start_date', '')
+                    img = ev.get('image_url', '')
+                    if not start or not img:
+                        continue
+                    try:
+                        ev_dt = _dt.strptime(start, '%Y-%m-%d %H:%M:%S').replace(tzinfo=_tz.utc)
+                        if ev_dt >= now:
+                            sorted_events.append((ev_dt, img))
+                    except Exception:
+                        pass
+                sorted_events.sort(key=lambda x: x[0])
+                upcoming_images = [img for _, img in sorted_events[:8]]
+
+                if upcoming_images:
+                    try:
+                        banner_cfg = load_banner_config()
+                        if 'india' not in banner_cfg:
+                            banner_cfg['india'] = {'web': [], 'mobile': []}
+                        elif isinstance(banner_cfg['india'], list):
+                            banner_cfg['india'] = {'web': banner_cfg['india'], 'mobile': []}
+                        banner_cfg['india']['mobile'] = upcoming_images
+                        if not banner_cfg['india'].get('web'):
+                            banner_cfg['india']['web'] = upcoming_images
+                        save_banner_config(banner_cfg)
+                        logger.info('[partyhunt_poller] Updated India banners: %d mobile images from upcoming events', len(upcoming_images))
+                    except Exception as e:
+                        logger.warning('[partyhunt_poller] Banner update error: %s', e)
+            except Exception as e:
+                logger.warning('[partyhunt_poller] Banner build error: %s', e)
+
         except Exception as e:
             logger.warning('[partyhunt_poller] Error: %s', e)
 
