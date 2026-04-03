@@ -15,6 +15,7 @@
   },
   "india": {
     "web": [
+      "https://api.anbocas.com/storage/event/banner/DdvXfxP3oRR79o93uiVfRRRu78rxkZJb9vs0T8Hy.jpg",
       "https://firebasestorage.googleapis.com/v0/b/partyhunt-production.appspot.com/o/eventsPicture%2Ffbb9c104-e2c3-4a8a-8d9b-fc9f9f9202f9%2Ffull_fbb9c104-e2c3-4a8a-8d9b-fc9f9f9202f9?alt=media&token=27dedeae-783e-4458-8b6d-ca3d01c6db67",
       "https://api.anbocas.com/storage/event/banner/P0EtIO60hzwIKMCwpzd9pdzvfgo2wo9717RfdDzu.jpg",
       "https://api.anbocas.com/storage/event/banner/b032FkEEQRBUoSf0ZlCiqjI1A2sb9gCeLV8dgIjW.jpg",
@@ -22,9 +23,11 @@
       "https://api.anbocas.com/storage/event/banner/bSdT6POa6Vq3nwhbJIZ7NDmkXHiOWcanc7MiRO4j.jpg",
       "https://api.anbocas.com/storage/event/banner/kebeRHFbxt27hhMIMXFy2OaAjehNxdOCfVGuKBvb.jpg",
       "https://api.anbocas.com/storage/event/banner/9XEnzuptEF8ta2Og7wNHfALKx1J9vUDvY1KcBRcM.png",
-      "https://api.anbocas.com/storage/event/banner/ODj2EFH4ct7eKZM03buR9FNwbZynbYP6fNkGJZH7.jpg"
+      "https://api.anbocas.com/storage/event/banner/ODj2EFH4ct7eKZM03buR9FNwbZynbYP6fNkGJZH7.jpg",
+      "https://firebasestorage.googleapis.com/v0/b/partyhunt-production.appspot.com/o/eventsPicture%2F73ba7790-6ff2-45c3-9b63-66d832dac0cf%2Ffull_73ba7790-6ff2-45c3-9b63-66d832dac0cf?alt=media&token=734f0b96-2acd-43d5-a794-ecdfa2700c6f"
     ],
     "mobile": [
+      "https://api.anbocas.com/storage/event/banner/DdvXfxP3oRR79o93uiVfRRRu78rxkZJb9vs0T8Hy.jpg",
       "https://firebasestorage.googleapis.com/v0/b/partyhunt-production.appspot.com/o/eventsPicture%2Ffbb9c104-e2c3-4a8a-8d9b-fc9f9f9202f9%2Ffull_fbb9c104-e2c3-4a8a-8d9b-fc9f9f9202f9?alt=media&token=27dedeae-783e-4458-8b6d-ca3d01c6db67",
       "https://api.anbocas.com/storage/event/banner/P0EtIO60hzwIKMCwpzd9pdzvfgo2wo9717RfdDzu.jpg",
       "https://api.anbocas.com/storage/event/banner/b032FkEEQRBUoSf0ZlCiqjI1A2sb9gCeLV8dgIjW.jpg",
@@ -32,7 +35,8 @@
       "https://api.anbocas.com/storage/event/banner/bSdT6POa6Vq3nwhbJIZ7NDmkXHiOWcanc7MiRO4j.jpg",
       "https://api.anbocas.com/storage/event/banner/kebeRHFbxt27hhMIMXFy2OaAjehNxdOCfVGuKBvb.jpg",
       "https://api.anbocas.com/storage/event/banner/9XEnzuptEF8ta2Og7wNHfALKx1J9vUDvY1KcBRcM.png",
-      "https://api.anbocas.com/storage/event/banner/ODj2EFH4ct7eKZM03buR9FNwbZynbYP6fNkGJZH7.jpg"
+      "https://api.anbocas.com/storage/event/banner/ODj2EFH4ct7eKZM03buR9FNwbZynbYP6fNkGJZH7.jpg",
+      "https://firebasestorage.googleapis.com/v0/b/partyhunt-production.appspot.com/o/eventsPicture%2F73ba7790-6ff2-45c3-9b63-66d832dac0cf%2Ffull_73ba7790-6ff2-45c3-9b63-66d832dac0cf?alt=media&token=734f0b96-2acd-43d5-a794-ecdfa2700c6f"
     ]
   },
   "indonesia": {
