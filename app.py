@@ -7100,9 +7100,19 @@ def _is_mostly_english(text):
         return False
     return latin_count > cyrillic_count * 3
 
+def _is_link_only(text):
+    if not text:
+        return True
+    cleaned = re.sub(r'https?://\S+', '', text)
+    cleaned = re.sub(r'@[\w]+', '', cleaned)
+    cleaned = re.sub(r'[^\w]', '', cleaned)
+    return len(cleaned) < 20
+
 def _is_spam(text):
     if not text:
         return False
+    if _is_link_only(text):
+        return True
     t = text.lower()
     for word in _SPAM_WORDS:
         if word in t:
