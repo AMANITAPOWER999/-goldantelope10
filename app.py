@@ -899,20 +899,10 @@ def get_city_counts(category):
     if country == 'india':
         india_city_keywords = {
             'Гоа': ['goa', 'anjuna', 'arambol', 'vagator', 'morjim', 'palolem', 'calangute', 'candolim', 'гоа'],
+            'Касол': ['kasol', 'касол'],
             'Мумбаи': ['mumbai', 'мумбаи'],
             'Дели': ['delhi', 'new delhi', 'gurugram', 'noida', 'дели'],
             'Бангалор': ['bangalore', 'bengaluru', 'бангалор'],
-            'Хайдарабад': ['hyderabad', 'хайдарабад'],
-            'Керала': ['kerala', 'керала'],
-            'Касол': ['kasol', 'касол'],
-            'Манали': ['manali', 'манали'],
-            'Ришикеш': ['rishikesh', 'ришикеш'],
-            'Дхарамсала': ['dharamshala', 'дхарамсала'],
-            'Бир': ['bir', 'бир'],
-            'Тош': ['tosh', 'тош'],
-            'Ченнаи': ['chennai', 'ченнаи'],
-            'Пуна': ['pune', 'пуна'],
-            'Колката': ['kolkata', 'колката'],
         }
         cities = list(india_city_keywords.keys())
         counts = {city: 0 for city in cities}
@@ -1241,20 +1231,10 @@ def get_listings(category):
                 'Хуахин': ['хуахин', 'hua hin', 'huahin', 'hua_hin'],
                 'Краби': ['краби', 'krabi'],
                 'Гоа': ['гоа', 'goa', 'anjuna', 'arambol', 'vagator', 'morjim', 'palolem', 'calangute', 'candolim'],
+                'Касол': ['касол', 'kasol'],
                 'Мумбаи': ['мумбаи', 'mumbai'],
                 'Дели': ['дели', 'delhi', 'new delhi', 'gurugram', 'noida'],
                 'Бангалор': ['бангалор', 'bangalore', 'bengaluru'],
-                'Хайдарабад': ['хайдарабад', 'hyderabad'],
-                'Керала': ['керала', 'kerala'],
-                'Касол': ['касол', 'kasol'],
-                'Манали': ['манали', 'manali'],
-                'Ришикеш': ['ришикеш', 'rishikesh'],
-                'Дхарамсала': ['дхарамсала', 'dharamshala'],
-                'Бир': ['бир', 'bir'],
-                'Тош': ['тош', 'tosh'],
-                'Ченнаи': ['ченнаи', 'chennai'],
-                'Пуна': ['пуна', 'pune'],
-                'Колката': ['колката', 'kolkata'],
             }
             
             targets = city_keywords_map.get(city_filter, [city_filter.lower()])
