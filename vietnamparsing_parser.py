@@ -1053,14 +1053,8 @@ def scrape_extra_channel_page(channel: str, before_id: int | None = None) -> lis
 
             photo_wraps = wrap.find_all('a', class_='tgme_widget_message_photo_wrap')
             photos = []
-            for pw in photo_wraps:
-                style = pw.get('style', '')
-                bg_match = re.search(r"background-image:\s*url\('([^']+)'\)", style)
-                if bg_match:
-                    photos.append(bg_match.group(1))
-                else:
-                    if post_id:
-                        photos.append(f'https://t.me/{channel}/{post_id}')
+            if photo_wraps and post_id:
+                photos = [f'https://t.me/{channel}/{post_id}']
 
             results.append({
                 'post_id': post_id,

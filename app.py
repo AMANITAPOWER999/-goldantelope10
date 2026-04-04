@@ -8054,7 +8054,7 @@ def update_paymens_rates():
                         'city': city,
                         'city_ru': city,
                         'date': msg.get('date', ''),
-                        'images': msg.get('images', []),
+                        'images': [f'/tg_img/paymens_vn/{post_id}'] if msg.get('images') else [],
                         'contact': '@paymens_vn',
                         'contact_name': 'paymens_vn',
                         'telegram_link': f'https://t.me/paymens_vn/{post_id}' if post_id else 'https://t.me/paymens_vn',
