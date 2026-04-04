@@ -1,5 +1,5 @@
 """
-Загружает посты из @GAvibeshub в entertainment (Vietnam).
+Загружает посты из @media_vn в entertainment (Vietnam).
 Использует Bot API для получения полного текста + og:image CDN URL для фото.
 """
 import os, re, json, time, requests
@@ -7,7 +7,7 @@ from datetime import datetime, timezone
 from html import unescape
 
 BOT_TOKEN = os.environ.get('TELEGRAM_BOT_TOKEN', '')
-CHANNEL = 'GAvibeshub'
+CHANNEL = 'media_vn'
 LISTINGS_FILE = 'listings_vietnam.json'
 INDEX_FILE = 'file_id_index.json'
 
@@ -59,8 +59,8 @@ def load_existing_ids() -> set:
                 if it.get('id'):
                     ids.add(it['id'])
                 mid = it.get('message_id')
-                if mid and it.get('source_group','').lower() == 'gavibeshub':
-                    ids.add(f'gavibeshub_{mid}')
+                if mid and it.get('source_group','').lower() == 'media_vn':
+                    ids.add(f'media_vn_{mid}')
         return ids
     except Exception:
         return set()
@@ -104,8 +104,8 @@ def build_listing(post: dict) -> dict:
                 idx = json.load(f)
         except Exception:
             pass
-        if f'gavibeshub_{msg_id}' in idx:
-            photos = [f'/tg_img/gavibeshub/{msg_id}']
+        if f'media_vn_{msg_id}' in idx:
+            photos = [f'/tg_img/media_vn/{msg_id}']
         else:
             # Используем CDN URL напрямую
             photos = [img_url]
@@ -114,8 +114,8 @@ def build_listing(post: dict) -> dict:
     now = datetime.now(timezone.utc).isoformat()
 
     return {
-        'id': f'gavibeshub_{msg_id}',
-        'listing_id': f'gavibeshub_{msg_id}',
+        'id': f'media_vn_{msg_id}',
+        'listing_id': f'media_vn_{msg_id}',
         'title': title,
         'description': description,
         'text': text,
@@ -190,7 +190,7 @@ def main():
     skipped_no_content = 0
 
     for msg_id in range(8, 81):
-        item_id = f'gavibeshub_{msg_id}'
+        item_id = f'media_vn_{msg_id}'
         if item_id in existing_ids:
             skipped_duplicate += 1
             continue

@@ -1698,7 +1698,7 @@ def save_banner_config(config):
     with open(BANNER_CONFIG_FILE, 'w', encoding='utf-8') as f:
         json.dump(config, f, ensure_ascii=False, indent=2)
 
-_BANNER_TG_GROUP = 'GAmedia_vn'
+_BANNER_TG_GROUP = 'vibeshub_vn'
 _BANNER_TG_CHAT_ID = -1003825420004
 _BANNER_DATA_FILE = 'banner_data.json'
 
@@ -1768,7 +1768,7 @@ def _load_banner_file_ids_to_cache():
         _update_banner_config_from_data(data)
 
 threading.Thread(target=_load_banner_file_ids_to_cache, daemon=True, name='BannerCacheLoader').start()
-logger.info('[banner_sync] Синхронизация баннеров из @GAmedia_vn (канал) запущена')
+logger.info('[banner_sync] Синхронизация баннеров из @vibeshub_vn (канал) запущена')
 
 @app.route('/api/banners')
 def get_banners():
@@ -3408,14 +3408,14 @@ def _auto_delete_webhook():
 threading.Thread(target=_auto_delete_webhook, daemon=True, name='BotWebhookDelete').start()
 
 
-# ============ ФОНОВЫЙ ПОЛЛЕР КАНАЛА @GAvibeshub ============
+# ============ ФОНОВЫЙ ПОЛЛЕР КАНАЛА @media_vn ============
 
 _gavibeshub_poll_offset = 0
 _gavibeshub_poll_lock = threading.Lock()
 GAVIBESHUB_POLL_INTERVAL = 30  # секунд
 
 def _gavibeshub_poller():
-    """Фоновый поллер: получает новые посты из @GAvibeshub через Bot API getUpdates
+    """Фоновый поллер: получает новые посты из @media_vn через Bot API getUpdates
     и добавляет их в категорию entertainment (Vietnam)."""
     import time as _time
     global _gavibeshub_poll_offset
@@ -3468,7 +3468,7 @@ def _gavibeshub_poller():
                 chat_username = cp.get('chat', {}).get('username', '').lower()
                 chat_id_val = cp.get('chat', {}).get('id', 0)
 
-                if chat_username == 'gamedia_vn' or chat_id_val == _BANNER_TG_CHAT_ID:
+                if chat_username == 'vibeshub_vn' or chat_id_val == _BANNER_TG_CHAT_ID:
                     if cp.get('photo'):
                         msg_id = cp.get('message_id', 0)
                         photo_list = cp.get('photo', [])
@@ -3479,7 +3479,7 @@ def _gavibeshub_poller():
                                 handle_banner_channel_photo(msg_id, fid)
                     continue
 
-                if chat_username != 'gavibeshub':
+                if chat_username != 'media_vn':
                     continue
 
                 # Есть ли фото в посте?
@@ -3498,21 +3498,21 @@ def _gavibeshub_poller():
                         fid = largest.get('file_id')
                         if fid:
                             with _msg_to_file_id_lock:
-                                _msg_to_file_id[('gavibeshub', msg_id)] = fid
+                                _msg_to_file_id[('media_vn', msg_id)] = fid
                             try:
                                 idx_path = 'file_id_index.json'
                                 idx = {}
                                 if os.path.exists(idx_path):
                                     with open(idx_path, 'r') as _f:
                                         idx = json.load(_f)
-                                idx[f'gavibeshub_{msg_id}'] = fid
+                                idx[f'media_vn_{msg_id}'] = fid
                                 with open(idx_path, 'w') as _f:
                                     json.dump(idx, _f, ensure_ascii=False, indent=2)
                             except Exception:
                                 pass
 
                     update_wrapped = {'channel_post': cp}
-                    item = process_extra_channel_update(update_wrapped, 'gavibeshub', 'entertainment', None)
+                    item = process_extra_channel_update(update_wrapped, 'media_vn', 'entertainment', None)
                     if item:
                         added = atomic_add_listing('entertainment', item)
                         status = 'добавлен' if added else 'дубликат'

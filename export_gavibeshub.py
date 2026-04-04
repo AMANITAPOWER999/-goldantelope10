@@ -3,7 +3,7 @@ import re
 import time
 from bs4 import BeautifulSoup
 
-CHANNEL = 'GAvibeshub'
+CHANNEL = 'media_vn'
 BASE_URL = f'https://t.me/s/{CHANNEL}'
 
 EMOJI_RE = re.compile(
