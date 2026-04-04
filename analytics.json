@@ -4,41 +4,48 @@
       "unique_visitors": [
         "user_5z5vh1tlz_1775298342521",
         "user_za5e2b4kg_1775294080664",
-        "user_anfb3wqwv_1775300926014"
+        "user_anfb3wqwv_1775300926014",
+        "user_wpwk5zlru_1775300955554"
       ],
-      "page_views": 29,
+      "page_views": 52,
       "countries": {
-        "vietnam": 29
+        "vietnam": 52
       },
       "categories": {
-        "real_estate": 12,
-        "entertainment": 17
+        "real_estate": 30,
+        "entertainment": 20,
+        "restaurants": 2
       },
       "hours": {
         "10": 1,
-        "11": 28
+        "11": 51
       },
       "referrers": {},
       "devices": {
-        "mobile": 0,
-        "desktop": 29
+        "mobile": 7,
+        "desktop": 45
       }
     }
   },
   "visitors": {
     "user_5z5vh1tlz_1775298342521": {
       "first_seen": "2026-04-04",
-      "visits": 10,
+      "visits": 15,
       "last_seen": "2026-04-04"
     },
     "user_za5e2b4kg_1775294080664": {
       "first_seen": "2026-04-04",
-      "visits": 18,
+      "visits": 29,
       "last_seen": "2026-04-04"
     },
     "user_anfb3wqwv_1775300926014": {
       "first_seen": "2026-04-04",
       "visits": 1,
+      "last_seen": "2026-04-04"
+    },
+    "user_wpwk5zlru_1775300955554": {
+      "first_seen": "2026-04-04",
+      "visits": 7,
       "last_seen": "2026-04-04"
     }
   }

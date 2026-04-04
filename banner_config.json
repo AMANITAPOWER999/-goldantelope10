@@ -1,7 +1,9 @@
 {
   "vietnam": {
     "web": [],
-    "mobile": []
+    "mobile": [
+      "/tg_img/media_vn/4"
+    ]
   },
   "thailand": {
     "web": [],

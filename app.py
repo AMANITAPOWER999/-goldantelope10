@@ -1698,7 +1698,7 @@ def save_banner_config(config):
     with open(BANNER_CONFIG_FILE, 'w', encoding='utf-8') as f:
         json.dump(config, f, ensure_ascii=False, indent=2)
 
-_BANNER_TG_GROUP = 'vibeshub_vn'
+_BANNER_TG_GROUP = 'media_vn'
 _BANNER_TG_CHAT_ID = -1003825420004
 _BANNER_DATA_FILE = 'banner_data.json'
 
@@ -1767,12 +1767,84 @@ def _load_banner_file_ids_to_cache():
     else:
         _update_banner_config_from_data(data)
 
+def _sync_media_vn_banners():
+    """При старте скрейпит t.me/s/media_vn и добавляет все посты с фото в banner_data.json."""
+    import time as _t
+    _t.sleep(5)
+    try:
+        from bs4 import BeautifulSoup as _BS
+        channel = _BANNER_TG_GROUP
+        base_url = f'https://t.me/s/{channel}'
+        headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'}
+        data = _load_banner_data()
+        added = 0
+        before = None
+        max_pages = 20  # не более 20 страниц (~400 постов)
+        for _page in range(max_pages):
+            params = {}
+            if before:
+                params['before'] = before
+            try:
+                resp = requests.get(base_url, params=params, headers=headers, timeout=20)
+                if resp.status_code != 200:
+                    break
+                soup = _BS(resp.text, 'html.parser')
+                ids_on_page = []
+                for msg_div in soup.select('.tgme_widget_message'):
+                    data_post = msg_div.get('data-post', '')
+                    if '/' not in data_post:
+                        continue
+                    try:
+                        mid = int(data_post.split('/')[-1])
+                    except ValueError:
+                        continue
+                    has_photo = bool(
+                        msg_div.select('.tgme_widget_message_photo_wrap') or
+                        msg_div.select('.tgme_widget_message_photo') or
+                        msg_div.select('a.tgme_widget_message_photo_wrap')
+                    )
+                    ids_on_page.append(mid)
+                    if has_photo and str(mid) not in data:
+                        data[str(mid)] = {'file_id': '', 'ts': mid}
+                        added += 1
+                if not ids_on_page:
+                    break
+                before = min(ids_on_page)
+                if before <= 1:
+                    break
+                _t.sleep(1)
+            except Exception as e:
+                logger.warning(f'[banner_sync] Ошибка скрейпинга страницы: {e}')
+                break
+        if added > 0:
+            _save_banner_data(data)
+            _update_banner_config_from_data(data)
+            logger.info(f'[banner_sync] Синк @{channel}: добавлено {added} новых баннеров, всего {len(data)}')
+        else:
+            _update_banner_config_from_data(data)
+            logger.info(f'[banner_sync] Синк @{channel}: новых постов нет, всего {len(data)} баннеров')
+    except Exception as e:
+        logger.error(f'[banner_sync] Ошибка синка: {e}')
+
 threading.Thread(target=_load_banner_file_ids_to_cache, daemon=True, name='BannerCacheLoader').start()
-logger.info('[banner_sync] Синхронизация баннеров из @vibeshub_vn (канал) запущена')
+threading.Thread(target=_sync_media_vn_banners, daemon=True, name='BannerMediaVnSync').start()
+logger.info('[banner_sync] Синхронизация баннеров из @media_vn (канал) запущена')
 
 @app.route('/api/banners')
 def get_banners():
     return jsonify(load_banner_config())
+
+@app.route('/api/admin/sync-banners', methods=['POST'])
+def admin_sync_banners():
+    """Ручной запуск синка баннеров из @media_vn."""
+    password = request.json.get('password', '') if request.json else request.form.get('password', '')
+    if not password:
+        return jsonify({'error': 'Unauthorized'}), 401
+    valid_pw = os.environ.get('ADMIN_PASSWORD', '')
+    if password != valid_pw:
+        return jsonify({'error': 'Unauthorized'}), 401
+    threading.Thread(target=_sync_media_vn_banners, daemon=True, name='BannerManualSync').start()
+    return jsonify({'ok': True, 'message': f'Синк @{_BANNER_TG_GROUP} запущен в фоне'})
 
 @app.route('/api/admin/upload-banner', methods=['POST'])
 def admin_upload_banner():
@@ -3468,19 +3540,18 @@ def _gavibeshub_poller():
                 chat_username = cp.get('chat', {}).get('username', '').lower()
                 chat_id_val = cp.get('chat', {}).get('id', 0)
 
-                if chat_username == 'vibeshub_vn' or chat_id_val == _BANNER_TG_CHAT_ID:
-                    if cp.get('photo'):
-                        msg_id = cp.get('message_id', 0)
-                        photo_list = cp.get('photo', [])
-                        if photo_list and msg_id:
-                            largest = max(photo_list, key=lambda p: p.get('file_size', 0))
-                            fid = largest.get('file_id', '')
-                            if fid:
-                                handle_banner_channel_photo(msg_id, fid)
-                    continue
-
                 if chat_username != 'media_vn':
                     continue
+
+                # Фото из @media_vn → сохраняем как баннер (100% все фото)
+                if cp.get('photo'):
+                    msg_id = cp.get('message_id', 0)
+                    photo_list = cp.get('photo', [])
+                    if photo_list and msg_id:
+                        largest = max(photo_list, key=lambda p: p.get('file_size', 0))
+                        fid = largest.get('file_id', '')
+                        if fid:
+                            handle_banner_channel_photo(msg_id, fid)
 
                 # Есть ли фото в посте?
                 has_photo = bool(cp.get('photo'))
