@@ -1101,6 +1101,60 @@ def _enrich_tg_images(items):
                     item[key] = f'/tg_file/{fid}'
 
 
+@app.route('/api/exchange-rates')
+def get_exchange_rates():
+    import re as _re
+    country = request.args.get('country', 'vietnam')
+    data = load_data(country)
+    listings = data.get('money_exchange', [])
+    rates = []
+    date_str = ''
+    for item in listings:
+        src = (item.get('source_group') or '').lstrip('@')
+        if src != 'paymens_vn':
+            continue
+        text = item.get('text', '') or item.get('description', '')
+        date_m = _re.search(r'курс на (\d{2}\.\d{2}\.\d{4})', text)
+        if date_m:
+            date_str = date_m.group(1)
+        flag_map = {
+            'RUB': '🇷🇺', 'USD': '🇺🇸', 'USDT': '🏴', 'EUR': '🇪🇺',
+            'KZT': '🇰🇿', 'KRW': '🇰🇷', 'CNY': '🇨🇳', 'THB': '🇹🇭', 'MYR': '🇲🇾'
+        }
+        patterns = [
+            (r'([\d.,\s]+)\s*RUB\s*➤\s*([\d.,\s]+)\s*VNĐ', 'RUB', 'VNĐ'),
+            (r'(\d+)\$\s*USD\s*➤\s*([\d.,\s]+)\s*VNĐ', 'USD', 'VNĐ'),
+            (r'(\d+)\$\s*USDT\s*➤\s*([\d.,\s]+)\s*VNĐ', 'USDT', 'VNĐ'),
+            (r'(\d+)€\s*EUR\s*➤\s*([\d.,\s]+)\s*VNĐ', 'EUR', 'VNĐ'),
+            (r'([\d.,\s]+)\s*KZT\s*➤\s*([\d.,\s]+)\s*VNĐ', 'KZT', 'VNĐ'),
+            (r'([\d\s]+)\s*КRW\s*➤\s*([\d.,\s]+)\s*VNĐ', 'KRW', 'VNĐ'),
+            (r'(\d+)¥\s*CNY\s*➤\s*([\d.,\s]+)\s*VNĐ', 'CNY', 'VNĐ'),
+            (r'(\d+)฿\s*THB\s*➤\s*([\d.,\s]+)\s*VNĐ', 'THB', 'VNĐ'),
+            (r'(\d+)\s*MYR\s*➤\s*([\d.,\s]+)\s*VNĐ', 'MYR', 'VNĐ'),
+        ]
+        for pat, cur, to_cur in patterns:
+            m = _re.search(pat, text)
+            if m:
+                amt = m.group(1).replace(' ', '').replace('.', '')
+                vnd = m.group(2).replace(' ', '').replace('.', '')
+                rates.append({
+                    'currency': cur,
+                    'flag': flag_map.get(cur, ''),
+                    'amount': m.group(1).strip(),
+                    'vnd': m.group(2).strip(),
+                    'amount_num': int(amt) if amt.isdigit() else 0,
+                    'vnd_num': int(vnd) if vnd.isdigit() else 0,
+                })
+        if rates:
+            break
+    return jsonify({
+        'date': date_str,
+        'rates': rates,
+        'source': '@paymens_vn',
+        'telegram_link': 'https://t.me/paymens_vn',
+    })
+
+
 @app.route('/api/listings/<category>')
 def get_listings(category):
     country = request.args.get('country', 'vietnam')

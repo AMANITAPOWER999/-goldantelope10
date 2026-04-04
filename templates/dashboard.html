@@ -2298,6 +2298,25 @@
 
         <!-- Финансы -->
         <div id="exchange" class="content">
+            <div id="exchange-rates-board" style="display: block; padding: 20px 20px 0 20px;">
+                <div style="background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%); border-radius: 16px; padding: 24px; color: #fff; box-shadow: 0 8px 32px rgba(0,0,0,0.3); position: relative; overflow: hidden;">
+                    <div style="position: absolute; top: 0; right: 0; width: 200px; height: 200px; background: radial-gradient(circle, rgba(212,175,55,0.15) 0%, transparent 70%); pointer-events: none;"></div>
+                    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 18px;">
+                        <div style="display: flex; align-items: center; gap: 10px;">
+                            <span style="font-size: 24px;">💱</span>
+                            <div>
+                                <div style="font-size: 18px; font-weight: 700; letter-spacing: 0.5px;">Курсы валют Вьетнам</div>
+                                <div id="rates-date" style="font-size: 13px; color: #d4af37; margin-top: 2px;"></div>
+                            </div>
+                        </div>
+                        <a id="rates-source-link" href="https://t.me/paymens_vn" target="_blank" style="font-size: 12px; color: #8892b0; text-decoration: none; display: flex; align-items: center; gap: 4px;">
+                            <span>📡</span> @paymens_vn
+                        </a>
+                    </div>
+                    <div id="rates-table" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 8px;"></div>
+                    <div id="rates-loading" style="text-align: center; padding: 20px; color: #8892b0;">Загрузка курсов...</div>
+                </div>
+            </div>
             <div id="vietnam-exchange-buttons" style="display: none; padding: 20px;">
                 <div class="tour-grid-container" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; margin-bottom: 25px;">
                     <div class="tour-city-btn exchange-city-btn" data-city="Нячанг" onclick="filterExchangeByCity('Нячанг')" style="cursor: pointer; position: relative; border-radius: 12px; overflow: hidden; aspect-ratio: 4/3; box-shadow: 0 4px 12px rgba(0,0,0,0.15); border: 3px solid #d4af37;">
@@ -5696,6 +5715,12 @@
                     if (btn) btn.style.display = (c === country) ? 'block' : 'none';
                 });
             });
+
+            const ratesBoard = document.getElementById('exchange-rates-board');
+            if (ratesBoard) {
+                ratesBoard.style.display = isVietnam ? 'block' : 'none';
+                if (isVietnam) loadExchangeRatesBoard();
+            }
             
             // Генерируем динамические города для других стран
             if (!isVietnam) {
@@ -7231,6 +7256,44 @@
             return loadRealEstateGroups();
         }
         
+        function loadExchangeRatesBoard() {
+            fetch('/api/exchange-rates?country=vietnam')
+                .then(r => r.json())
+                .then(data => {
+                    const table = document.getElementById('rates-table');
+                    const loading = document.getElementById('rates-loading');
+                    const dateEl = document.getElementById('rates-date');
+                    if (!table) return;
+                    if (!data.rates || data.rates.length === 0) {
+                        if (loading) loading.textContent = 'Курсы пока не загружены';
+                        return;
+                    }
+                    if (loading) loading.style.display = 'none';
+                    if (dateEl && data.date) dateEl.textContent = 'Обновлено: ' + data.date;
+                    table.innerHTML = data.rates.map(r => {
+                        const currColors = {
+                            'RUB': '#5b8def', 'USD': '#4caf50', 'USDT': '#26a17b', 'EUR': '#ff9800',
+                            'KZT': '#00bcd4', 'KRW': '#e91e63', 'CNY': '#f44336', 'THB': '#9c27b0', 'MYR': '#ff5722'
+                        };
+                        const clr = currColors[r.currency] || '#d4af37';
+                        return '<div style="display:flex;align-items:center;justify-content:space-between;padding:10px 14px;background:rgba(255,255,255,0.06);border-radius:10px;border-left:3px solid '+clr+';">' +
+                            '<div style="display:flex;align-items:center;gap:10px;">' +
+                                '<span style="font-size:22px;">'+r.flag+'</span>' +
+                                '<div><span style="font-size:15px;font-weight:600;color:#e6e6e6;">'+r.amount+' '+r.currency+'</span></div>' +
+                            '</div>' +
+                            '<div style="display:flex;align-items:center;gap:6px;">' +
+                                '<span style="color:#d4af37;font-size:14px;">➤</span>' +
+                                '<span style="font-size:16px;font-weight:700;color:#fff;font-variant-numeric:tabular-nums;">'+r.vnd+' VNĐ</span>' +
+                            '</div>' +
+                        '</div>';
+                    }).join('');
+                })
+                .catch(e => {
+                    const loading = document.getElementById('rates-loading');
+                    if (loading) loading.textContent = 'Ошибка загрузки курсов';
+                });
+        }
+
         function loadExchangeCounts() {
             const cities = [
                 {key: 'nhatrang', filter: 'Нячанг'},
@@ -8201,6 +8264,7 @@
         
         updateRates();
         loadRealEstateCounts();
+        loadExchangeRatesBoard();
         loadExchangeCounts();
         loadKidsCounts();
         loadVisasCounts();
