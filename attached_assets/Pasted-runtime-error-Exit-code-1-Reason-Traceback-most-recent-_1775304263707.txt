@@ -1,0 +1,63 @@
+runtime error
+Exit code: 1. Reason: Traceback (most recent call last):
+  File "/usr/local/lib/python3.13/site-packages/pydub/utils.py", line 14, in <module>
+    import audioop
+ModuleNotFoundError: No module named 'audioop'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/app/app.py", line 7, in <module>
+    import gradio as gr
+  File "/usr/local/lib/python3.13/site-packages/gradio/__init__.py", line 3, in <module>
+    import gradio._simple_templates
+  File "/usr/local/lib/python3.13/site-packages/gradio/_simple_templates/__init__.py", line 1, in <module>
+    from .simpledropdown import SimpleDropdown
+  File "/usr/local/lib/python3.13/site-packages/gradio/_simple_templates/simpledropdown.py", line 6, in <module>
+    from gradio.components.base import Component, FormComponent
+  File "/usr/local/lib/python3.13/site-packages/gradio/components/__init__.py", line 1, in <module>
+    from gradio.components.annotated_image import AnnotatedImage
+  File "/usr/local/lib/python3.13/site-packages/gradio/components/annotated_image.py", line 13, in <module>
+    from gradio import processing_utils, utils
+  File "/usr/local/lib/python3.13/site-packages/gradio/processing_utils.py", line 29, in <module>
+    from pydub import AudioSegment
+  File "/usr/local/lib/python3.13/site-packages/pydub/__init__.py", line 1, in <module>
+    from .audio_segment import AudioSegment
+  File "/usr/local/lib/python3.13/site-packages/pydub/audio_segment.py", line 11, in <module>
+    from .utils import mediainfo_json, fsdecode
+  File "/usr/local/lib/python3.13/site-packages/pydub/utils.py", line 16, in <module>
+    import pyaudioop as audioop
+ModuleNotFoundError: No module named 'pyaudioop'
+Container logs:
+
+===== Application Startup at 2026-04-04 12:03:27 =====
+
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.13/site-packages/pydub/utils.py", line 14, in <module>
+    import audioop
+ModuleNotFoundError: No module named 'audioop'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/app/app.py", line 7, in <module>
+    import gradio as gr
+  File "/usr/local/lib/python3.13/site-packages/gradio/__init__.py", line 3, in <module>
+    import gradio._simple_templates
+  File "/usr/local/lib/python3.13/site-packages/gradio/_simple_templates/__init__.py", line 1, in <module>
+    from .simpledropdown import SimpleDropdown
+  File "/usr/local/lib/python3.13/site-packages/gradio/_simple_templates/simpledropdown.py", line 6, in <module>
+    from gradio.components.base import Component, FormComponent
+  File "/usr/local/lib/python3.13/site-packages/gradio/components/__init__.py", line 1, in <module>
+    from gradio.components.annotated_image import AnnotatedImage
+  File "/usr/local/lib/python3.13/site-packages/gradio/components/annotated_image.py", line 13, in <module>
+    from gradio import processing_utils, utils
+  File "/usr/local/lib/python3.13/site-packages/gradio/processing_utils.py", line 29, in <module>
+    from pydub import AudioSegment
+  File "/usr/local/lib/python3.13/site-packages/pydub/__init__.py", line 1, in <module>
+    from .audio_segment import AudioSegment
+  File "/usr/local/lib/python3.13/site-packages/pydub/audio_segment.py", line 11, in <module>
+    from .utils import mediainfo_json, fsdecode
+  File "/usr/local/lib/python3.13/site-packages/pydub/utils.py", line 16, in <module>
+    import pyaudioop as audioop
+ModuleNotFoundError: No module named 'pyaudioop'
