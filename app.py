@@ -1109,12 +1109,14 @@ def get_exchange_rates():
     listings = data.get('money_exchange', [])
     rates = []
     date_str = ''
+    from datetime import datetime as _dt
     for item in listings:
         src = (item.get('source_group') or '').lstrip('@')
         if src != 'paymens_vn':
             continue
         text = item.get('text', '') or item.get('description', '')
-        date_m = _re.search(r'курс на (\d{2}\.\d{2}\.\d{4})', text)
+        text_clean = text.replace('\xa0', ' ')
+        date_m = _re.search(r'курс на (\d{2}\.\d{2}\.\d{4})', text_clean)
         if date_m:
             date_str = date_m.group(1)
         flag_map = {
@@ -1122,21 +1124,23 @@ def get_exchange_rates():
             'KZT': '🇰🇿', 'KRW': '🇰🇷', 'CNY': '🇨🇳', 'THB': '🇹🇭', 'MYR': '🇲🇾'
         }
         patterns = [
-            (r'([\d.,\s]+)\s*RUB\s*➤\s*([\d.,\s]+)\s*VNĐ', 'RUB', 'VNĐ'),
-            (r'(\d+)\$\s*USD\s*➤\s*([\d.,\s]+)\s*VNĐ', 'USD', 'VNĐ'),
-            (r'(\d+)\$\s*USDT\s*➤\s*([\d.,\s]+)\s*VNĐ', 'USDT', 'VNĐ'),
-            (r'(\d+)€\s*EUR\s*➤\s*([\d.,\s]+)\s*VNĐ', 'EUR', 'VNĐ'),
-            (r'([\d.,\s]+)\s*KZT\s*➤\s*([\d.,\s]+)\s*VNĐ', 'KZT', 'VNĐ'),
-            (r'([\d\s]+)\s*КRW\s*➤\s*([\d.,\s]+)\s*VNĐ', 'KRW', 'VNĐ'),
-            (r'(\d+)¥\s*CNY\s*➤\s*([\d.,\s]+)\s*VNĐ', 'CNY', 'VNĐ'),
-            (r'(\d+)฿\s*THB\s*➤\s*([\d.,\s]+)\s*VNĐ', 'THB', 'VNĐ'),
-            (r'(\d+)\s*MYR\s*➤\s*([\d.,\s]+)\s*VNĐ', 'MYR', 'VNĐ'),
+            (r'([\d.,\s]+)\s*RUB\s*➤\s*([\d.,\s]+)\s*VNĐ', 'RUB'),
+            (r'(\d+)\$?\s*USD\s*➤\s*([\d.,\s]+)\s*VNĐ', 'USD'),
+            (r'(\d+)\$?\s*USDT\s*➤\s*([\d.,\s]+)\s*VNĐ', 'USDT'),
+            (r'(\d+)[€]?\s*EUR\s*➤\s*([\d.,\s]+)\s*VNĐ', 'EUR'),
+            (r'([\d.,\s]+)\s*KZT\s*➤\s*([\d.,\s]+)\s*VNĐ', 'KZT'),
+            (r'([\d\s]+)\s*[KК]RW\s*➤\s*([\d.,\s]+)\s*VNĐ', 'KRW'),
+            (r'(\d+)[¥]?\s*CNY\s*➤\s*([\d.,\s]+)\s*VNĐ', 'CNY'),
+            (r'(\d+)[฿]?\s*THB\s*➤\s*([\d.,\s]+)\s*VNĐ', 'THB'),
+            (r'(\d+)\s*MYR\s*➤\s*([\d.,\s]+)\s*VNĐ', 'MYR'),
         ]
-        for pat, cur, to_cur in patterns:
-            m = _re.search(pat, text)
+        for pat, cur in patterns:
+            m = _re.search(pat, text_clean)
             if m:
-                amt = m.group(1).replace(' ', '').replace('.', '')
-                vnd = m.group(2).replace(' ', '').replace('.', '')
+                raw_amt = m.group(1).strip()
+                raw_vnd = m.group(2).strip()
+                amt = _re.sub(r'[^\d]', '', raw_amt)
+                vnd = _re.sub(r'[^\d]', '', raw_vnd)
                 rates.append({
                     'currency': cur,
                     'flag': flag_map.get(cur, ''),
@@ -1147,6 +1151,8 @@ def get_exchange_rates():
                 })
         if rates:
             break
+    if not date_str:
+        date_str = _dt.now().strftime('%d.%m.%Y')
     return jsonify({
         'date': date_str,
         'rates': rates,
