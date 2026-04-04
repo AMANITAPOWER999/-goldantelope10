@@ -1405,7 +1405,7 @@ def get_listings(category):
             targets = city_keywords_map.get(city_filter, [city_filter.lower()])
             
             def matches_city(item):
-                search_text = f"{item.get('city', '')} {item.get('title', '')} {item.get('description', '')} {item.get('address', '')}".lower()
+                search_text = f"{item.get('city', '')} {item.get('title', '')} {item.get('description', '')} {item.get('text', '')} {item.get('address', '')}".lower()
                 return any(t in search_text for t in targets)
             
             filtered = [x for x in filtered if matches_city(x)]
@@ -7985,45 +7985,38 @@ except Exception as _e:
 
 RATES_UPDATE_INTERVAL = 1800
 
+def _detect_city_paymens(text):
+    """Detect city from post text for paymens_vn listings."""
+    if not text:
+        return 'Вьетнам'
+    t = text.lower()
+    city_kw = {
+        'Нячанг': ['нячанг', 'nha trang', 'nhatrang'],
+        'Дананг': ['дананг', 'da nang', 'danang'],
+        'Хошимин': ['хошимин', 'ho chi minh', 'hochiminh', 'сайгон', 'saigon', 'hcm'],
+        'Ханой': ['ханой', 'hanoi'],
+        'Фукуок': ['фукуок', 'phu quoc', 'phuquoc'],
+    }
+    for city, kws in city_kw.items():
+        for kw in kws:
+            if kw in t:
+                return city
+    return 'Вьетнам'
+
 def update_paymens_rates():
-    """Background task: scrape @paymens_vn every 30 min and update rates in listings_vietnam.json"""
+    """Background task: scrape @paymens_vn every 30 min, save rates + regular posts."""
     import time as _t
     while True:
         _t.sleep(RATES_UPDATE_INTERVAL)
         try:
-            logger.info('[RATES] Updating exchange rates from @paymens_vn...')
-            from vietnamparsing_parser import scrape_extra_channel_page, build_generic_listing
+            logger.info('[RATES] Updating from @paymens_vn...')
+            from vietnamparsing_parser import scrape_extra_channel_page
             msgs = scrape_extra_channel_page('paymens_vn')
             if not msgs:
                 logger.warning('[RATES] No messages from paymens_vn')
                 continue
 
             rate_pattern = re.compile(r'➤.*VNĐ')
-            best_msg = None
-            for msg in reversed(msgs):
-                text = (msg.get('text', '') or '').replace('\xa0', ' ')
-                lines = [l.strip() for l in text.split('\n') if l.strip()]
-                rate_count = sum(1 for l in lines if rate_pattern.search(l))
-                if rate_count >= 4:
-                    best_msg = msg
-                    break
-
-            if not best_msg:
-                logger.info('[RATES] No rate post found in paymens_vn')
-                continue
-
-            text = best_msg.get('text', '').replace('\xa0', ' ')
-            post_id = best_msg.get('id', 0)
-            new_item = {
-                'id': f'paymens_vn_{post_id}',
-                'source_group': 'paymens_vn',
-                'text': best_msg.get('text', ''),
-                'description': best_msg.get('text', ''),
-                'date': best_msg.get('date', ''),
-                'images': best_msg.get('images', []),
-                'contact': '@paymens_vn',
-                'contact_name': 'paymens_vn',
-            }
 
             with file_lock:
                 fpath = 'listings_vietnam.json'
@@ -8037,31 +8030,57 @@ def update_paymens_rates():
                 existing_ids = {item.get('id') for item in exchange_list}
                 updated = False
 
-                if new_item['id'] not in existing_ids:
-                    exchange_list.insert(0, new_item)
-                    data['money_exchange'] = exchange_list
-                    updated = True
-                    logger.info(f'[RATES] Added new rate post: {new_item["id"]}')
-                else:
-                    for i, item in enumerate(exchange_list):
-                        if item.get('id') == new_item['id']:
-                            exchange_list[i] = new_item
-                            data['money_exchange'] = exchange_list
-                            updated = True
-                            logger.info(f'[RATES] Updated existing rate post: {new_item["id"]}')
-                            break
+                for msg in msgs:
+                    text = (msg.get('text', '') or '').replace('\xa0', ' ')
+                    post_id = msg.get('id', 0)
+                    if not post_id or not text.strip():
+                        continue
+                    item_id = f'paymens_vn_{post_id}'
+
+                    city = _detect_city_paymens(text)
+                    lines_raw = [l.strip() for l in text.split('\n') if l.strip()]
+                    title_line = lines_raw[0] if lines_raw else 'Обмен валют'
+
+                    new_item = {
+                        'id': item_id,
+                        'source_group': 'paymens_vn',
+                        'title': title_line[:120],
+                        'text': msg.get('text', ''),
+                        'description': msg.get('text', ''),
+                        'city': city,
+                        'city_ru': city,
+                        'date': msg.get('date', ''),
+                        'images': msg.get('images', []),
+                        'contact': '@paymens_vn',
+                        'contact_name': 'paymens_vn',
+                        'telegram_link': f'https://t.me/paymens_vn/{post_id}' if post_id else 'https://t.me/paymens_vn',
+                    }
+
+                    if item_id not in existing_ids:
+                        exchange_list.insert(0, new_item)
+                        existing_ids.add(item_id)
+                        updated = True
+                        logger.info(f'[RATES] Added post: {item_id} (city={city})')
+                    else:
+                        for i, item in enumerate(exchange_list):
+                            if item.get('id') == item_id:
+                                new_item['city'] = city
+                                exchange_list[i] = new_item
+                                updated = True
+                                break
 
                 if updated:
+                    data['money_exchange'] = exchange_list
                     with open(fpath, 'w', encoding='utf-8') as f:
                         json.dump(data, f, ensure_ascii=False, indent=2)
                     data_cache.pop('vietnam', None)
                     data_cache.pop('all', None)
-                    logger.info('[RATES] Exchange rates updated successfully')
+                    logger.info('[RATES] paymens_vn data updated successfully')
                 else:
-                    logger.info('[RATES] No changes to rates')
+                    logger.info('[RATES] No new posts from paymens_vn')
 
         except Exception as e:
-            logger.error(f'[RATES] Error updating rates: {e}')
+            logger.error(f'[RATES] Error updating: {e}')
 
 _rates_thread = threading.Thread(target=update_paymens_rates, daemon=True)
 _rates_thread.start()
