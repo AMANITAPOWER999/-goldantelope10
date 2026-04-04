@@ -8030,11 +8030,15 @@ def update_paymens_rates():
                 existing_ids = {item.get('id') for item in exchange_list}
                 updated = False
 
-                for msg in msgs:
+                for msg_idx, msg in enumerate(msgs):
                     text = (msg.get('text', '') or '').replace('\xa0', ' ')
-                    post_id = msg.get('id', 0)
-                    if not post_id or not text.strip():
+                    post_id = msg.get('post_id', 0) or msg.get('id', 0)
+                    if not text.strip():
                         continue
+                    if text.strip() in ('Channel created', 'Channel photo updated'):
+                        continue
+                    if not post_id:
+                        post_id = f'auto_{msg_idx}'
                     item_id = f'paymens_vn_{post_id}'
 
                     city = _detect_city_paymens(text)
