@@ -75,13 +75,24 @@ async def run_bot():
     if not SESSION_STRING:
         add_log("SESSION_STRING не задан!")
         return
+    add_log(f"SESSION_STRING длина: {len(SESSION_STRING)} символов")
 
     client = TelegramClient(StringSession(SESSION_STRING), API_ID, API_HASH)
     await client.connect()
     if not await client.is_user_authorized():
-        add_log("Ошибка: сессия не авторизована! Проверьте SESSION_STRING")
-        return
+        add_log(f"Сессия не авторизована (len={len(SESSION_STRING)}, starts={SESSION_STRING[:10]}...)")
+        add_log("Попробуем повторно...")
+        await client.disconnect()
+        await asyncio.sleep(2)
+        client = TelegramClient(StringSession(SESSION_STRING), API_ID, API_HASH)
+        await client.connect()
+        if not await client.is_user_authorized():
+            add_log("Повторная попытка не удалась. Проверьте SESSION_STRING")
+            return
     me = await client.get_me()
+    if not me:
+        add_log("Не удалось получить данные пользователя")
+        return
     add_log(f"Авторизован как {me.first_name} ({me.phone})")
 
     target = await client.get_entity(TARGET_CHANNEL)
