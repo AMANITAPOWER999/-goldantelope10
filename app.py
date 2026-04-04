@@ -3540,21 +3540,22 @@ def _gavibeshub_poller():
                 chat_username = cp.get('chat', {}).get('username', '').lower()
                 chat_id_val = cp.get('chat', {}).get('id', 0)
 
-                # Обрабатываем только media_vn и vibeshub_vn
-                if chat_username not in ('media_vn', 'vibeshub_vn'):
+                # @media_vn → только баннеры Вьетнам, без Развлечений
+                if chat_username == 'media_vn':
+                    if cp.get('photo'):
+                        msg_id_b = cp.get('message_id', 0)
+                        photo_list_b = cp.get('photo', [])
+                        if photo_list_b and msg_id_b:
+                            largest_b = max(photo_list_b, key=lambda p: p.get('file_size', 0))
+                            fid_b = largest_b.get('file_id', '')
+                            if fid_b:
+                                handle_banner_channel_photo(msg_id_b, fid_b)
                     continue
 
-                # Фото из @media_vn → дополнительно сохраняем как баннер
-                if chat_username == 'media_vn' and cp.get('photo'):
-                    msg_id_b = cp.get('message_id', 0)
-                    photo_list_b = cp.get('photo', [])
-                    if photo_list_b and msg_id_b:
-                        largest_b = max(photo_list_b, key=lambda p: p.get('file_size', 0))
-                        fid_b = largest_b.get('file_id', '')
-                        if fid_b:
-                            handle_banner_channel_photo(msg_id_b, fid_b)
+                # @vibeshub_vn → только Развлечения Вьетнам
+                if chat_username != 'vibeshub_vn':
+                    continue
 
-                # Все посты с фото из обоих каналов → Развлечения Вьетнам
                 has_photo = bool(cp.get('photo'))
                 if not has_photo:
                     continue
