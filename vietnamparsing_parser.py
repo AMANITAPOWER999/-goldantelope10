@@ -34,6 +34,7 @@ EXTRA_CHANNELS = {
     'GAclinic_vn':          ('medicine', None),
     'GAfoods':              ('restaurants', None),
     'GApayments':           ('money_exchange', None),
+    'paymens_vn':           ('money_exchange', None),
 }
 
 TH_EXTRA_CHANNELS = {
@@ -1067,6 +1068,7 @@ PRIVATE_SUPERGROUPS = {
     'GAclinic_vn': -1003435759447,
     'GAfoods': -1003824692347,
     'GApayments': -1003752108127,
+    'paymens_vn': -1002406407953,
 }
 
 CHANNEL_CITY_MAP = {
@@ -1077,6 +1079,7 @@ CHANNEL_CITY_MAP = {
     'GAclinic_vn': 'Вьетнам',
     'GAfoods': 'Вьетнам',
     'GApayments': 'Вьетнам',
+    'paymens_vn': 'Вьетнам',
 }
 
 CITY_KEYWORDS = {
