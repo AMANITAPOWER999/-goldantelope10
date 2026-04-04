@@ -84,6 +84,22 @@ async def run_bot():
     target = await client.get_entity(TARGET_CHANNEL)
     add_log(f"Целевой канал: @{TARGET_CHANNEL} (id={target.id})")
 
+    add_log("Очистка старых сообщений из канала...")
+    old_ids = []
+    async for msg in client.iter_messages(target):
+        old_ids.append(msg.id)
+    if old_ids:
+        for i in range(0, len(old_ids), 100):
+            batch = old_ids[i:i+100]
+            try:
+                await client.delete_messages(target, batch)
+            except Exception as e:
+                add_log(f"  Ошибка удаления: {e}")
+            await asyncio.sleep(0.5)
+        add_log(f"Удалено {len(old_ids)} старых сообщений")
+    else:
+        add_log("Канал уже пуст")
+
     source_entities = {}
     for username, city in SOURCE_GROUPS.items():
         try:
