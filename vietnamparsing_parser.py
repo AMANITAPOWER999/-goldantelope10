@@ -905,8 +905,14 @@ def build_generic_listing(msg: dict, item_id: str, channel: str, category: str, 
 
     tg_link = f'https://t.me/{channel}/{msg_id}' if msg_id else f'https://t.me/{channel}'
 
-    clean_desc = strip_emoji(description).strip()
-    clean_text = strip_emoji(text).strip()
+    RAW_CHANNELS = {'paymens_vn'}
+    if channel in RAW_CHANNELS:
+        clean_desc = description.strip()
+        clean_text = text.strip()
+        title = (lines[0] if lines else 'Без названия')[:120]
+    else:
+        clean_desc = strip_emoji(description).strip()
+        clean_text = strip_emoji(text).strip()
 
     item: dict = {
         'id': item_id,
