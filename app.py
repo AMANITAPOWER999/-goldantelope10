@@ -7983,6 +7983,90 @@ try:
 except Exception as _e:
     logger.warning(f'Парсер не запущен: {_e}')
 
+RATES_UPDATE_INTERVAL = 1800
+
+def update_paymens_rates():
+    """Background task: scrape @paymens_vn every 30 min and update rates in listings_vietnam.json"""
+    import time as _t
+    while True:
+        _t.sleep(RATES_UPDATE_INTERVAL)
+        try:
+            logger.info('[RATES] Updating exchange rates from @paymens_vn...')
+            from vietnamparsing_parser import scrape_extra_channel_page, build_generic_listing
+            msgs = scrape_extra_channel_page('paymens_vn')
+            if not msgs:
+                logger.warning('[RATES] No messages from paymens_vn')
+                continue
+
+            rate_pattern = re.compile(r'➤.*VNĐ')
+            best_msg = None
+            for msg in reversed(msgs):
+                text = (msg.get('text', '') or '').replace('\xa0', ' ')
+                lines = [l.strip() for l in text.split('\n') if l.strip()]
+                rate_count = sum(1 for l in lines if rate_pattern.search(l))
+                if rate_count >= 4:
+                    best_msg = msg
+                    break
+
+            if not best_msg:
+                logger.info('[RATES] No rate post found in paymens_vn')
+                continue
+
+            text = best_msg.get('text', '').replace('\xa0', ' ')
+            post_id = best_msg.get('id', 0)
+            new_item = {
+                'id': f'paymens_vn_{post_id}',
+                'source_group': 'paymens_vn',
+                'text': best_msg.get('text', ''),
+                'description': best_msg.get('text', ''),
+                'date': best_msg.get('date', ''),
+                'images': best_msg.get('images', []),
+                'contact': '@paymens_vn',
+                'contact_name': 'paymens_vn',
+            }
+
+            with file_lock:
+                fpath = 'listings_vietnam.json'
+                try:
+                    with open(fpath, 'r', encoding='utf-8') as f:
+                        data = json.load(f)
+                except Exception:
+                    data = {}
+
+                exchange_list = data.get('money_exchange', [])
+                existing_ids = {item.get('id') for item in exchange_list}
+                updated = False
+
+                if new_item['id'] not in existing_ids:
+                    exchange_list.insert(0, new_item)
+                    data['money_exchange'] = exchange_list
+                    updated = True
+                    logger.info(f'[RATES] Added new rate post: {new_item["id"]}')
+                else:
+                    for i, item in enumerate(exchange_list):
+                        if item.get('id') == new_item['id']:
+                            exchange_list[i] = new_item
+                            data['money_exchange'] = exchange_list
+                            updated = True
+                            logger.info(f'[RATES] Updated existing rate post: {new_item["id"]}')
+                            break
+
+                if updated:
+                    with open(fpath, 'w', encoding='utf-8') as f:
+                        json.dump(data, f, ensure_ascii=False, indent=2)
+                    data_cache.pop('vietnam', None)
+                    data_cache.pop('all', None)
+                    logger.info('[RATES] Exchange rates updated successfully')
+                else:
+                    logger.info('[RATES] No changes to rates')
+
+        except Exception as e:
+            logger.error(f'[RATES] Error updating rates: {e}')
+
+_rates_thread = threading.Thread(target=update_paymens_rates, daemon=True)
+_rates_thread.start()
+logger.info(f'[RATES] Background rates updater started (every {RATES_UPDATE_INTERVAL}s)')
+
 if __name__ == '__main__':
     import threading
     t = threading.Thread(target=run_bot, daemon=True)
