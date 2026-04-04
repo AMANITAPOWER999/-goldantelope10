@@ -2313,7 +2313,7 @@
                             <span>📡</span> @paymens_vn
                         </a>
                     </div>
-                    <div id="rates-table" style="display: grid; grid-template-columns: 1fr; gap: 6px;"></div>
+                    <div id="rates-table" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 8px;"></div>
                     <div id="rates-loading" style="text-align: center; padding: 20px; color: #8892b0;">Загрузка курсов...</div>
                 </div>
             </div>
@@ -7262,20 +7262,19 @@
             return Math.round(n).toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
         }
         function calcRow(cur) {
-            var r = _ratesData.find(x => x.currency === cur);
+            var r = _ratesData.find(function(x) { return x.currency === cur; });
             if (!r) return;
             var inp = document.getElementById('calc-inp-' + cur);
             var out = document.getElementById('calc-out-' + cur);
             if (!inp || !out) return;
             var val = parseFloat(inp.value) || 0;
             var rate = r.vnd_num / r.amount_num;
-            var result = val * rate;
-            out.textContent = formatVND(result) + ' VNĐ';
+            out.textContent = formatVND(val * rate) + ' VNĐ';
         }
         function loadExchangeRatesBoard() {
             fetch('/api/exchange-rates?country=vietnam')
-                .then(r => r.json())
-                .then(data => {
+                .then(function(r) { return r.json(); })
+                .then(function(data) {
                     var table = document.getElementById('rates-table');
                     var loading = document.getElementById('rates-loading');
                     var dateEl = document.getElementById('rates-date');
@@ -7293,16 +7292,18 @@
                     };
                     table.innerHTML = data.rates.map(function(r) {
                         var clr = currColors[r.currency] || '#d4af37';
-                        return '<div style="display:flex;align-items:center;justify-content:space-between;padding:10px 14px;background:rgba(255,255,255,0.06);border-radius:10px;border-left:3px solid '+clr+';gap:8px;flex-wrap:wrap;">' +
-                            '<div style="display:flex;align-items:center;gap:8px;min-width:140px;">' +
-                                '<span style="font-size:20px;">'+r.flag+'</span>' +
-                                '<span style="font-size:13px;color:#8892b0;">'+r.amount+' '+r.currency+' = '+r.vnd+' VNĐ</span>' +
+                        var initVnd = formatVND(r.vnd_num);
+                        return '<div style="display:flex;align-items:center;justify-content:space-between;padding:10px 14px;background:rgba(255,255,255,0.06);border-radius:10px;border-left:3px solid '+clr+';">' +
+                            '<div style="display:flex;align-items:center;gap:10px;">' +
+                                '<span style="font-size:22px;">'+r.flag+'</span>' +
+                                '<div style="display:flex;align-items:center;gap:4px;">' +
+                                    '<input type="number" id="calc-inp-'+r.currency+'" value="'+r.amount_num+'" min="0" style="width:80px;padding:5px 8px;border-radius:6px;border:1px solid rgba(212,175,55,0.3);background:rgba(0,0,0,0.3);color:#fff;font-size:15px;font-weight:600;text-align:right;outline:none;" oninput="calcRow(\''+r.currency+'\')">' +
+                                    '<span style="font-size:15px;font-weight:600;color:#e6e6e6;">'+r.currency+'</span>' +
+                                '</div>' +
                             '</div>' +
-                            '<div style="display:flex;align-items:center;gap:6px;flex:1;justify-content:flex-end;">' +
-                                '<input type="number" id="calc-inp-'+r.currency+'" placeholder="'+r.amount+'" style="width:90px;padding:7px 10px;border-radius:6px;border:1px solid rgba(212,175,55,0.3);background:rgba(0,0,0,0.4);color:#fff;font-size:15px;font-weight:600;text-align:right;outline:none;" oninput="calcRow(\''+r.currency+'\')">' +
-                                '<span style="font-size:13px;color:#8892b0;">'+r.currency+'</span>' +
-                                '<span style="color:#d4af37;font-size:13px;">➤</span>' +
-                                '<span id="calc-out-'+r.currency+'" style="font-size:15px;font-weight:700;color:#4caf50;min-width:110px;text-align:right;">0 VNĐ</span>' +
+                            '<div style="display:flex;align-items:center;gap:6px;">' +
+                                '<span style="color:#d4af37;font-size:14px;">➤</span>' +
+                                '<span id="calc-out-'+r.currency+'" style="font-size:16px;font-weight:700;color:#fff;font-variant-numeric:tabular-nums;min-width:120px;text-align:right;">'+initVnd+' VNĐ</span>' +
                             '</div>' +
                         '</div>';
                     }).join('');
