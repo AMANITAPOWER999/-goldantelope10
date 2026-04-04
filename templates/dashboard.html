@@ -8102,9 +8102,11 @@
                                                     }
                                                     return '';
                                                 })()
-                                                : (displayPrice ? `<div style="background: transparent; border: 2px solid #d4af37; color: #d4af37; padding: 10px 12px; border-radius: 8px; margin-bottom: 10px; text-align: center;">
-                                                    <span style="font-size: 18px; font-weight: bold;">💰 ${displayPrice}</span>
-                                                </div>` : '')
+                                                : ((category === 'money_exchange' || category === 'exchange') ? ''
+                                                    : (displayPrice ? `<div style="background: transparent; border: 2px solid #d4af37; color: #d4af37; padding: 10px 12px; border-radius: 8px; margin-bottom: 10px; text-align: center;">
+                                                        <span style="font-size: 18px; font-weight: bold;">💰 ${displayPrice}</span>
+                                                    </div>` : '')
+                                                )
                                             )
                                         )
                                     }
