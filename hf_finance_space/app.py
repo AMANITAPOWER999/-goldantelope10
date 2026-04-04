@@ -206,6 +206,7 @@ with gr.Blocks(title="Finance Exchange Monitor") as demo:
     status = gr.Textbox(label="Лог", lines=20, interactive=False, value=get_status)
     refresh_btn = gr.Button("Обновить лог")
     refresh_btn.click(fn=get_status, outputs=status)
-    demo.load(fn=get_status, outputs=status, every=10)
+    timer = gr.Timer(10)
+    timer.tick(fn=get_status, outputs=status)
 
 demo.launch(server_name="0.0.0.0", server_port=7860)
