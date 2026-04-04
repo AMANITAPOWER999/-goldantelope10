@@ -1051,9 +1051,16 @@ def scrape_extra_channel_page(channel: str, before_id: int | None = None) -> lis
             date_tag = wrap.find('time')
             date_str = date_tag.get('datetime', '') if date_tag else ''
 
-            photo_count = len(wrap.find_all('a', class_='tgme_widget_message_photo_wrap'))
-            # Используем прямые t.me ссылки вместо CDN (CDN-ссылки истекают быстро)
-            photos = [f'https://t.me/{channel}/{post_id + i}' for i in range(photo_count)] if photo_count else []
+            photo_wraps = wrap.find_all('a', class_='tgme_widget_message_photo_wrap')
+            photos = []
+            for pw in photo_wraps:
+                style = pw.get('style', '')
+                bg_match = re.search(r"background-image:\s*url\('([^']+)'\)", style)
+                if bg_match:
+                    photos.append(bg_match.group(1))
+                else:
+                    if post_id:
+                        photos.append(f'https://t.me/{channel}/{post_id}')
 
             results.append({
                 'post_id': post_id,
