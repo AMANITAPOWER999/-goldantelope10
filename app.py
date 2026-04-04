@@ -3540,20 +3540,21 @@ def _gavibeshub_poller():
                 chat_username = cp.get('chat', {}).get('username', '').lower()
                 chat_id_val = cp.get('chat', {}).get('id', 0)
 
-                if chat_username != 'media_vn':
+                # Обрабатываем только media_vn и vibeshub_vn
+                if chat_username not in ('media_vn', 'vibeshub_vn'):
                     continue
 
-                # Фото из @media_vn → сохраняем как баннер (100% все фото)
-                if cp.get('photo'):
-                    msg_id = cp.get('message_id', 0)
-                    photo_list = cp.get('photo', [])
-                    if photo_list and msg_id:
-                        largest = max(photo_list, key=lambda p: p.get('file_size', 0))
-                        fid = largest.get('file_id', '')
-                        if fid:
-                            handle_banner_channel_photo(msg_id, fid)
+                # Фото из @media_vn → дополнительно сохраняем как баннер
+                if chat_username == 'media_vn' and cp.get('photo'):
+                    msg_id_b = cp.get('message_id', 0)
+                    photo_list_b = cp.get('photo', [])
+                    if photo_list_b and msg_id_b:
+                        largest_b = max(photo_list_b, key=lambda p: p.get('file_size', 0))
+                        fid_b = largest_b.get('file_id', '')
+                        if fid_b:
+                            handle_banner_channel_photo(msg_id_b, fid_b)
 
-                # Есть ли фото в посте?
+                # Все посты с фото из обоих каналов → Развлечения Вьетнам
                 has_photo = bool(cp.get('photo'))
                 if not has_photo:
                     continue
@@ -3561,7 +3562,6 @@ def _gavibeshub_poller():
                 try:
                     from vietnamparsing_parser import process_extra_channel_update, atomic_add_listing
 
-                    # Сохраняем file_id фото в индекс для прокси /tg_img/
                     msg_id = cp.get('message_id', 0)
                     photo_list = cp.get('photo', [])
                     if photo_list and msg_id:
@@ -3569,29 +3569,29 @@ def _gavibeshub_poller():
                         fid = largest.get('file_id')
                         if fid:
                             with _msg_to_file_id_lock:
-                                _msg_to_file_id[('media_vn', msg_id)] = fid
+                                _msg_to_file_id[(chat_username, msg_id)] = fid
                             try:
                                 idx_path = 'file_id_index.json'
                                 idx = {}
                                 if os.path.exists(idx_path):
                                     with open(idx_path, 'r') as _f:
                                         idx = json.load(_f)
-                                idx[f'media_vn_{msg_id}'] = fid
+                                idx[f'{chat_username}_{msg_id}'] = fid
                                 with open(idx_path, 'w') as _f:
                                     json.dump(idx, _f, ensure_ascii=False, indent=2)
                             except Exception:
                                 pass
 
                     update_wrapped = {'channel_post': cp}
-                    item = process_extra_channel_update(update_wrapped, 'media_vn', 'entertainment', None)
+                    item = process_extra_channel_update(update_wrapped, chat_username, 'entertainment', None)
                     if item:
                         added = atomic_add_listing('entertainment', item)
                         status = 'добавлен' if added else 'дубликат'
-                        logger.info('[gavibeshub_poller] Пост #%d → entertainment (%s)', msg_id, status)
+                        logger.info('[entertainment_poller] @%s Пост #%d → entertainment (%s)', chat_username, msg_id, status)
                     else:
-                        logger.debug('[gavibeshub_poller] Пост #%d пропущен (нет текста/фото)', msg_id)
+                        logger.debug('[entertainment_poller] @%s Пост #%d пропущен (нет текста/фото)', chat_username, msg_id)
                 except Exception as e:
-                    logger.error('[gavibeshub_poller] Ошибка обработки поста: %s', e)
+                    logger.error('[entertainment_poller] Ошибка обработки поста @%s: %s', chat_username, e)
 
         except Exception as e:
             logger.warning('[gavibeshub_poller] Ошибка поллинга: %s', e)
@@ -3599,7 +3599,158 @@ def _gavibeshub_poller():
         _time.sleep(GAVIBESHUB_POLL_INTERVAL)
 
 
+def _sync_vibeshub_vn_entertainment():
+    """При старте скрейпит t.me/s/vibeshub_vn и добавляет все посты с фото в Entertainment Vietnam."""
+    import time as _t
+    _t.sleep(7)
+    try:
+        from bs4 import BeautifulSoup as _BS
+        channel = 'vibeshub_vn'
+        base_url = f'https://t.me/s/{channel}'
+        headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'}
+
+        # Загружаем существующие ID из entertainment
+        try:
+            with open('listings_vietnam.json', 'r', encoding='utf-8') as _f:
+                _vn = json.load(_f)
+            existing_ids = set()
+            for it in _vn.get('entertainment', []):
+                if isinstance(it, dict):
+                    if it.get('listing_id'): existing_ids.add(it['listing_id'])
+                    if it.get('id'): existing_ids.add(it['id'])
+        except Exception:
+            existing_ids = set()
+
+        added = 0
+        before = None
+        max_pages = 20
+        for _page in range(max_pages):
+            params = {}
+            if before:
+                params['before'] = before
+            try:
+                resp = requests.get(base_url, params=params, headers=headers, timeout=20)
+                if resp.status_code != 200:
+                    break
+                soup = _BS(resp.text, 'html.parser')
+                ids_on_page = []
+                for msg_div in soup.select('.tgme_widget_message'):
+                    data_post = msg_div.get('data-post', '')
+                    if '/' not in data_post:
+                        continue
+                    try:
+                        mid = int(data_post.split('/')[-1])
+                    except ValueError:
+                        continue
+                    ids_on_page.append(mid)
+                    has_photo = bool(
+                        msg_div.select('.tgme_widget_message_photo_wrap') or
+                        msg_div.select('a.tgme_widget_message_photo_wrap')
+                    )
+                    if not has_photo:
+                        continue
+                    item_id = f'{channel}_{mid}'
+                    if item_id in existing_ids:
+                        continue
+                    # Строим листинг через og:image
+                    try:
+                        og_resp = requests.get(
+                            f'https://t.me/{channel}/{mid}',
+                            headers={'User-Agent': 'TelegramBot (like TwitterBot)'},
+                            timeout=10
+                        )
+                        import re as _re
+                        from datetime import datetime, timezone
+                        from html import unescape as _ue
+                        desc_m = _re.search(r'<meta property="og:description" content="([^"]*)"', og_resp.text)
+                        img_m = _re.search(r'<meta property="og:image" content="([^"]+)"', og_resp.text)
+                        text = _ue(desc_m.group(1)) if desc_m else ''
+                        img_url = img_m.group(1) if img_m else ''
+                        if not text or 'You can view and join' in text:
+                            _t.sleep(0.3)
+                            continue
+                        lines = [l.strip() for l in text.splitlines() if l.strip()]
+                        title = lines[0][:120] if lines else 'Развлечение'
+                        description = '\n'.join(lines[1:]) if len(lines) > 1 else text
+                        city = 'Вьетнам'
+                        tl = text.lower()
+                        if any(k in tl for k in ['нячанг', 'nha trang', 'nhatrang']): city = 'Нячанг'
+                        elif any(k in tl for k in ['дананг', 'da nang', 'danang']): city = 'Дананг'
+                        elif any(k in tl for k in ['хошимин', 'ho chi minh', 'saigon', 'сайгон']): city = 'Хошимин'
+                        elif any(k in tl for k in ['ханой', 'ha noi', 'hanoi']): city = 'Ханой'
+                        elif any(k in tl for k in ['фукуок', 'phu quoc']): city = 'Фукуок'
+                        elif any(k in tl for k in ['хойан', 'hoi an']): city = 'Хойан'
+                        elif any(k in tl for k in ['далат', 'da lat', 'dalat']): city = 'Далат'
+                        now = datetime.now(timezone.utc).isoformat()
+                        item = {
+                            'id': item_id,
+                            'listing_id': item_id,
+                            'title': title,
+                            'description': description,
+                            'text': text,
+                            'price': 0,
+                            'price_display': '',
+                            'city': city,
+                            'city_ru': city,
+                            'date': now,
+                            'contact': f'@{channel}',
+                            'contact_name': channel,
+                            'source_group': channel,
+                            'source_channel': channel,
+                            'telegram': f'https://t.me/{channel}',
+                            'telegram_link': f'https://t.me/{channel}/{mid}',
+                            'image_url': f'/tg_img/{channel}/{mid}' if img_url else '',
+                            'all_images': [f'/tg_img/{channel}/{mid}'] if img_url else [],
+                            'photos': [f'/tg_img/{channel}/{mid}'] if img_url else [],
+                            'status': 'active',
+                            'country': 'vietnam',
+                            'message_id': mid,
+                            'has_media': bool(img_url),
+                            'category': 'entertainment',
+                            'listing_type': 'entertainment',
+                        }
+                        # Атомарно добавляем в listings_vietnam.json
+                        try:
+                            with open('listings_vietnam.json', 'r', encoding='utf-8') as _f:
+                                _data = json.load(_f)
+                        except Exception:
+                            _data = {}
+                        if 'entertainment' not in _data:
+                            _data['entertainment'] = []
+                        _ent = _data['entertainment']
+                        _ex_ids = set()
+                        for _it in _ent:
+                            if isinstance(_it, dict):
+                                if _it.get('listing_id'): _ex_ids.add(_it['listing_id'])
+                                if _it.get('id'): _ex_ids.add(_it['id'])
+                        if item_id not in _ex_ids:
+                            _ent.insert(0, item)
+                            _data['entertainment'] = _ent
+                            _tmp = 'listings_vietnam.json.tmp'
+                            with open(_tmp, 'w', encoding='utf-8') as _f:
+                                json.dump(_data, _f, ensure_ascii=False, indent=2)
+                            os.replace(_tmp, 'listings_vietnam.json')
+                            existing_ids.add(item_id)
+                            added += 1
+                            logger.info(f'[vibeshub_vn_sync] + пост #{mid}: {title[:50]}')
+                    except Exception as _e:
+                        logger.warning(f'[vibeshub_vn_sync] Ошибка поста #{mid}: {_e}')
+                    _t.sleep(0.5)
+                if not ids_on_page:
+                    break
+                before = min(ids_on_page)
+                if before <= 1:
+                    break
+                _t.sleep(1)
+            except Exception as e:
+                logger.warning(f'[vibeshub_vn_sync] Ошибка страницы: {e}')
+                break
+        logger.info(f'[vibeshub_vn_sync] Завершено: добавлено {added} постов из @{channel} в entertainment')
+    except Exception as e:
+        logger.error(f'[vibeshub_vn_sync] Критическая ошибка: {e}')
+
 threading.Thread(target=_gavibeshub_poller, daemon=True, name='GAvibeshubPoller').start()
+threading.Thread(target=_sync_vibeshub_vn_entertainment, daemon=True, name='VibeshubVnSync').start()
 logger.info('GAvibeshub background poller started (every %ds)', GAVIBESHUB_POLL_INTERVAL)
 
 
