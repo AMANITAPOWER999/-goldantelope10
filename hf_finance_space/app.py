@@ -77,7 +77,10 @@ async def run_bot():
         return
 
     client = TelegramClient(StringSession(SESSION_STRING), API_ID, API_HASH)
-    await client.start()
+    await client.connect()
+    if not await client.is_user_authorized():
+        add_log("Ошибка: сессия не авторизована! Проверьте SESSION_STRING")
+        return
     me = await client.get_me()
     add_log(f"Авторизован как {me.first_name} ({me.phone})")
 
