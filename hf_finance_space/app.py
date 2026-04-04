@@ -14,7 +14,7 @@ logger = logging.getLogger(__name__)
 API_ID = int(os.environ.get("API_ID", "38261764"))
 API_HASH = os.environ.get("API_HASH", "9a28366ae819d01b5ba5ad6d5de4baa8")
 SESSION_STRING = os.environ.get("SESSION_STRING", "")
-TARGET_CHANNEL = os.environ.get("TARGET_CHANNEL", "paymens_vn")
+TARGET_CHANNEL = os.environ.get("TARGET_CHANNEL", "obmenvietnam")
 
 SOURCE_GROUPS = {
     "exchange_vn_dn": "Дананг",
@@ -181,7 +181,7 @@ bot_thread = threading.Thread(target=start_bot, daemon=True)
 bot_thread.start()
 
 with gr.Blocks(title="Finance Exchange Monitor") as demo:
-    gr.Markdown("## 💱 Exchange Monitor → @paymens_vn")
+    gr.Markdown("## 💱 Exchange Monitor → @obmenvietnam")
     gr.Markdown(
         "Источники: @exchange_vn_dn (Дананг) · "
         "@obmen_valyut_Nhatrang (Нячанг) · "
