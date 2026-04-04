@@ -1379,8 +1379,21 @@ def get_listings(category):
             city_filter = filters['city'].lower()
             filtered = [x for x in filtered if city_filter in str(x.get('city', '')).lower() or city_filter in str(x.get('title', '')).lower() or city_filter in str(x.get('description', '')).lower()]
 
-    # Фильтры для обмена денег
     if category == 'money_exchange':
+        import re as _re_ex
+        def _is_rates_only_post(item):
+            src = (item.get('source_group') or '').lstrip('@')
+            if src != 'paymens_vn':
+                return False
+            text = (item.get('text', '') or item.get('description', '') or '')
+            text_clean = text.replace('\xa0', ' ').strip()
+            lines = [l.strip() for l in text_clean.split('\n') if l.strip()]
+            if not lines:
+                return False
+            rate_count = sum(1 for l in lines if _re_ex.search(r'➤.*VNĐ', l))
+            return rate_count >= 4 and rate_count >= len(lines) * 0.5
+        filtered = [x for x in filtered if not _is_rates_only_post(x)]
+
         if 'city' in filters and filters['city']:
             city_filter = filters['city']
             city_keywords_map = {
