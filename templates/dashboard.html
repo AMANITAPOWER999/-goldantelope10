@@ -1380,6 +1380,17 @@
         html.dark .tcs-drop-item { color: #eee; }
         html.dark .tcs-drop-item:hover { background: #2a2510; }
         html.dark .tcs-drop-item.selected { background: #2a2510; color: #f0c040; }
+        /* Transport dropdowns wrapper — same bg as .tabs */
+        .tr-drop-section {
+            background: #ffffff;
+            border-radius: 12px;
+            padding: 10px 12px 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+        }
+        html.dark .tr-drop-section {
+            background: #1a1a2e;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+        }
         /* =========================================== */
 
         .tours-city-header {
@@ -2065,7 +2076,7 @@
 
         <!-- Транспорт -->
         <div id="transport" class="content">
-            <div id="vietnam-transport-buttons" style="padding: 10px 12px 0;">
+            <div id="vietnam-transport-buttons" class="tr-drop-section" style="margin: 10px 0 0;">
                 <!-- Фильтр по городам -->
                 <div style="position:relative; margin-bottom: 8px;">
                     <div class="tours-city-switcher" id="trvn-switcher" onclick="toggleCityDrop('trvn')">
