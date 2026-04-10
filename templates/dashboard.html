@@ -1292,7 +1292,7 @@
             box-sizing: border-box;
             align-items: center;
             gap: 12px;
-            background: #fff;
+            background: transparent;
             border: 2px solid #d4af37;
             border-radius: 12px;
             padding: 10px 16px 10px 10px;
@@ -1304,6 +1304,7 @@
             -webkit-tap-highlight-color: transparent;
         }
         .tours-city-switcher:active { transform: scale(.97); background: #fffbf0; }
+        .tours-city-switcher.open { background: #fff; }
         .tcs-sw-img {
             width: 48px;
             height: 48px;
@@ -1373,7 +1374,8 @@
             object-fit: cover;
             flex-shrink: 0;
         }
-        html.dark .tours-city-switcher { background: #1e1e1e; border-color: #c8a020; }
+        html.dark .tours-city-switcher { background: transparent; border-color: #c8a020; }
+        html.dark .tours-city-switcher.open { background: #1e1e1e; }
         html.dark .tours-city-switcher:active { background: #252010; }
         html.dark .tcs-sw-label { color: #f0f0f0; }
         html.dark .tcs-drop { background: #1e1e1e; border-color: #c8a020; }
@@ -7608,19 +7610,20 @@
         function toggleTourCityDrop() {
             var drop  = document.getElementById('tcs-drop');
             var arrow = document.getElementById('tcs-sw-arrow');
+            var sw    = document.getElementById('tours-city-switcher');
             if (!drop) return;
             var isOpen = drop.classList.contains('open');
             if (isOpen) {
                 drop.classList.remove('open');
                 if (arrow) arrow.classList.remove('open');
+                if (sw)    sw.classList.remove('open');
             } else {
-                // Пометить текущий город
                 drop.querySelectorAll('.tcs-drop-item').forEach(function(el, i) {
                     el.classList.toggle('selected', i === tourCityIndex);
                 });
                 drop.classList.add('open');
                 if (arrow) arrow.classList.add('open');
-                // Закрыть по клику вне
+                if (sw)    sw.classList.add('open');
                 setTimeout(function() {
                     document.addEventListener('click', closeTourDrop, { once: true });
                 }, 10);
@@ -7630,8 +7633,10 @@
         function closeTourDrop(e) {
             var drop  = document.getElementById('tcs-drop');
             var arrow = document.getElementById('tcs-sw-arrow');
+            var sw    = document.getElementById('tours-city-switcher');
             if (drop)  drop.classList.remove('open');
             if (arrow) arrow.classList.remove('open');
+            if (sw)    sw.classList.remove('open');
         }
 
         function selectTourCity(idx) {
@@ -7729,21 +7734,25 @@
             var data  = cityDropData[key]; if (!data) return;
             var drop  = document.getElementById(key + '-drop');
             var arrow = document.getElementById(key + '-sw-arrow');
+            var sw    = document.getElementById(key + '-switcher');
             if (!drop) return;
             var isOpen = drop.classList.contains('open');
             if (isOpen) {
                 drop.classList.remove('open');
                 if (arrow) arrow.classList.remove('open');
+                if (sw)    sw.classList.remove('open');
             } else {
                 drop.querySelectorAll('.tcs-drop-item').forEach(function(el, i) {
                     el.classList.toggle('selected', i === data.idx);
                 });
                 drop.classList.add('open');
                 if (arrow) arrow.classList.add('open');
+                if (sw)    sw.classList.add('open');
                 setTimeout(function() {
                     document.addEventListener('click', function() {
                         drop.classList.remove('open');
                         if (arrow) arrow.classList.remove('open');
+                        if (sw)    sw.classList.remove('open');
                     }, { once: true });
                 }, 10);
             }
@@ -7755,10 +7764,12 @@
             var c     = data.cities[idx];
             var drop  = document.getElementById(key + '-drop');
             var arrow = document.getElementById(key + '-sw-arrow');
+            var sw    = document.getElementById(key + '-switcher');
             var lbl   = document.getElementById(key + '-sw-label');
             var img   = document.getElementById(key + '-sw-img');
             if (drop)  drop.classList.remove('open');
             if (arrow) arrow.classList.remove('open');
+            if (sw)    sw.classList.remove('open');
             if (lbl)   lbl.textContent = c.name;
             if (img)   img.src = c.img;
             data.onSelect(c);
