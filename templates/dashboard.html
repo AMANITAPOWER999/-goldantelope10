@@ -1841,35 +1841,21 @@
         <!-- Рестораны -->
         <div id="restaurants" class="content">
             <!-- Вьетнам - статические кнопки городов -->
-            <div id="vietnam-restaurants-buttons" style="display: none; padding: 20px;">
-                <div class="tour-grid-container" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; margin-bottom: 25px;">
-                    <div class="tour-city-btn restaurant-city-btn" data-city="Нячанг" onclick="filterRestaurantsByCity('Нячанг')" style="cursor: pointer; position: relative; border-radius: 12px; overflow: hidden; aspect-ratio: 4/3; box-shadow: 0 4px 12px rgba(0,0,0,0.15); border: 3px solid #d4af37;">
-                        <img src="/static/images/restaurants/nyachang.jpg" style="width: 100%; height: 100%; object-fit: cover;">
-                        <div class="city-info" style="position: absolute; bottom: 0; left: 0; right: 0; background: rgba(255,255,255,0.95); color: #333; padding: 12px; text-align: center;">
-                            <div class="city-name" style="font-weight: bold; font-size: 16px;">Нячанг</div>
-                            <div class="tour-count" style="font-size: 13px; margin-top: 4px; color: #666;">106 ресторанов</div>
+            <div id="vietnam-restaurants-buttons" style="display: none; padding: 10px 12px 0;">
+                <div style="position:relative;">
+                    <div class="tours-city-switcher" id="rvn-switcher" onclick="toggleCityDrop('rvn')">
+                        <img class="tcs-sw-img" id="rvn-sw-img" src="/static/images/restaurants/nyachang.jpg" alt="">
+                        <div class="tcs-sw-info">
+                            <span class="tcs-sw-hint">Выбрать город</span>
+                            <span class="tcs-sw-label" id="rvn-sw-label">Нячанг</span>
                         </div>
+                        <div class="tcs-sw-arrow" id="rvn-sw-arrow">▾</div>
                     </div>
-                    <div class="tour-city-btn restaurant-city-btn" data-city="Дананг" onclick="filterRestaurantsByCity('Дананг')" style="cursor: pointer; position: relative; border-radius: 12px; overflow: hidden; aspect-ratio: 4/3; box-shadow: 0 4px 12px rgba(0,0,0,0.15); border: 3px solid transparent;">
-                        <img src="/static/images/restaurants/danang.jpg" style="width: 100%; height: 100%; object-fit: cover;">
-                        <div class="city-info" style="position: absolute; bottom: 0; left: 0; right: 0; background: rgba(255,255,255,0.95); color: #333; padding: 12px; text-align: center;">
-                            <div class="city-name" style="font-weight: bold; font-size: 16px;">Дананг</div>
-                            <div class="tour-count" style="font-size: 13px; margin-top: 4px; color: #666;">95 ресторанов</div>
-                        </div>
-                    </div>
-                    <div class="tour-city-btn restaurant-city-btn" data-city="Хошимин" onclick="filterRestaurantsByCity('Хошимин')" style="cursor: pointer; position: relative; border-radius: 12px; overflow: hidden; aspect-ratio: 4/3; box-shadow: 0 4px 12px rgba(0,0,0,0.15); border: 3px solid transparent;">
-                        <img src="/static/images/restaurants/hochiminh.jpg" style="width: 100%; height: 100%; object-fit: cover;">
-                        <div class="city-info" style="position: absolute; bottom: 0; left: 0; right: 0; background: rgba(255,255,255,0.95); color: #333; padding: 12px; text-align: center;">
-                            <div class="city-name" style="font-weight: bold; font-size: 16px;">Хошимин</div>
-                            <div class="tour-count" style="font-size: 13px; margin-top: 4px; color: #666;">74 ресторана</div>
-                        </div>
-                    </div>
-                    <div class="tour-city-btn restaurant-city-btn" data-city="Фукуок" onclick="filterRestaurantsByCity('Фукуок')" style="cursor: pointer; position: relative; border-radius: 12px; overflow: hidden; aspect-ratio: 4/3; box-shadow: 0 4px 12px rgba(0,0,0,0.15); border: 3px solid transparent;">
-                        <img src="/static/images/restaurants/phuquoc.jpg" style="width: 100%; height: 100%; object-fit: cover;">
-                        <div class="city-info" style="position: absolute; bottom: 0; left: 0; right: 0; background: rgba(255,255,255,0.95); color: #333; padding: 12px; text-align: center;">
-                            <div class="city-name" style="font-weight: bold; font-size: 16px;">Фукуок</div>
-                            <div class="tour-count" style="font-size: 13px; margin-top: 4px; color: #666;">3 ресторана</div>
-                        </div>
+                    <div class="tcs-drop" id="rvn-drop">
+                        <div class="tcs-drop-item" onclick="selectCityFromDrop('rvn',0)"><img src="/static/images/restaurants/nyachang.jpg" alt="">Нячанг</div>
+                        <div class="tcs-drop-item" onclick="selectCityFromDrop('rvn',1)"><img src="/static/images/restaurants/danang.jpg" alt="">Дананг</div>
+                        <div class="tcs-drop-item" onclick="selectCityFromDrop('rvn',2)"><img src="/static/images/restaurants/hochiminh.jpg" alt="">Хошимин</div>
+                        <div class="tcs-drop-item" onclick="selectCityFromDrop('rvn',3)"><img src="/static/images/restaurants/phuquoc.jpg" alt="">Фукуок</div>
                     </div>
                 </div>
             </div>
@@ -2118,14 +2104,21 @@
                     </div>
                 </div>
                 <!-- Фильтр по городам -->
-                <div style="margin-top: 10px;">
-                    <div data-i18n="city-filter" style="font-weight: 600; color: #333; margin-bottom: 8px; font-size: 14px;">🏙️ Город:</div>
-                    <div style="display: flex; gap: 8px; flex-wrap: wrap;">
-                        <button class="transport-city-btn" data-city="" onclick="filterTransportCity('')" data-i18n="city-all" style="padding: 8px 16px; border: 2px solid #d4af37; background: #d4af37; color: white; border-radius: 20px; cursor: pointer; font-size: 13px; font-weight: 600;">Все</button>
-                        <button class="transport-city-btn" data-city="Nha Trang" onclick="filterTransportCity('Nha Trang')" data-i18n="city-nhatrang" style="padding: 8px 16px; border: 2px solid #ccc; background: #fff; color: #333; border-radius: 20px; cursor: pointer; font-size: 13px;">Нячанг</button>
-                        <button class="transport-city-btn" data-city="Da Nang" onclick="filterTransportCity('Da Nang')" data-i18n="city-danang" style="padding: 8px 16px; border: 2px solid #ccc; background: #fff; color: #333; border-radius: 20px; cursor: pointer; font-size: 13px;">Дананг</button>
-                        <button class="transport-city-btn" data-city="Ho Chi Minh" onclick="filterTransportCity('Ho Chi Minh')" data-i18n="city-hochiminh" style="padding: 8px 16px; border: 2px solid #ccc; background: #fff; color: #333; border-radius: 20px; cursor: pointer; font-size: 13px;">Хошимин</button>
-                        <button class="transport-city-btn" data-city="Phu Quoc" onclick="filterTransportCity('Phu Quoc')" data-i18n="city-phuquoc" style="padding: 8px 16px; border: 2px solid #ccc; background: #fff; color: #333; border-radius: 20px; cursor: pointer; font-size: 13px;">Фукуок</button>
+                <div style="margin-top: 10px; position:relative;">
+                    <div class="tours-city-switcher" id="trvn-switcher" onclick="toggleCityDrop('trvn')">
+                        <img class="tcs-sw-img" id="trvn-sw-img" src="/static/images/transport/bikes.jpg" alt="">
+                        <div class="tcs-sw-info">
+                            <span class="tcs-sw-hint">Выбрать город</span>
+                            <span class="tcs-sw-label" id="trvn-sw-label">Все города</span>
+                        </div>
+                        <div class="tcs-sw-arrow" id="trvn-sw-arrow">▾</div>
+                    </div>
+                    <div class="tcs-drop" id="trvn-drop">
+                        <div class="tcs-drop-item" onclick="selectCityFromDrop('trvn',0)"><img src="/static/images/transport/bikes.jpg" alt="">Все города</div>
+                        <div class="tcs-drop-item" onclick="selectCityFromDrop('trvn',1)"><img src="/static/images/restaurants/nyachang.jpg" alt="">Нячанг</div>
+                        <div class="tcs-drop-item" onclick="selectCityFromDrop('trvn',2)"><img src="/static/images/restaurants/danang.jpg" alt="">Дананг</div>
+                        <div class="tcs-drop-item" onclick="selectCityFromDrop('trvn',3)"><img src="/static/images/restaurants/hochiminh.jpg" alt="">Хошимин</div>
+                        <div class="tcs-drop-item" onclick="selectCityFromDrop('trvn',4)"><img src="/static/images/restaurants/phuquoc.jpg" alt="">Фукуок</div>
                     </div>
                 </div>
             </div>
@@ -2294,35 +2287,21 @@
 
         <!-- Недвижимость -->
         <div id="realestate" class="content active">
-            <div id="vietnam-realestate-buttons" style="padding: 20px;">
-                <div class="tour-grid-container" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; margin-bottom: 25px;">
-                    <div class="tour-city-btn realestate-city-btn" data-city="nhatrang" onclick="filterRealEstateByCity('nhatrang')" style="cursor: pointer; position: relative; border-radius: 12px; overflow: hidden; aspect-ratio: 4/3; box-shadow: 0 4px 12px rgba(0,0,0,0.15); border: 3px solid #d4af37;">
-                        <img src="/static/images/realestate_nhatrang.jpg?v=20260119" alt="Нячанг" style="width: 100%; height: 100%; object-fit: cover; min-height: 120px; background: #f0f0f0;">
-                        <div class="city-info" style="position: absolute; bottom: 0; left: 0; right: 0; background: rgba(255,255,255,0.95); color: #333; padding: 12px; text-align: center;">
-                            <div class="city-name" style="font-weight: bold; font-size: 18px;">Нячанг</div>
-                            <div class="tour-count" id="realestate-nhatrang-count" style="font-size: 14px; margin-top: 4px; color: #666;">0 объявлений</div>
+            <div id="vietnam-realestate-buttons" style="padding: 10px 12px 0;">
+                <div style="position:relative;">
+                    <div class="tours-city-switcher" id="revn-switcher" onclick="toggleCityDrop('revn')">
+                        <img class="tcs-sw-img" id="revn-sw-img" src="/static/images/realestate_nhatrang.jpg" alt="">
+                        <div class="tcs-sw-info">
+                            <span class="tcs-sw-hint">Выбрать город</span>
+                            <span class="tcs-sw-label" id="revn-sw-label">Нячанг</span>
                         </div>
+                        <div class="tcs-sw-arrow" id="revn-sw-arrow">▾</div>
                     </div>
-                    <div class="tour-city-btn realestate-city-btn" data-city="danang" onclick="filterRealEstateByCity('danang')" style="cursor: pointer; position: relative; border-radius: 12px; overflow: hidden; aspect-ratio: 4/3; box-shadow: 0 4px 12px rgba(0,0,0,0.15); border: 3px solid transparent;">
-                        <img src="/static/images/realestate_danang.jpg?v=20260119" alt="Дананг" style="width: 100%; height: 100%; object-fit: cover; min-height: 120px; background: #f0f0f0;">
-                        <div class="city-info" style="position: absolute; bottom: 0; left: 0; right: 0; background: rgba(255,255,255,0.95); color: #333; padding: 12px; text-align: center;">
-                            <div class="city-name" style="font-weight: bold; font-size: 18px;">Дананг</div>
-                            <div class="tour-count" id="realestate-danang-count" style="font-size: 14px; margin-top: 4px; color: #666;">0 объявлений</div>
-                        </div>
-                    </div>
-                    <div class="tour-city-btn realestate-city-btn" data-city="hochiminh" onclick="filterRealEstateByCity('hochiminh')" style="cursor: pointer; position: relative; border-radius: 12px; overflow: hidden; aspect-ratio: 4/3; box-shadow: 0 4px 12px rgba(0,0,0,0.15); border: 3px solid transparent;">
-                        <img src="/static/images/realestate_hochiminh.jpg?v=20260119" alt="Хошимин" style="width: 100%; height: 100%; object-fit: cover; min-height: 120px; background: #f0f0f0;">
-                        <div class="city-info" style="position: absolute; bottom: 0; left: 0; right: 0; background: rgba(255,255,255,0.95); color: #333; padding: 12px; text-align: center;">
-                            <div class="city-name" style="font-weight: bold; font-size: 18px;">Хошимин</div>
-                            <div class="tour-count" id="realestate-hochiminh-count" style="font-size: 14px; margin-top: 4px; color: #666;">0 объявлений</div>
-                        </div>
-                    </div>
-                    <div class="tour-city-btn realestate-city-btn" data-city="phuquoc" onclick="filterRealEstateByCity('phuquoc')" style="cursor: pointer; position: relative; border-radius: 12px; overflow: hidden; aspect-ratio: 4/3; box-shadow: 0 4px 12px rgba(0,0,0,0.15); border: 3px solid transparent;">
-                        <img src="/static/images/realestate_phuquoc.jpg?v=20260119" alt="Фукуок" style="width: 100%; height: 100%; object-fit: cover; min-height: 120px; background: #f0f0f0;">
-                        <div class="city-info" style="position: absolute; bottom: 0; left: 0; right: 0; background: rgba(255,255,255,0.95); color: #333; padding: 12px; text-align: center;">
-                            <div class="city-name" style="font-weight: bold; font-size: 18px;">Фукуок</div>
-                            <div class="tour-count" id="realestate-phuquoc-count" style="font-size: 14px; margin-top: 4px; color: #666;">0 объявлений</div>
-                        </div>
+                    <div class="tcs-drop" id="revn-drop">
+                        <div class="tcs-drop-item" onclick="selectCityFromDrop('revn',0)"><img src="/static/images/realestate_nhatrang.jpg" alt="">Нячанг</div>
+                        <div class="tcs-drop-item" onclick="selectCityFromDrop('revn',1)"><img src="/static/images/realestate_danang.jpg" alt="">Дананг</div>
+                        <div class="tcs-drop-item" onclick="selectCityFromDrop('revn',2)"><img src="/static/images/realestate_hochiminh.jpg" alt="">Хошимин</div>
+                        <div class="tcs-drop-item" onclick="selectCityFromDrop('revn',3)"><img src="/static/images/realestate_phuquoc.jpg" alt="">Фукуок</div>
                     </div>
                 </div>
             </div>
@@ -2652,35 +2631,21 @@
 
         <!-- Финансы -->
         <div id="exchange" class="content">
-            <div id="vietnam-exchange-buttons" style="display: none; padding: 20px;">
-                <div class="tour-grid-container" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; margin-bottom: 25px;">
-                    <div class="tour-city-btn exchange-city-btn" data-city="Нячанг" onclick="filterExchangeByCity('Нячанг')" style="cursor: pointer; position: relative; border-radius: 12px; overflow: hidden; aspect-ratio: 4/3; box-shadow: 0 4px 12px rgba(0,0,0,0.15); border: 3px solid #d4af37;">
-                        <img src="/static/images/categories/exchange/nhatrang.jpg" style="width: 100%; height: 100%; object-fit: cover;">
-                        <div class="city-info" style="position: absolute; bottom: 0; left: 0; right: 0; background: rgba(255,255,255,0.95); color: #333; padding: 12px; text-align: center;">
-                            <div class="city-name" style="font-weight: bold; font-size: 18px;">Нячанг</div>
-                            <div class="tour-count" id="exchange-nhatrang-count" style="font-size: 14px; margin-top: 4px; color: #666;">0 предложений</div>
+            <div id="vietnam-exchange-buttons" style="display: none; padding: 10px 12px 0;">
+                <div style="position:relative;">
+                    <div class="tours-city-switcher" id="exvn-switcher" onclick="toggleCityDrop('exvn')">
+                        <img class="tcs-sw-img" id="exvn-sw-img" src="/static/images/categories/exchange/nhatrang.jpg" alt="">
+                        <div class="tcs-sw-info">
+                            <span class="tcs-sw-hint">Выбрать город</span>
+                            <span class="tcs-sw-label" id="exvn-sw-label">Нячанг</span>
                         </div>
+                        <div class="tcs-sw-arrow" id="exvn-sw-arrow">▾</div>
                     </div>
-                    <div class="tour-city-btn exchange-city-btn" data-city="Дананг" onclick="filterExchangeByCity('Дананг')" style="cursor: pointer; position: relative; border-radius: 12px; overflow: hidden; aspect-ratio: 4/3; box-shadow: 0 4px 12px rgba(0,0,0,0.15); border: 3px solid transparent;">
-                        <img src="/static/images/categories/exchange/danang.jpg" style="width: 100%; height: 100%; object-fit: cover;">
-                        <div class="city-info" style="position: absolute; bottom: 0; left: 0; right: 0; background: rgba(255,255,255,0.95); color: #333; padding: 12px; text-align: center;">
-                            <div class="city-name" style="font-weight: bold; font-size: 18px;">Дананг</div>
-                            <div class="tour-count" id="exchange-danang-count" style="font-size: 14px; margin-top: 4px; color: #666;">0 предложений</div>
-                        </div>
-                    </div>
-                    <div class="tour-city-btn exchange-city-btn" data-city="Хошимин" onclick="filterExchangeByCity('Хошимин')" style="cursor: pointer; position: relative; border-radius: 12px; overflow: hidden; aspect-ratio: 4/3; box-shadow: 0 4px 12px rgba(0,0,0,0.15); border: 3px solid transparent;">
-                        <img src="/static/images/categories/exchange/saigon.jpg" style="width: 100%; height: 100%; object-fit: cover;">
-                        <div class="city-info" style="position: absolute; bottom: 0; left: 0; right: 0; background: rgba(255,255,255,0.95); color: #333; padding: 12px; text-align: center;">
-                            <div class="city-name" style="font-weight: bold; font-size: 18px;">Хошимин</div>
-                            <div class="tour-count" id="exchange-hochiminh-count" style="font-size: 14px; margin-top: 4px; color: #666;">0 предложений</div>
-                        </div>
-                    </div>
-                    <div class="tour-city-btn exchange-city-btn" data-city="Фукуок" onclick="filterExchangeByCity('Фукуок')" style="cursor: pointer; position: relative; border-radius: 12px; overflow: hidden; aspect-ratio: 4/3; box-shadow: 0 4px 12px rgba(0,0,0,0.15); border: 3px solid transparent;">
-                        <img src="/static/images/categories/exchange/phuquoc.jpg" style="width: 100%; height: 100%; object-fit: cover;">
-                        <div class="city-info" style="position: absolute; bottom: 0; left: 0; right: 0; background: rgba(255,255,255,0.95); color: #333; padding: 12px; text-align: center;">
-                            <div class="city-name" style="font-weight: bold; font-size: 18px;">Фукуок</div>
-                            <div class="tour-count" id="exchange-phuquoc-count" style="font-size: 14px; margin-top: 4px; color: #666;">0 предложений</div>
-                        </div>
+                    <div class="tcs-drop" id="exvn-drop">
+                        <div class="tcs-drop-item" onclick="selectCityFromDrop('exvn',0)"><img src="/static/images/categories/exchange/nhatrang.jpg" alt="">Нячанг</div>
+                        <div class="tcs-drop-item" onclick="selectCityFromDrop('exvn',1)"><img src="/static/images/categories/exchange/danang.jpg" alt="">Дананг</div>
+                        <div class="tcs-drop-item" onclick="selectCityFromDrop('exvn',2)"><img src="/static/images/categories/exchange/saigon.jpg" alt="">Хошимин</div>
+                        <div class="tcs-drop-item" onclick="selectCityFromDrop('exvn',3)"><img src="/static/images/categories/exchange/phuquoc.jpg" alt="">Фукуок</div>
                     </div>
                 </div>
             </div>
@@ -2998,35 +2963,21 @@
 
         <!-- Развлечения -->
         <div id="entertainment" class="content">
-            <div id="vietnam-entertainment-buttons" style="padding: 20px;">
-                <div class="tour-grid-container" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; margin-bottom: 25px;">
-                    <div class="tour-city-btn entertainment-city-btn" data-city="Нячанг" onclick="filterEntertainmentByCity('Нячанг')" style="cursor: pointer; position: relative; border-radius: 12px; overflow: hidden; aspect-ratio: 4/3; box-shadow: 0 4px 12px rgba(0,0,0,0.15); border: 3px solid #d4af37;">
-                        <img src="/static/images/entertainment/nyachang.jpg" style="width: 100%; height: 100%; object-fit: cover;">
-                        <div class="city-info" style="position: absolute; bottom: 0; left: 0; right: 0; background: rgba(255,255,255,0.95); color: #333; padding: 12px; text-align: center;">
-                            <div class="city-name" style="font-weight: bold; font-size: 16px;">Нячанг</div>
-                            <div class="tour-count" style="font-size: 13px; margin-top: 4px; color: #666;">51 развлечение</div>
+            <div id="vietnam-entertainment-buttons" style="padding: 10px 12px 0;">
+                <div style="position:relative;">
+                    <div class="tours-city-switcher" id="envn-switcher" onclick="toggleCityDrop('envn')">
+                        <img class="tcs-sw-img" id="envn-sw-img" src="/static/images/entertainment/nyachang.jpg" alt="">
+                        <div class="tcs-sw-info">
+                            <span class="tcs-sw-hint">Выбрать город</span>
+                            <span class="tcs-sw-label" id="envn-sw-label">Нячанг</span>
                         </div>
+                        <div class="tcs-sw-arrow" id="envn-sw-arrow">▾</div>
                     </div>
-                    <div class="tour-city-btn entertainment-city-btn" data-city="Дананг" onclick="filterEntertainmentByCity('Дананг')" style="cursor: pointer; position: relative; border-radius: 12px; overflow: hidden; aspect-ratio: 4/3; box-shadow: 0 4px 12px rgba(0,0,0,0.15); border: 3px solid transparent;">
-                        <img src="/static/images/entertainment/danang.jpg" style="width: 100%; height: 100%; object-fit: cover;">
-                        <div class="city-info" style="position: absolute; bottom: 0; left: 0; right: 0; background: rgba(255,255,255,0.95); color: #333; padding: 12px; text-align: center;">
-                            <div class="city-name" style="font-weight: bold; font-size: 16px;">Дананг</div>
-                            <div class="tour-count" style="font-size: 13px; margin-top: 4px; color: #666;">16 развлечений</div>
-                        </div>
-                    </div>
-                    <div class="tour-city-btn entertainment-city-btn" data-city="Хошимин" onclick="filterEntertainmentByCity('Хошимин')" style="cursor: pointer; position: relative; border-radius: 12px; overflow: hidden; aspect-ratio: 4/3; box-shadow: 0 4px 12px rgba(0,0,0,0.15); border: 3px solid transparent;">
-                        <img src="/static/images/entertainment/hochiminh.jpg" style="width: 100%; height: 100%; object-fit: cover;">
-                        <div class="city-info" style="position: absolute; bottom: 0; left: 0; right: 0; background: rgba(255,255,255,0.95); color: #333; padding: 12px; text-align: center;">
-                            <div class="city-name" style="font-weight: bold; font-size: 16px;">Хошимин</div>
-                            <div class="tour-count" style="font-size: 13px; margin-top: 4px; color: #666;">33 развлечения</div>
-                        </div>
-                    </div>
-                    <div class="tour-city-btn entertainment-city-btn" data-city="Фукуок" onclick="filterEntertainmentByCity('Фукуок')" style="cursor: pointer; position: relative; border-radius: 12px; overflow: hidden; aspect-ratio: 4/3; box-shadow: 0 4px 12px rgba(0,0,0,0.15); border: 3px solid transparent;">
-                        <img src="/static/images/entertainment/phuquoc.jpg" style="width: 100%; height: 100%; object-fit: cover;">
-                        <div class="city-info" style="position: absolute; bottom: 0; left: 0; right: 0; background: rgba(255,255,255,0.95); color: #333; padding: 12px; text-align: center;">
-                            <div class="city-name" style="font-weight: bold; font-size: 16px;">Фукуок</div>
-                            <div class="tour-count" style="font-size: 13px; margin-top: 4px; color: #666;">27 развлечений</div>
-                        </div>
+                    <div class="tcs-drop" id="envn-drop">
+                        <div class="tcs-drop-item" onclick="selectCityFromDrop('envn',0)"><img src="/static/images/entertainment/nyachang.jpg" alt="">Нячанг</div>
+                        <div class="tcs-drop-item" onclick="selectCityFromDrop('envn',1)"><img src="/static/images/entertainment/danang.jpg" alt="">Дананг</div>
+                        <div class="tcs-drop-item" onclick="selectCityFromDrop('envn',2)"><img src="/static/images/entertainment/hochiminh.jpg" alt="">Хошимин</div>
+                        <div class="tcs-drop-item" onclick="selectCityFromDrop('envn',3)"><img src="/static/images/entertainment/phuquoc.jpg" alt="">Фукуок</div>
                     </div>
                 </div>
             </div>
@@ -3145,7 +3096,24 @@
 
         <!-- Визаран -->
         <div id="visas" class="content">
-            <div id="vietnam-visas-buttons" style="display: none; padding: 20px;">
+            <div id="vietnam-visas-buttons" style="display: none; padding: 10px 12px 20px;">
+                <!-- Выбор города отправления -->
+                <div style="position:relative; margin-bottom: 16px;">
+                    <div class="tours-city-switcher" id="visvn-switcher" onclick="toggleCityDrop('visvn')">
+                        <img class="tcs-sw-img" id="visvn-sw-img" src="/static/images/visas/laos.jpg" alt="">
+                        <div class="tcs-sw-info">
+                            <span class="tcs-sw-hint">Выбрать город</span>
+                            <span class="tcs-sw-label" id="visvn-sw-label">Нячанг</span>
+                        </div>
+                        <div class="tcs-sw-arrow" id="visvn-sw-arrow">▾</div>
+                    </div>
+                    <div class="tcs-drop" id="visvn-drop">
+                        <div class="tcs-drop-item" onclick="selectCityFromDrop('visvn',0)"><img src="/static/images/restaurants/nyachang.jpg" alt="">Нячанг</div>
+                        <div class="tcs-drop-item" onclick="selectCityFromDrop('visvn',1)"><img src="/static/images/restaurants/danang.jpg" alt="">Дананг</div>
+                        <div class="tcs-drop-item" onclick="selectCityFromDrop('visvn',2)"><img src="/static/images/restaurants/hochiminh.jpg" alt="">Хошимин</div>
+                        <div class="tcs-drop-item" onclick="selectCityFromDrop('visvn',3)"><img src="/static/images/restaurants/phuquoc.jpg" alt="">Фукуок</div>
+                    </div>
+                </div>
                 <!-- Мини-дашборд цен Визаран -->
                 <div style="margin-bottom: 20px; display: flex; flex-direction: column; gap: 12px;">
                     <!-- Блок Лаос -->
@@ -7671,6 +7639,99 @@
             });
             loadListings('tours', city);
         }
+
+        // ===== Generic City Dropdown System =====
+        var cityDropData = {
+            'rvn': {
+                cities: [
+                    {name:'Нячанг',  img:'/static/images/restaurants/nyachang.jpg',  value:'Нячанг'},
+                    {name:'Дананг',  img:'/static/images/restaurants/danang.jpg',    value:'Дананг'},
+                    {name:'Хошимин', img:'/static/images/restaurants/hochiminh.jpg', value:'Хошимин'},
+                    {name:'Фукуок',  img:'/static/images/restaurants/phuquoc.jpg',   value:'Фукуок'}
+                ], idx:0, onSelect: function(c){ filterRestaurantsByCity(c.value); }
+            },
+            'exvn': {
+                cities: [
+                    {name:'Нячанг',  img:'/static/images/categories/exchange/nhatrang.jpg', value:'Нячанг'},
+                    {name:'Дананг',  img:'/static/images/categories/exchange/danang.jpg',   value:'Дананг'},
+                    {name:'Хошимин', img:'/static/images/categories/exchange/saigon.jpg',   value:'Хошимин'},
+                    {name:'Фукуок',  img:'/static/images/categories/exchange/phuquoc.jpg',  value:'Фукуок'}
+                ], idx:0, onSelect: function(c){ filterExchangeByCity(c.value); }
+            },
+            'trvn': {
+                cities: [
+                    {name:'Все города', img:'/static/images/transport/bikes.jpg',           value:''},
+                    {name:'Нячанг',     img:'/static/images/restaurants/nyachang.jpg',      value:'Nha Trang'},
+                    {name:'Дананг',     img:'/static/images/restaurants/danang.jpg',        value:'Da Nang'},
+                    {name:'Хошимин',    img:'/static/images/restaurants/hochiminh.jpg',     value:'Ho Chi Minh'},
+                    {name:'Фукуок',     img:'/static/images/restaurants/phuquoc.jpg',       value:'Phu Quoc'}
+                ], idx:0, onSelect: function(c){ filterTransportCity(c.value); }
+            },
+            'revn': {
+                cities: [
+                    {name:'Нячанг',  img:'/static/images/realestate_nhatrang.jpg',  value:'nhatrang'},
+                    {name:'Дананг',  img:'/static/images/realestate_danang.jpg',    value:'danang'},
+                    {name:'Хошимин', img:'/static/images/realestate_hochiminh.jpg', value:'hochiminh'},
+                    {name:'Фукуок',  img:'/static/images/realestate_phuquoc.jpg',   value:'phuquoc'}
+                ], idx:0, onSelect: function(c){ filterRealEstateByCity(c.value); }
+            },
+            'envn': {
+                cities: [
+                    {name:'Нячанг',  img:'/static/images/entertainment/nyachang.jpg',  value:'Нячанг'},
+                    {name:'Дананг',  img:'/static/images/entertainment/danang.jpg',     value:'Дананг'},
+                    {name:'Хошимин', img:'/static/images/entertainment/hochiminh.jpg',  value:'Хошимин'},
+                    {name:'Фукуок',  img:'/static/images/entertainment/phuquoc.jpg',    value:'Фукуок'}
+                ], idx:0, onSelect: function(c){ filterEntertainmentByCity(c.value); }
+            },
+            'visvn': {
+                cities: [
+                    {name:'Нячанг',  img:'/static/images/restaurants/nyachang.jpg',  value:'Нячанг'},
+                    {name:'Дананг',  img:'/static/images/restaurants/danang.jpg',     value:'Дананг'},
+                    {name:'Хошимин', img:'/static/images/restaurants/hochiminh.jpg',  value:'Хошимин'},
+                    {name:'Фукуок',  img:'/static/images/restaurants/phuquoc.jpg',    value:'Фукуок'}
+                ], idx:0, onSelect: function(c){ if(typeof filterVisasByCity==='function') filterVisasByCity(c.value); }
+            }
+        };
+
+        function toggleCityDrop(key) {
+            var data  = cityDropData[key]; if (!data) return;
+            var drop  = document.getElementById(key + '-drop');
+            var arrow = document.getElementById(key + '-sw-arrow');
+            if (!drop) return;
+            var isOpen = drop.classList.contains('open');
+            if (isOpen) {
+                drop.classList.remove('open');
+                if (arrow) arrow.classList.remove('open');
+            } else {
+                drop.querySelectorAll('.tcs-drop-item').forEach(function(el, i) {
+                    el.classList.toggle('selected', i === data.idx);
+                });
+                drop.classList.add('open');
+                if (arrow) arrow.classList.add('open');
+                setTimeout(function() {
+                    document.addEventListener('click', function() {
+                        drop.classList.remove('open');
+                        if (arrow) arrow.classList.remove('open');
+                    }, { once: true });
+                }, 10);
+            }
+        }
+
+        function selectCityFromDrop(key, idx) {
+            var data  = cityDropData[key]; if (!data) return;
+            data.idx  = idx;
+            var c     = data.cities[idx];
+            var drop  = document.getElementById(key + '-drop');
+            var arrow = document.getElementById(key + '-sw-arrow');
+            var lbl   = document.getElementById(key + '-sw-label');
+            var img   = document.getElementById(key + '-sw-img');
+            if (drop)  drop.classList.remove('open');
+            if (arrow) arrow.classList.remove('open');
+            if (lbl)   lbl.textContent = c.name;
+            if (img)   img.src = c.img;
+            data.onSelect(c);
+        }
+        // ==========================================
 
         let currentTransportType = 'bikes';
         let currentTransportCity = '';
