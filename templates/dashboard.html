@@ -2066,8 +2066,25 @@
         <!-- Транспорт -->
         <div id="transport" class="content">
             <div id="vietnam-transport-buttons" style="padding: 10px 12px 0;">
-                <!-- Выбор типа транспорта -->
+                <!-- Фильтр по городам -->
                 <div style="position:relative; margin-bottom: 8px;">
+                    <div class="tours-city-switcher" id="trvn-switcher" onclick="toggleCityDrop('trvn')">
+                        <img class="tcs-sw-img" id="trvn-sw-img" src="/static/images/restaurants/nyachang.jpg" alt="">
+                        <div class="tcs-sw-info">
+                            <span class="tcs-sw-hint">Выбрать город</span>
+                            <span class="tcs-sw-label" id="trvn-sw-label">Нячанг</span>
+                        </div>
+                        <div class="tcs-sw-arrow" id="trvn-sw-arrow">▾</div>
+                    </div>
+                    <div class="tcs-drop" id="trvn-drop">
+                        <div class="tcs-drop-item" onclick="selectCityFromDrop('trvn',0)"><img src="/static/images/restaurants/nyachang.jpg" alt="">Нячанг</div>
+                        <div class="tcs-drop-item" onclick="selectCityFromDrop('trvn',1)"><img src="/static/images/restaurants/danang.jpg" alt="">Дананг</div>
+                        <div class="tcs-drop-item" onclick="selectCityFromDrop('trvn',2)"><img src="/static/images/restaurants/hochiminh.jpg" alt="">Хошимин</div>
+                        <div class="tcs-drop-item" onclick="selectCityFromDrop('trvn',3)"><img src="/static/images/restaurants/phuquoc.jpg" alt="">Фукуок</div>
+                    </div>
+                </div>
+                <!-- Выбор типа транспорта -->
+                <div style="position:relative;">
                     <div class="tours-city-switcher" id="trvn-type-switcher" onclick="toggleCityDrop('trvn-type')">
                         <img class="tcs-sw-img" id="trvn-type-sw-img" src="/static/images/transport/bikes.jpg" alt="">
                         <div class="tcs-sw-info">
@@ -2081,24 +2098,6 @@
                         <div class="tcs-drop-item" onclick="selectCityFromDrop('trvn-type',1)"><img src="/static/images/transport/cars.jpg" alt="">🚗 Авто</div>
                         <div class="tcs-drop-item" onclick="selectCityFromDrop('trvn-type',2)"><img src="/static/images/transport/yachts.jpg" alt="">⛵ Яхты</div>
                         <div class="tcs-drop-item" onclick="selectCityFromDrop('trvn-type',3)"><img src="/static/images/transport/bicycles.jpg" alt="">🚲 Велосипеды</div>
-                    </div>
-                </div>
-                <!-- Фильтр по городам -->
-                <div style="margin-top: 10px; position:relative;">
-                    <div class="tours-city-switcher" id="trvn-switcher" onclick="toggleCityDrop('trvn')">
-                        <img class="tcs-sw-img" id="trvn-sw-img" src="/static/images/transport/bikes.jpg" alt="">
-                        <div class="tcs-sw-info">
-                            <span class="tcs-sw-hint">Выбрать город</span>
-                            <span class="tcs-sw-label" id="trvn-sw-label">Все города</span>
-                        </div>
-                        <div class="tcs-sw-arrow" id="trvn-sw-arrow">▾</div>
-                    </div>
-                    <div class="tcs-drop" id="trvn-drop">
-                        <div class="tcs-drop-item" onclick="selectCityFromDrop('trvn',0)"><img src="/static/images/transport/bikes.jpg" alt="">Все города</div>
-                        <div class="tcs-drop-item" onclick="selectCityFromDrop('trvn',1)"><img src="/static/images/restaurants/nyachang.jpg" alt="">Нячанг</div>
-                        <div class="tcs-drop-item" onclick="selectCityFromDrop('trvn',2)"><img src="/static/images/restaurants/danang.jpg" alt="">Дананг</div>
-                        <div class="tcs-drop-item" onclick="selectCityFromDrop('trvn',3)"><img src="/static/images/restaurants/hochiminh.jpg" alt="">Хошимин</div>
-                        <div class="tcs-drop-item" onclick="selectCityFromDrop('trvn',4)"><img src="/static/images/restaurants/phuquoc.jpg" alt="">Фукуок</div>
                     </div>
                 </div>
             </div>
@@ -7648,11 +7647,10 @@
             },
             'trvn': {
                 cities: [
-                    {name:'Все города', img:'/static/images/transport/bikes.jpg',           value:''},
-                    {name:'Нячанг',     img:'/static/images/restaurants/nyachang.jpg',      value:'Nha Trang'},
-                    {name:'Дананг',     img:'/static/images/restaurants/danang.jpg',        value:'Da Nang'},
-                    {name:'Хошимин',    img:'/static/images/restaurants/hochiminh.jpg',     value:'Ho Chi Minh'},
-                    {name:'Фукуок',     img:'/static/images/restaurants/phuquoc.jpg',       value:'Phu Quoc'}
+                    {name:'Нячанг',  img:'/static/images/restaurants/nyachang.jpg',  value:'Nha Trang'},
+                    {name:'Дананг',  img:'/static/images/restaurants/danang.jpg',     value:'Da Nang'},
+                    {name:'Хошимин', img:'/static/images/restaurants/hochiminh.jpg',  value:'Ho Chi Minh'},
+                    {name:'Фукуок',  img:'/static/images/restaurants/phuquoc.jpg',    value:'Phu Quoc'}
                 ], idx:0, onSelect: function(c){ filterTransportCity(c.value); }
             },
             'revn': {
