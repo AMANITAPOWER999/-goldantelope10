@@ -1380,6 +1380,32 @@
         html.dark .tcs-drop-item { color: #eee; }
         html.dark .tcs-drop-item:hover { background: #2a2510; }
         html.dark .tcs-drop-item.selected { background: #2a2510; color: #f0c040; }
+        /* Extra-filters toggle button */
+        .extra-filters-btn {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            width: 100%;
+            box-sizing: border-box;
+            padding: 9px 16px;
+            background: transparent;
+            border: 2px solid #d4af37;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 600;
+            color: #b8860b;
+            margin: 6px 0 2px;
+            transition: background .15s;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .extra-filters-btn:hover, .extra-filters-btn:active { background: #fffbf0; }
+        .extra-filters-btn .efb-arrow { margin-left: auto; font-size: 15px; transition: transform .2s; }
+        .extra-filters-btn.open .efb-arrow { transform: rotate(180deg); }
+        html.dark .extra-filters-btn { color: #f0c040; border-color: #c8a020; }
+        html.dark .extra-filters-btn:hover { background: #252010; }
+        .extra-filters-wrap { display: none; }
+        .extra-filters-wrap.open { display: block; }
         /* Transport dropdowns wrapper — same bg as .tabs */
         .tr-drop-section {
             background: #ffffff;
@@ -1875,17 +1901,25 @@
                 <div id="restaurants-city-grid" class="tour-grid-container" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; margin-bottom: 25px;">
                 </div>
             </div>
-            <div class="filters" style="display: flex; gap: 10px; padding: 15px; flex-wrap: wrap;">
-                <button onclick="searchNearby5km()" class="nearby-btn" style="padding: 10px 20px; background: #4285F4; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 600;">📍 Искать в радиусе 5 км</button>
-                <span style="border-left: 2px solid #ddd; margin: 0 5px;"></span>
-                <button onclick="filterRestaurantType('all')" class="rest-type-btn active" data-type="all" style="padding: 10px 20px; background: #d4af37; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 600;">🍽️ Все</button>
-                <button onclick="filterRestaurantType('ресторан')" class="rest-type-btn" data-type="ресторан" style="padding: 10px 20px; background: #fff; color: #333; border: 2px solid #FF5722; border-radius: 8px; cursor: pointer; font-weight: 600;">🍽️ Рестораны</button>
-                <button onclick="filterRestaurantType('кафе')" class="rest-type-btn" data-type="кафе" style="padding: 10px 20px; background: #fff; color: #333; border: 2px solid #795548; border-radius: 8px; cursor: pointer; font-weight: 600;">☕ Кафе</button>
-                <button onclick="filterRestaurantType('бар')" class="rest-type-btn" data-type="бар" style="padding: 10px 20px; background: #fff; color: #333; border: 2px solid #9C27B0; border-radius: 8px; cursor: pointer; font-weight: 600;">🍸 Бары</button>
-                <button onclick="filterRestaurantType('ночной клуб')" class="rest-type-btn" data-type="ночной клуб" style="padding: 10px 20px; background: #fff; color: #333; border: 2px solid #E91E63; border-radius: 8px; cursor: pointer; font-weight: 600;">🎵 Ночные клубы</button>
-                <button onclick="filterRestaurantType('русская еда')" class="rest-type-btn" data-type="русская еда" style="padding: 10px 20px; background: #fff; color: #333; border: 2px solid #F44336; border-radius: 8px; cursor: pointer; font-weight: 600;">🥟 Русская еда</button>
-                <button onclick="filterRestaurantType('морепродукт')" class="rest-type-btn" data-type="морепродукт" style="padding: 10px 20px; background: #fff; color: #333; border: 2px solid #00BCD4; border-radius: 8px; cursor: pointer; font-weight: 600;">🦐 Морепродукты</button>
-                <button onclick="filterRestaurantType('high_rating')" class="rest-type-btn" data-type="high_rating" style="padding: 10px 20px; background: #fff; color: #333; border: 2px solid #FFC107; border-radius: 8px; cursor: pointer; font-weight: 600;">⭐ Высокий рейтинг</button>
+            <div style="padding: 0 12px;">
+                <button class="extra-filters-btn" id="rest-filters-btn" onclick="toggleExtraFilters('rest')">
+                    🔽 Дополнительные фильтры
+                    <span class="efb-arrow">▾</span>
+                </button>
+            </div>
+            <div class="extra-filters-wrap" id="rest-filters-wrap">
+                <div class="filters" style="display: flex; gap: 10px; padding: 10px 15px 15px; flex-wrap: wrap;">
+                    <button onclick="searchNearby5km()" class="nearby-btn" style="padding: 10px 20px; background: #4285F4; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 600;">📍 Искать в радиусе 5 км</button>
+                    <span style="border-left: 2px solid #ddd; margin: 0 5px;"></span>
+                    <button onclick="filterRestaurantType('all')" class="rest-type-btn active" data-type="all" style="padding: 10px 20px; background: #d4af37; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 600;">🍽️ Все</button>
+                    <button onclick="filterRestaurantType('ресторан')" class="rest-type-btn" data-type="ресторан" style="padding: 10px 20px; background: #fff; color: #333; border: 2px solid #FF5722; border-radius: 8px; cursor: pointer; font-weight: 600;">🍽️ Рестораны</button>
+                    <button onclick="filterRestaurantType('кафе')" class="rest-type-btn" data-type="кафе" style="padding: 10px 20px; background: #fff; color: #333; border: 2px solid #795548; border-radius: 8px; cursor: pointer; font-weight: 600;">☕ Кафе</button>
+                    <button onclick="filterRestaurantType('бар')" class="rest-type-btn" data-type="бар" style="padding: 10px 20px; background: #fff; color: #333; border: 2px solid #9C27B0; border-radius: 8px; cursor: pointer; font-weight: 600;">🍸 Бары</button>
+                    <button onclick="filterRestaurantType('ночной клуб')" class="rest-type-btn" data-type="ночной клуб" style="padding: 10px 20px; background: #fff; color: #333; border: 2px solid #E91E63; border-radius: 8px; cursor: pointer; font-weight: 600;">🎵 Ночные клубы</button>
+                    <button onclick="filterRestaurantType('русская еда')" class="rest-type-btn" data-type="русская еда" style="padding: 10px 20px; background: #fff; color: #333; border: 2px solid #F44336; border-radius: 8px; cursor: pointer; font-weight: 600;">🥟 Русская еда</button>
+                    <button onclick="filterRestaurantType('морепродукт')" class="rest-type-btn" data-type="морепродукт" style="padding: 10px 20px; background: #fff; color: #333; border: 2px solid #00BCD4; border-radius: 8px; cursor: pointer; font-weight: 600;">🦐 Морепродукты</button>
+                    <button onclick="filterRestaurantType('high_rating')" class="rest-type-btn" data-type="high_rating" style="padding: 10px 20px; background: #fff; color: #333; border: 2px solid #FFC107; border-radius: 8px; cursor: pointer; font-weight: 600;">⭐ Высокий рейтинг</button>
+                </div>
             </div>
             <div class="listing-grid" id="restaurants-grid">
                 <div class="loading"><div class="spinner"></div></div>
@@ -2295,26 +2329,34 @@
                     </div>
                 </div>
             </div>
-            <div id="vietnam-realestate-filters" class="filters" style="display: flex; gap: 10px; padding: 15px; flex-wrap: wrap;">
-                <button onclick="filterRealEstateType('rent')" class="filter-type-btn" id="filter-rent" style="padding: 10px 20px; background: #fff; border: 2px solid #2196F3; border-radius: 8px; cursor: pointer; font-weight: 600; color: #333;">🔑 Аренда</button>
-                <button onclick="filterRealEstateType('sale')" class="filter-type-btn" id="filter-sale" style="padding: 10px 20px; background: #fff; border: 2px solid #4CAF50; border-radius: 8px; cursor: pointer; font-weight: 600; color: #333;">🏠 Продажа</button>
-                <span style="border-left: 2px solid #ddd; margin: 0 5px;"></span>
-                <button onclick="sortRealEstate('price_asc')" class="sort-btn" style="padding: 10px 20px; background: #fff; border: 2px solid #d4af37; border-radius: 8px; cursor: pointer; font-weight: 600; color: #333;">📈 По возрастанию</button>
-                <button onclick="sortRealEstate('price_desc')" class="sort-btn" style="padding: 10px 20px; background: #fff; border: 2px solid #d4af37; border-radius: 8px; cursor: pointer; font-weight: 600; color: #333;">📉 По убыванию</button>
-                <button onclick="sortRealEstate('date_desc')" class="sort-btn sort-date-btn" data-sort="date_desc" style="padding: 10px 20px; background: #fff; border: 2px solid #00BCD4; border-radius: 8px; cursor: pointer; font-weight: 600; color: #333;">🆕 Новые</button>
-                <button onclick="sortRealEstate('date_asc')" class="sort-btn sort-date-btn" data-sort="date_asc" style="padding: 10px 20px; background: #fff; border: 2px solid #607D8B; border-radius: 8px; cursor: pointer; font-weight: 600; color: #333;">🕰️ Ранние</button>
-                <button onclick="filterRealEstatePrice(7000000)" class="filter-btn" style="padding: 10px 20px; background: #fff; border: 2px solid #FF9800; border-radius: 8px; cursor: pointer; font-weight: 600; color: #333;">До 7 млн</button>
-                <button onclick="filterRealEstatePrice(15000000)" class="filter-btn" style="padding: 10px 20px; background: #fff; border: 2px solid #FF9800; border-radius: 8px; cursor: pointer; font-weight: 600; color: #333;">До 15 млн</button>
-                <button onclick="filterRealEstatePriceMin(15000000)" class="filter-btn" style="padding: 10px 20px; background: #fff; border: 2px solid #E91E63; border-radius: 8px; cursor: pointer; font-weight: 600; color: #333;">От 15 млн</button>
-                <button onclick="resetRealEstateFilters()" class="reset-btn" style="padding: 10px 20px; background: #fff; border: 2px solid #999; border-radius: 8px; cursor: pointer; font-weight: 600; color: #333;">✕ Сброс</button>
+            <div style="padding: 0 12px;">
+                <button class="extra-filters-btn" id="re-filters-btn" onclick="toggleExtraFilters('re')">
+                    🔽 Дополнительные фильтры
+                    <span class="efb-arrow">▾</span>
+                </button>
             </div>
-            <!-- Фильтр по группам/контактам -->
-            <div id="vietnam-realestate-groups" class="filters" style="display: flex; gap: 8px; padding: 0 15px 15px 15px; flex-wrap: wrap; align-items: center;">
-                <span style="font-size: 13px; color: #666; margin-right: 5px;">📌 Группы:</span>
-                <button onclick="filterRealEstateGroup('')" class="group-filter-btn" data-group="" style="padding: 6px 12px; background: #d4af37; border: 2px solid #d4af37; border-radius: 6px; cursor: pointer; font-weight: 500; color: #fff; font-size: 12px; height: 32px; box-sizing: border-box;">Все</button>
-                <select id="group-select" onchange="filterRealEstateGroup(this.value)" style="padding: 6px 12px; border: 2px solid #9C27B0; border-radius: 6px; font-size: 12px; font-weight: 500; color: #333; background: #fff; cursor: pointer; min-width: 150px; height: 32px; box-sizing: border-box;">
-                    <option value="">-- Выбрать группу --</option>
-                </select>
+            <div class="extra-filters-wrap" id="re-filters-wrap">
+                <div id="vietnam-realestate-filters" class="filters" style="display: flex; gap: 10px; padding: 10px 15px 8px; flex-wrap: wrap;">
+                    <button onclick="filterRealEstateType('rent')" class="filter-type-btn" id="filter-rent" style="padding: 10px 20px; background: #fff; border: 2px solid #2196F3; border-radius: 8px; cursor: pointer; font-weight: 600; color: #333;">🔑 Аренда</button>
+                    <button onclick="filterRealEstateType('sale')" class="filter-type-btn" id="filter-sale" style="padding: 10px 20px; background: #fff; border: 2px solid #4CAF50; border-radius: 8px; cursor: pointer; font-weight: 600; color: #333;">🏠 Продажа</button>
+                    <span style="border-left: 2px solid #ddd; margin: 0 5px;"></span>
+                    <button onclick="sortRealEstate('price_asc')" class="sort-btn" style="padding: 10px 20px; background: #fff; border: 2px solid #d4af37; border-radius: 8px; cursor: pointer; font-weight: 600; color: #333;">📈 По возрастанию</button>
+                    <button onclick="sortRealEstate('price_desc')" class="sort-btn" style="padding: 10px 20px; background: #fff; border: 2px solid #d4af37; border-radius: 8px; cursor: pointer; font-weight: 600; color: #333;">📉 По убыванию</button>
+                    <button onclick="sortRealEstate('date_desc')" class="sort-btn sort-date-btn" data-sort="date_desc" style="padding: 10px 20px; background: #fff; border: 2px solid #00BCD4; border-radius: 8px; cursor: pointer; font-weight: 600; color: #333;">🆕 Новые</button>
+                    <button onclick="sortRealEstate('date_asc')" class="sort-btn sort-date-btn" data-sort="date_asc" style="padding: 10px 20px; background: #fff; border: 2px solid #607D8B; border-radius: 8px; cursor: pointer; font-weight: 600; color: #333;">🕰️ Ранние</button>
+                    <button onclick="filterRealEstatePrice(7000000)" class="filter-btn" style="padding: 10px 20px; background: #fff; border: 2px solid #FF9800; border-radius: 8px; cursor: pointer; font-weight: 600; color: #333;">До 7 млн</button>
+                    <button onclick="filterRealEstatePrice(15000000)" class="filter-btn" style="padding: 10px 20px; background: #fff; border: 2px solid #FF9800; border-radius: 8px; cursor: pointer; font-weight: 600; color: #333;">До 15 млн</button>
+                    <button onclick="filterRealEstatePriceMin(15000000)" class="filter-btn" style="padding: 10px 20px; background: #fff; border: 2px solid #E91E63; border-radius: 8px; cursor: pointer; font-weight: 600; color: #333;">От 15 млн</button>
+                    <button onclick="resetRealEstateFilters()" class="reset-btn" style="padding: 10px 20px; background: #fff; border: 2px solid #999; border-radius: 8px; cursor: pointer; font-weight: 600; color: #333;">✕ Сброс</button>
+                </div>
+                <!-- Фильтр по группам/контактам -->
+                <div id="vietnam-realestate-groups" class="filters" style="display: flex; gap: 8px; padding: 0 15px 15px 15px; flex-wrap: wrap; align-items: center;">
+                    <span style="font-size: 13px; color: #666; margin-right: 5px;">📌 Группы:</span>
+                    <button onclick="filterRealEstateGroup('')" class="group-filter-btn" data-group="" style="padding: 6px 12px; background: #d4af37; border: 2px solid #d4af37; border-radius: 6px; cursor: pointer; font-weight: 500; color: #fff; font-size: 12px; height: 32px; box-sizing: border-box;">Все</button>
+                    <select id="group-select" onchange="filterRealEstateGroup(this.value)" style="padding: 6px 12px; border: 2px solid #9C27B0; border-radius: 6px; font-size: 12px; font-weight: 500; color: #333; background: #fff; cursor: pointer; min-width: 150px; height: 32px; box-sizing: border-box;">
+                        <option value="">-- Выбрать группу --</option>
+                    </select>
+                </div>
             </div>
             <!-- Другие страны - динамические кнопки городов для недвижимости -->
             <div id="other-realestate-buttons" style="display: none; padding: 20px;">
@@ -7729,6 +7771,15 @@
             data.onSelect(c);
         }
         // ==========================================
+
+        function toggleExtraFilters(key) {
+            var btn  = document.getElementById(key + '-filters-btn');
+            var wrap = document.getElementById(key + '-filters-wrap');
+            if (!btn || !wrap) return;
+            var open = wrap.classList.toggle('open');
+            btn.classList.toggle('open', open);
+            btn.childNodes[0].textContent = open ? '\uD83D\uDD3C Скрыть фильтры ' : '\uD83D\uDD3D Дополнительные фильтры ';
+        }
 
         let currentTransportType = 'bikes';
         let currentTransportCity = '';
