@@ -1287,7 +1287,9 @@
         }
         /* ===== Кнопка-дропдаун города (туры) ===== */
         .tours-city-switcher {
-            display: inline-flex;
+            display: flex;
+            width: 100%;
+            box-sizing: border-box;
             align-items: center;
             gap: 12px;
             background: #fff;
@@ -1300,7 +1302,6 @@
             box-shadow: 0 3px 12px rgba(212,175,55,.22);
             transition: background .15s, transform .1s;
             -webkit-tap-highlight-color: transparent;
-            min-width: 200px;
         }
         .tours-city-switcher:active { transform: scale(.97); background: #fffbf0; }
         .tcs-sw-img {
@@ -1343,12 +1344,12 @@
             position: absolute;
             top: calc(100% + 4px);
             left: 0;
+            right: 0;
             background: #fff;
             border: 2px solid #d4af37;
             border-radius: 10px;
             box-shadow: 0 8px 24px rgba(0,0,0,.15);
             z-index: 500;
-            min-width: 160px;
             overflow: hidden;
         }
         .tcs-drop.open { display: block; }
@@ -1898,7 +1899,7 @@
         <div id="tours" class="content">
             <!-- Вьетнам - кнопка-переключатель города -->
             <div id="vietnam-tours-buttons" style="padding: 10px 12px 0;">
-                <div style="position:relative; display:inline-block;">
+                <div style="position:relative; display:block;">
                     <div class="tours-city-switcher" id="tours-city-switcher" onclick="toggleTourCityDrop()">
                         <img class="tcs-sw-img" id="tcs-sw-img" src="/static/images/tours/nyachang.jpg" alt="">
                         <div class="tcs-sw-info">
