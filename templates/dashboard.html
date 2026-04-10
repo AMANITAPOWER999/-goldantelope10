@@ -1285,6 +1285,103 @@
             margin-bottom: 12px;
             border: 1px solid #f0ede0;
         }
+        /* ===== Кнопка-дропдаун города (туры) ===== */
+        .tours-city-switcher {
+            display: flex;
+            width: 100%;
+            box-sizing: border-box;
+            align-items: center;
+            gap: 12px;
+            background: #fff;
+            border: 2px solid #d4af37;
+            border-radius: 12px;
+            padding: 10px 16px 10px 10px;
+            cursor: pointer;
+            user-select: none;
+            margin-bottom: 10px;
+            box-shadow: 0 3px 12px rgba(212,175,55,.22);
+            transition: background .15s, transform .1s;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .tours-city-switcher:active { transform: scale(.97); background: #fffbf0; }
+        .tcs-sw-img {
+            width: 48px;
+            height: 48px;
+            border-radius: 8px;
+            object-fit: cover;
+            flex-shrink: 0;
+        }
+        .tcs-sw-info {
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+        }
+        .tcs-sw-hint {
+            font-size: 11px;
+            color: #b8860b;
+            font-weight: 500;
+            letter-spacing: .3px;
+            margin-bottom: 2px;
+        }
+        .tcs-sw-label {
+            font-size: 17px;
+            font-weight: 700;
+            color: #1a1a1a;
+            white-space: nowrap;
+        }
+        .tcs-sw-arrow {
+            font-size: 18px;
+            color: #d4af37;
+            line-height: 1;
+            transition: transform .2s;
+            flex-shrink: 0;
+        }
+        .tcs-sw-arrow.open { transform: rotate(180deg); }
+        html.dark .tcs-sw-hint { color: #f0c040; }
+        /* Выпадающий список */
+        .tcs-drop {
+            display: none;
+            position: absolute;
+            top: calc(100% + 4px);
+            left: 0;
+            right: 0;
+            background: #fff;
+            border: 2px solid #d4af37;
+            border-radius: 10px;
+            box-shadow: 0 8px 24px rgba(0,0,0,.15);
+            z-index: 500;
+            overflow: hidden;
+        }
+        .tcs-drop.open { display: block; }
+        .tcs-drop-item {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            padding: 9px 13px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            color: #222;
+            transition: background .12s;
+        }
+        .tcs-drop-item:hover, .tcs-drop-item:active { background: #fffbf0; }
+        .tcs-drop-item.selected { color: #b8860b; background: #fdf8e8; }
+        .tcs-drop-item img {
+            width: 32px;
+            height: 32px;
+            border-radius: 6px;
+            object-fit: cover;
+            flex-shrink: 0;
+        }
+        html.dark .tours-city-switcher { background: #1e1e1e; border-color: #c8a020; }
+        html.dark .tours-city-switcher:active { background: #252010; }
+        html.dark .tcs-sw-label { color: #f0f0f0; }
+        html.dark .tcs-drop { background: #1e1e1e; border-color: #c8a020; }
+        html.dark .tcs-drop-item { color: #eee; }
+        html.dark .tcs-drop-item:hover { background: #2a2510; }
+        html.dark .tcs-drop-item.selected { background: #2a2510; color: #f0c040; }
+        /* =========================================== */
+
         .tours-city-header {
             display: flex;
             align-items: center;
@@ -1800,35 +1897,29 @@
 
         <!-- Экскурсии -->
         <div id="tours" class="content">
-            <!-- Вьетнам - статические кнопки городов -->
-            <div id="vietnam-tours-buttons" style="padding: 20px;">
-                <div class="tour-grid-container" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; margin-bottom: 25px;">
-                    <div class="tour-city-btn tours-city-btn" data-city="Нячанг" onclick="filterToursByCity('Нячанг')" style="cursor: pointer; position: relative; border-radius: 12px; overflow: hidden; aspect-ratio: 4/3; box-shadow: 0 4px 12px rgba(0,0,0,0.15); border: 3px solid #d4af37;">
-                        <img src="/static/images/tours/nyachang.jpg" style="width: 100%; height: 100%; object-fit: cover;">
-                        <div class="city-info" style="position: absolute; bottom: 0; left: 0; right: 0; background: rgba(255,255,255,0.95); color: #333; padding: 12px; text-align: center;">
-                            <div class="city-name" style="font-weight: bold; font-size: 16px;">Нячанг</div>
-                            <div class="tour-count" style="font-size: 13px; margin-top: 4px; color: #666;">58 экскурсий</div>
+            <!-- Вьетнам - кнопка-переключатель города -->
+            <div id="vietnam-tours-buttons" style="padding: 10px 12px 0;">
+                <div style="position:relative; display:block;">
+                    <div class="tours-city-switcher" id="tours-city-switcher" onclick="toggleTourCityDrop()">
+                        <img class="tcs-sw-img" id="tcs-sw-img" src="/static/images/tours/nyachang.jpg" alt="">
+                        <div class="tcs-sw-info">
+                            <span class="tcs-sw-hint">Выбрать город</span>
+                            <span class="tcs-sw-label" id="tcs-sw-label">Нячанг</span>
                         </div>
+                        <div class="tcs-sw-arrow" id="tcs-sw-arrow">▾</div>
                     </div>
-                    <div class="tour-city-btn tours-city-btn" data-city="Дананг" onclick="filterToursByCity('Дананг')" style="cursor: pointer; position: relative; border-radius: 12px; overflow: hidden; aspect-ratio: 4/3; box-shadow: 0 4px 12px rgba(0,0,0,0.15); border: 3px solid transparent;">
-                        <img src="/static/images/tours/danang.jpg" style="width: 100%; height: 100%; object-fit: cover;">
-                        <div class="city-info" style="position: absolute; bottom: 0; left: 0; right: 0; background: rgba(255,255,255,0.95); color: #333; padding: 12px; text-align: center;">
-                            <div class="city-name" style="font-weight: bold; font-size: 16px;">Дананг</div>
-                            <div class="tour-count" style="font-size: 13px; margin-top: 4px; color: #666;">16 экскурсий</div>
+                    <div class="tcs-drop" id="tcs-drop">
+                        <div class="tcs-drop-item" onclick="selectTourCity(0)">
+                            <img src="/static/images/tours/nyachang.jpg" alt="">Нячанг
                         </div>
-                    </div>
-                    <div class="tour-city-btn tours-city-btn" data-city="Хошимин" onclick="filterToursByCity('Хошимин')" style="cursor: pointer; position: relative; border-radius: 12px; overflow: hidden; aspect-ratio: 4/3; box-shadow: 0 4px 12px rgba(0,0,0,0.15); border: 3px solid transparent;">
-                        <img src="/static/images/tours/hochiminh.jpg" style="width: 100%; height: 100%; object-fit: cover;">
-                        <div class="city-info" style="position: absolute; bottom: 0; left: 0; right: 0; background: rgba(255,255,255,0.95); color: #333; padding: 12px; text-align: center;">
-                            <div class="city-name" style="font-weight: bold; font-size: 16px;">Хошимин</div>
-                            <div class="tour-count" style="font-size: 13px; margin-top: 4px; color: #666;">33 экскурсии</div>
+                        <div class="tcs-drop-item" onclick="selectTourCity(1)">
+                            <img src="/static/images/tours/danang.jpg" alt="">Дананг
                         </div>
-                    </div>
-                    <div class="tour-city-btn tours-city-btn" data-city="Фукуок" onclick="filterToursByCity('Фукуок')" style="cursor: pointer; position: relative; border-radius: 12px; overflow: hidden; aspect-ratio: 4/3; box-shadow: 0 4px 12px rgba(0,0,0,0.15); border: 3px solid transparent;">
-                        <img src="/static/images/tours/phuquoc.jpg" style="width: 100%; height: 100%; object-fit: cover;">
-                        <div class="city-info" style="position: absolute; bottom: 0; left: 0; right: 0; background: rgba(255,255,255,0.95); color: #333; padding: 12px; text-align: center;">
-                            <div class="city-name" style="font-weight: bold; font-size: 16px;">Фукуок</div>
-                            <div class="tour-count" style="font-size: 13px; margin-top: 4px; color: #666;">27 экскурсий</div>
+                        <div class="tcs-drop-item" onclick="selectTourCity(2)">
+                            <img src="/static/images/tours/hochiminh.jpg" alt="">Хошимин
+                        </div>
+                        <div class="tcs-drop-item" onclick="selectTourCity(3)">
+                            <img src="/static/images/tours/phuquoc.jpg" alt="">Фукуок
                         </div>
                     </div>
                 </div>
@@ -4804,7 +4895,7 @@
                                 <div style="font-size:11px;color:#555;margin-top:2px;" id="mon-vp-detail">опрос каналов</div>
                             </div>
                             <div class="mon-card" style="padding:16px 20px; border-left:4px solid #d4af37;">
-                                <div style="font-size:10px;color:#666;text-transform:uppercase;letter-spacing:.8px;margin-bottom:4px;">Всего объявлений</div>
+                                <div style="font-size:10px;color:#666;text-transform:uppercase;letter-spacing:.8px;margin-bottom:4px;">Всего предложений</div>
                                 <div style="font-size:18px;font-weight:700;color:#d4af37;" id="mon-total-count">—</div>
                                 <div style="font-size:11px;color:#555;margin-top:2px;" id="mon-total-detail">🇻🇳 — · 🇹🇭 —</div>
                             </div>
@@ -4838,7 +4929,7 @@
                                             <th style="padding:9px 10px; text-align:left; font-weight:600; border-bottom:2px solid #2a2a3d;">Канал</th>
                                             <th style="padding:9px 10px; text-align:left; font-weight:600; border-bottom:2px solid #2a2a3d;">Страна</th>
                                             <th style="padding:9px 10px; text-align:left; font-weight:600; border-bottom:2px solid #2a2a3d;">Категория</th>
-                                            <th style="padding:9px 10px; text-align:right; font-weight:600; border-bottom:2px solid #2a2a3d;">Объявлений</th>
+                                            <th style="padding:9px 10px; text-align:right; font-weight:600; border-bottom:2px solid #2a2a3d;">Предложений</th>
                                             <th style="padding:9px 10px; text-align:left; font-weight:600; border-bottom:2px solid #2a2a3d;">Источник</th>
                                         </tr>
                                     </thead>
@@ -4916,15 +5007,15 @@
             ru: {
                 countries: { vietnam: '🇻🇳 Вьетнам', thailand: '🇹🇭 Тайланд', india: '🇮🇳 Индия', indonesia: '🇮🇩 Индонезия' },
                 tabs: { entertainment: 'Развлечения', restaurants: 'Рестораны', tours: 'Экскурсии', transport: 'Транспорт', realestate: 'Недвижимость', exchange: 'Финансы', marketplace: 'Барахолка', visas: 'Визаран', news: 'Фотосессия', chat: 'Все чаты' },
-                status: { parser: 'Парсер:', total: 'Всего объявлений:', updated: 'Обновлено:', online: 'На портале', lang: 'Язык' },
-                filters: { rent: '🔑 Аренда', sale: '🏠 Продажа', ascending: '📈 По возрастанию', descending: '📉 По убыванию', newest: '🆕 Новые', oldest: '🕰️ Ранние', reset: '✕ Сброс', upto7m: 'До 7 млн', upto15m: 'До 15 млн', from15m: 'От 15 млн', upto30k: 'До 30,000 THB', upto100k: 'До 100,000 THB', all: 'Все', bike: '🏍️ Мотоцикл', car: '🚗 Авто', scooter: '🛵 Скутер', groups: '📌 Группы:', selectGroup: '-- Выбрать группу --', listings: 'объявлений', submit: '📝 Подать', listing: 'объявление' },
+                status: { parser: 'Парсер:', total: 'Всего предложений:', updated: 'Обновлено:', online: 'На портале', lang: 'Язык' },
+                filters: { rent: '🔑 Аренда', sale: '🏠 Продажа', ascending: '📈 По возрастанию', descending: '📉 По убыванию', newest: '🆕 Новые', oldest: '🕰️ Ранние', reset: '✕ Сброс', upto7m: 'До 7 млн', upto15m: 'До 15 млн', from15m: 'От 15 млн', upto30k: 'До 30,000 THB', upto100k: 'До 100,000 THB', all: 'Все', bike: '🏍️ Мотоцикл', car: '🚗 Авто', scooter: '🛵 Скутер', groups: '📌 Группы:', selectGroup: '-- Выбрать группу --', listings: 'предложений', submit: '📝 Подать', listing: 'предложение' },
                 transport: { bikes: '🏍️ Байки', cars: '🚗 Авто', yachts: '⛵ Яхты', bicycles: '🚲 Велосипеды', submit: '📝 Подать', add: 'Добавить транспорт', cityFilter: '🏙️ Город:' },
                 cities: { hochiminh: 'Хошимин', danang: 'Дананг', nhatrang: 'Нячанг', phuquoc: 'Фукуок', hanoi: 'Ханой', dalat: 'Далат', muine: 'Муйне', vungtau: 'Вунгтау', halong: 'Халонг', hue: 'Хюэ', phanthiet: 'Фантьет', camranh: 'Камрань', all: 'Все' },
                 thailandCities: { 'Бангкок': 'Бангкок', 'Пхукет': 'Пхукет', 'Паттайя': 'Паттайя', 'Самуи': 'Самуи', 'Чиангмай': 'Чиангмай', 'Хуахин': 'Хуахин', 'Краби': 'Краби', 'Бали': 'Бали', 'Джакарта': 'Джакарта', 'Йогьякарта': 'Йогьякарта', 'Бандунг': 'Бандунг', 'Сурабая': 'Сурабая', 'Гоа': 'Гоа', 'Касол': 'Касол', 'Мумбаи': 'Мумбаи', 'Дели': 'Дели', 'Бангалор': 'Бангалор' },
-                sectionLabels: { restaurants: 'ресторанов', tours: 'экскурсий', entertainment: 'развлечений', transport: 'объявлений', realestate: 'объявлений' },
+                sectionLabels: { restaurants: 'ресторанов', tours: 'экскурсий', entertainment: 'развлечений', transport: 'предложений', realestate: 'предложений' },
                 submitLabels: { restaurants: 'Добавить ресторан', tours: 'Добавить экскурсию', entertainment: 'Добавить развлечение', transport: 'Добавить транспорт', realestate: 'Добавить недвижимость' },
                 forms: { title: 'Заголовок', description: 'Описание', price: 'Цена', contact: 'Контакт', phone: 'Телефон', telegram: 'Telegram', whatsapp: 'WhatsApp', photo: 'Фото', submit: 'Отправить', cancel: 'Отменить', addListing: 'Добавить объявление', city: 'Город', category: 'Категория', type: 'Тип', rooms: 'Комнаты', area: 'Площадь', address: 'Адрес', submitListingTitle: '📝 Подать объявление', submitListingDesc: 'Добавьте своё объявление в раздел Недвижимость. После модерации оно появится на сайте.', name: 'Название *', descLabel: 'Описание *', priceLabel: 'Цена', roomsLabel: 'Комнат', areaLabel: 'Площадь м²', location: '📍 Расположение', cityLabel: '🏙️ Город', contactPerson: '👤 Контактное лицо *', listingType: 'Тип объявления', sale: 'Продажа', rent: 'Аренда', geolocation: '📍 Геолокация Google Maps', geoHint: 'Скопируйте ссылку из Google Maps', photos: '📷 Фото (до 4 шт)', captcha: '🤖 Капча *', captchaAnswer: 'Ответ', submitBtn: '📤 Отправить на модерацию', titlePlaceholder: 'Например: Квартира 2 комнаты в центре', descPlaceholder: 'Подробное описание объекта...', yourName: 'Ваше имя', locationPlaceholder: 'Центр, у моря...', noFileSelected: 'Файл не выбран', addExchange: 'Добавить обменник', exchangeDesc: 'Добавьте пункт обмена валют. После модерации объявление появится на сайте.', addMarketplace: 'Подать объявление', marketplaceDesc: 'Продайте или обменяйте вещи.', addVisa: 'Добавить визаран', visaDesc: 'Добавьте информацию о визаране.', addPhoto: 'Добавить фотосессию', photoDesc: 'Добавьте услугу фотографа.', addTour: 'Добавить экскурсию', tourDesc: 'Добавьте тур или экскурсию.', addTransport: 'Добавить транспорт', transportDesc: 'Добавьте мотоцикл или авто.', addEntertainment: 'Добавить развлечение', entertainmentDesc: 'Добавьте развлечение.', addRestaurant: 'Добавить ресторан', restaurantDesc: 'Добавьте ресторан или кафе.' },
-                common: { loading: 'Загрузка...', noResults: 'Нет объявлений', error: 'Ошибка', success: 'Успешно', date: 'Дата', contact: 'Контакт', viewMore: 'Подробнее', close: 'Закрыть', save: 'Сохранить', delete: 'Удалить', edit: 'Редактировать' }
+                common: { loading: 'Загрузка...', noResults: 'Нет предложений', error: 'Ошибка', success: 'Успешно', date: 'Дата', contact: 'Контакт', viewMore: 'Подробнее', close: 'Закрыть', save: 'Сохранить', delete: 'Удалить', edit: 'Редактировать' }
             },
             en: {
                 countries: { vietnam: '🇻🇳 Vietnam', thailand: '🇹🇭 Thailand', india: '🇮🇳 India', indonesia: '🇮🇩 Indonesia' },
@@ -7513,13 +7604,69 @@
 
         let currentToursCity = 'Нячанг';
         
-        function filterToursByCity(city) {
+        var tourCities = [
+            { name: 'Нячанг',  img: '/static/images/tours/nyachang.jpg'   },
+            { name: 'Дананг',  img: '/static/images/tours/danang.jpg'      },
+            { name: 'Хошимин', img: '/static/images/tours/hochiminh.jpg'   },
+            { name: 'Фукуок',  img: '/static/images/tours/phuquoc.jpg'     }
+        ];
+        var tourCityIndex = 0;
+
+        function toggleTourCityDrop() {
+            var drop  = document.getElementById('tcs-drop');
+            var arrow = document.getElementById('tcs-sw-arrow');
+            if (!drop) return;
+            var isOpen = drop.classList.contains('open');
+            if (isOpen) {
+                drop.classList.remove('open');
+                if (arrow) arrow.classList.remove('open');
+            } else {
+                // Пометить текущий город
+                drop.querySelectorAll('.tcs-drop-item').forEach(function(el, i) {
+                    el.classList.toggle('selected', i === tourCityIndex);
+                });
+                drop.classList.add('open');
+                if (arrow) arrow.classList.add('open');
+                // Закрыть по клику вне
+                setTimeout(function() {
+                    document.addEventListener('click', closeTourDrop, { once: true });
+                }, 10);
+            }
+        }
+
+        function closeTourDrop(e) {
+            var drop  = document.getElementById('tcs-drop');
+            var arrow = document.getElementById('tcs-sw-arrow');
+            if (drop)  drop.classList.remove('open');
+            if (arrow) arrow.classList.remove('open');
+        }
+
+        function selectTourCity(idx) {
+            tourCityIndex = idx;
+            var c = tourCities[idx];
+            // Закрыть дроп
+            var drop  = document.getElementById('tcs-drop');
+            var arrow = document.getElementById('tcs-sw-arrow');
+            if (drop)  drop.classList.remove('open');
+            if (arrow) arrow.classList.remove('open');
+            filterToursByCity(c.name, c.img);
+        }
+
+        function filterToursByCity(city, img) {
             currentToursCity = city;
-            document.querySelectorAll('.tours-city-btn').forEach(btn => {
-                btn.style.border = btn.dataset.city === city ? '3px solid #d4af37' : '3px solid transparent';
-            });
-            // Переключаем дашборд экскурсий по городу
-            document.querySelectorAll('.tours-city-dashboard').forEach(d => {
+            // Обновляем кнопку
+            var lbl   = document.getElementById('tcs-sw-label');
+            var swImg = document.getElementById('tcs-sw-img');
+            if (lbl) lbl.textContent = city;
+            if (swImg) {
+                var c = tourCities.find(function(x){ return x.name === city; });
+                if (c) swImg.src = c.img;
+                else if (img) swImg.src = img;
+            }
+            tourCityIndex = tourCities.findIndex(function(c){ return c.name === city; });
+            if (tourCityIndex < 0) tourCityIndex = 0;
+            // Переключаем дашборд
+            document.querySelectorAll('.tours-city-dashboard').forEach(function(d) {
                 d.style.display = d.dataset.dashboard === city ? 'block' : 'none';
             });
             loadListings('tours', city);
