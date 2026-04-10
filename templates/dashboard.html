@@ -1382,12 +1382,11 @@
         html.dark .tcs-drop-item.selected { background: #2a2510; color: #f0c040; }
         /* Extra-filters toggle button */
         .extra-filters-btn {
-            display: flex;
+            display: inline-flex;
             align-items: center;
             gap: 7px;
-            width: 100%;
-            box-sizing: border-box;
-            padding: 9px 16px;
+            width: auto;
+            padding: 7px 14px;
             background: transparent;
             border: 2px solid #d4af37;
             border-radius: 10px;
@@ -1902,10 +1901,7 @@
                 </div>
             </div>
             <div style="padding: 0 12px;">
-                <button class="extra-filters-btn" id="rest-filters-btn" onclick="toggleExtraFilters('rest')">
-                    🔽 Дополнительные фильтры
-                    <span class="efb-arrow">▾</span>
-                </button>
+                <button class="extra-filters-btn" id="rest-filters-btn" onclick="toggleExtraFilters('rest')">Дополнительные фильтры <span class="efb-arrow">▾</span></button>
             </div>
             <div class="extra-filters-wrap" id="rest-filters-wrap">
                 <div class="filters" style="display: flex; gap: 10px; padding: 10px 15px 15px; flex-wrap: wrap;">
@@ -2330,10 +2326,7 @@
                 </div>
             </div>
             <div style="padding: 0 12px;">
-                <button class="extra-filters-btn" id="re-filters-btn" onclick="toggleExtraFilters('re')">
-                    🔽 Дополнительные фильтры
-                    <span class="efb-arrow">▾</span>
-                </button>
+                <button class="extra-filters-btn" id="re-filters-btn" onclick="toggleExtraFilters('re')">Дополнительные фильтры <span class="efb-arrow">▾</span></button>
             </div>
             <div class="extra-filters-wrap" id="re-filters-wrap">
                 <div id="vietnam-realestate-filters" class="filters" style="display: flex; gap: 10px; padding: 10px 15px 8px; flex-wrap: wrap;">
@@ -7778,7 +7771,7 @@
             if (!btn || !wrap) return;
             var open = wrap.classList.toggle('open');
             btn.classList.toggle('open', open);
-            btn.childNodes[0].textContent = open ? '\uD83D\uDD3C Скрыть фильтры ' : '\uD83D\uDD3D Дополнительные фильтры ';
+            btn.childNodes[0].textContent = open ? 'Скрыть фильтры ' : 'Дополнительные фильтры ';
         }
 
         let currentTransportType = 'bikes';
