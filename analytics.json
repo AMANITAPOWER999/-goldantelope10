@@ -73,16 +73,16 @@
         "user_7nuvio2vr_1775899094735",
         "user_ji515khc9_1775899107938"
       ],
-      "page_views": 1105,
+      "page_views": 1106,
       "countries": {
-        "vietnam": 1103,
+        "vietnam": 1104,
         "india": 2
       },
       "categories": {
         "real_estate": 823,
         "realestate": 13,
         "tours": 46,
-        "entertainment": 179,
+        "entertainment": 180,
         "restaurants": 13,
         "exchange": 6,
         "transport": 15,
@@ -98,12 +98,12 @@
         "06": 124,
         "07": 188,
         "08": 97,
-        "09": 12
+        "09": 13
       },
       "referrers": {},
       "devices": {
         "mobile": 89,
-        "desktop": 1016
+        "desktop": 1017
       }
     }
   },
@@ -230,7 +230,7 @@
     },
     "user_7nuvio2vr_1775899094735": {
       "first_seen": "2026-04-11",
-      "visits": 11,
+      "visits": 12,
       "last_seen": "2026-04-11"
     },
     "user_ji515khc9_1775899107938": {
