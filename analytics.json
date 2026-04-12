@@ -5,34 +5,37 @@
         "user_7nuvio2vr_1775899094735",
         "user_m1j2dgeog_1775979646131"
       ],
-      "page_views": 16,
+      "page_views": 44,
       "countries": {
-        "vietnam": 16
+        "vietnam": 41,
+        "thailand": 3
       },
       "categories": {
         "exchange": 1,
-        "real_estate": 15
+        "real_estate": 29,
+        "entertainment": 9,
+        "transport": 5
       },
       "hours": {
         "08": 1,
-        "09": 15
+        "09": 43
       },
       "referrers": {},
       "devices": {
         "mobile": 0,
-        "desktop": 16
+        "desktop": 44
       }
     }
   },
   "visitors": {
     "user_7nuvio2vr_1775899094735": {
       "first_seen": "2026-04-12",
-      "visits": 11,
+      "visits": 29,
       "last_seen": "2026-04-12"
     },
     "user_m1j2dgeog_1775979646131": {
       "first_seen": "2026-04-12",
-      "visits": 5,
+      "visits": 15,
       "last_seen": "2026-04-12"
     }
   }
