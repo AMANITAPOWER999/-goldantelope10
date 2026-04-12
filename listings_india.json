@@ -3,6 +3,23 @@
   "tours": [],
   "entertainment": [
     {
+      "id": "partyhunt_a18655e4-87e2-48ac-8e46-dd6e90ca4f10",
+      "title": "Ecstatic Dance",
+      "description": "📅 14 Apr 2026, 19:00\n📍 Arambolians\n🗺 116/3 Deulwada, Next to Pirata Pizzeria, Wildeflower Road Pernem, Road, Arambol, Goa 403524, India\n🏷 Entertainment\n🎟 https://tickets.partyhunt.com/events/ecstatic-dance-14-apr-2026-arambolians-buy-tickets",
+      "photos": [
+        "https://api.anbocas.com/storage/event/banner/qluNiOo59f18H6jxdIhE3RLDTJ60EiFPGSboGDJt.jpg"
+      ],
+      "contact": "@partyhuntgoa",
+      "source_group": "partyhuntgoa",
+      "date": "2026-04-14 19:00:00",
+      "city": "Goa",
+      "realestate_city": "goa",
+      "country": "india",
+      "telegram_link": "https://tickets.partyhunt.com/events/ecstatic-dance-14-apr-2026-arambolians-buy-tickets",
+      "price": "600.00",
+      "price_display": "from ₹600.00"
+    },
+    {
       "id": "partyhunt_a1859f47-892a-4f4a-8a9f-95830dedab4c",
       "title": "Harmonic Decibels",
       "description": "📅 18 Apr 2026, 21:00\n📍 House of Chapora by the bay\n🗺 Chapora Jetty , H.No 340/2 Village Anjuna-Caisua, Chapora, Goa 403509, India\n🏷 Entertainment\n🎟 https://tickets.partyhunt.com/events/harmonic-decibels-18-apr-2026-house-of-chapora-by-the-bay-buy-tickets",
