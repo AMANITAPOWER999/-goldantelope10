@@ -3,6 +3,55 @@
   "tours": [],
   "entertainment": [
     {
+      "id": "partyhunt_a1859f47-892a-4f4a-8a9f-95830dedab4c",
+      "title": "Harmonic Decibels",
+      "description": "📅 18 Apr 2026, 21:00\n📍 House of Chapora by the bay\n🗺 Chapora Jetty , H.No 340/2 Village Anjuna-Caisua, Chapora, Goa 403509, India\n🏷 Entertainment\n🎟 https://tickets.partyhunt.com/events/harmonic-decibels-18-apr-2026-house-of-chapora-by-the-bay-buy-tickets",
+      "photos": [
+        "https://api.anbocas.com/storage/event/banner/wWTpHvimpa1zPkFq6j2y4pngA8xaiNCT5eYxdTbG.png"
+      ],
+      "contact": "@partyhuntgoa",
+      "source_group": "partyhuntgoa",
+      "date": "2026-04-18 21:00:00",
+      "city": "Goa",
+      "realestate_city": "goa",
+      "country": "india",
+      "telegram_link": "https://tickets.partyhunt.com/events/harmonic-decibels-18-apr-2026-house-of-chapora-by-the-bay-buy-tickets"
+    },
+    {
+      "id": "partyhunt_a173f8d8-341a-4163-acbd-a43345ba7879",
+      "title": "Hungover Monday",
+      "description": "📅 13 Apr 2026, 21:00\n📍 Dynamo\n🗺 Survey number 213, 6, part, Vagator, Anjuna, Goa 403509, India\n🏷 Entertainment\n🎟 https://tickets.partyhunt.com/events/hungover-monday-06-apr-2026-dynamo-buy-tickets",
+      "photos": [
+        "https://firebasestorage.googleapis.com/v0/b/partyhunt-production.appspot.com/o/eventsPicture%2Ffc73e85b-bf6c-4fc9-be3e-d671d20b229a%2Ffull_fc73e85b-bf6c-4fc9-be3e-d671d20b229a?alt=media&token=35773814-496b-4ec8-a350-4d3ff78d6253"
+      ],
+      "contact": "@partyhuntgoa",
+      "source_group": "partyhuntgoa",
+      "date": "2026-04-13 21:00:00",
+      "city": "Goa",
+      "realestate_city": "goa",
+      "country": "india",
+      "telegram_link": "https://tickets.partyhunt.com/events/hungover-monday-06-apr-2026-dynamo-buy-tickets",
+      "price": "499.00",
+      "price_display": "from ₹499.00"
+    },
+    {
+      "id": "partyhunt_a18470db-1e0a-4566-a2ac-7c588e989302",
+      "title": "Stanley Live",
+      "description": "📅 12 Apr 2026, 19:00\n📍 This Is It Beach Restaurant & Bar\n🗺 Khalcha, Wadda, North of Arambol Beach, Arambol, Goa 403524, India\n🏷 Entertainment\n🎟 https://tickets.partyhunt.com/events/stanley-live-12-apr-2026-this-is-it-beach-restaurant-bar-buy-tickets",
+      "photos": [
+        "https://api.anbocas.com/storage/event/banner/CGH5DNbpYsmJ5AAdV311LgAEPbdt2aCUSpnsMedB.jpg"
+      ],
+      "contact": "@partyhuntgoa",
+      "source_group": "partyhuntgoa",
+      "date": "2026-04-12 19:00:00",
+      "city": "Goa",
+      "realestate_city": "goa",
+      "country": "india",
+      "telegram_link": "https://tickets.partyhunt.com/events/stanley-live-12-apr-2026-this-is-it-beach-restaurant-bar-buy-tickets",
+      "price": "149.00",
+      "price_display": "from ₹149.00"
+    },
+    {
       "id": "partyhunt_a17e838b-a84a-4f1d-8700-a911aa0fc509",
       "title": "Vanaghotra",
       "description": "📅 31 Dec 2026, 19:00\n📍 Dpedro Inn\n🗺 Chonsai Mandrem Rd, Sotchem Bahtlem, Mandrem, Goa 403512, India\n🏷 Entertainment\n🎟 https://tickets.partyhunt.com/events/vanaghotra-31-dec-2026-dpedro-inn-buy-tickets",
@@ -458,23 +507,6 @@
       "realestate_city": "goa",
       "country": "india",
       "telegram_link": "https://tickets.partyhunt.com/events/chapora-dance-rituals-300-08-apr-2026-house-of-chapora-by-the-bay-buy-tickets",
-      "price": "1000.00",
-      "price_display": "from ₹1000.00"
-    },
-    {
-      "id": "partyhunt_a175f12d-b4dd-49db-80ea-e7c3a6a50d51",
-      "title": "Tues-Tech 25.0",
-      "description": "📅 07 Apr 2026, 20:00\n📍 House of Chapora by the bay\n🗺 Chapora Jetty , H.No 340/2 Village Anjuna-Caisua, Chapora, Goa 403509, India\n🏷 Entertainment\n🎟 https://tickets.partyhunt.com/events/tues-tech-250-07-apr-2026-house-of-chapora-by-the-bay-buy-tickets",
-      "photos": [
-        "https://api.anbocas.com/storage/event/banner/cV0gNNAHediiPkDTziR16p3AnNx93P6xnfV0NRSx.jpg"
-      ],
-      "contact": "@partyhuntgoa",
-      "source_group": "partyhuntgoa",
-      "date": "2026-04-07 20:00:00",
-      "city": "Goa",
-      "realestate_city": "goa",
-      "country": "india",
-      "telegram_link": "https://tickets.partyhunt.com/events/tues-tech-250-07-apr-2026-house-of-chapora-by-the-bay-buy-tickets",
       "price": "1000.00",
       "price_display": "from ₹1000.00"
     },

@@ -105,6 +105,27 @@
         "mobile": 89,
         "desktop": 1017
       }
+    },
+    "2026-04-12": {
+      "unique_visitors": [
+        "user_7nuvio2vr_1775899094735",
+        "user_720f8xir5_1775975434846"
+      ],
+      "page_views": 31,
+      "countries": {
+        "vietnam": 31
+      },
+      "categories": {
+        "real_estate": 31
+      },
+      "hours": {
+        "06": 31
+      },
+      "referrers": {},
+      "devices": {
+        "mobile": 0,
+        "desktop": 31
+      }
     }
   },
   "visitors": {
@@ -230,13 +251,18 @@
     },
     "user_7nuvio2vr_1775899094735": {
       "first_seen": "2026-04-11",
-      "visits": 12,
-      "last_seen": "2026-04-11"
+      "visits": 40,
+      "last_seen": "2026-04-12"
     },
     "user_ji515khc9_1775899107938": {
       "first_seen": "2026-04-11",
       "visits": 1,
       "last_seen": "2026-04-11"
+    },
+    "user_720f8xir5_1775975434846": {
+      "first_seen": "2026-04-12",
+      "visits": 3,
+      "last_seen": "2026-04-12"
     }
   }
 }
