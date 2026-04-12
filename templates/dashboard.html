@@ -723,18 +723,22 @@
             }
             
             .country-selector {
-                flex-wrap: wrap;
-                justify-content: center;
+                flex-wrap: nowrap;
+                overflow-x: auto;
+                justify-content: flex-start;
                 width: 100%;
                 gap: 8px;
                 padding: 8px 10px;
                 border: 2px solid #d4af37;
+                -webkit-overflow-scrolling: touch;
+                scrollbar-width: none;
             }
+            .country-selector::-webkit-scrollbar { display: none; }
             
             .country-btn {
                 padding: 8px 12px;
                 font-size: 12px;
-                flex: 1;
+                flex: 0 0 auto;
                 min-width: 80px;
             }
             
