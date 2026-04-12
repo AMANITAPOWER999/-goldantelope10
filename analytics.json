@@ -117,30 +117,30 @@
         "user_8e9xhfoz9_1775979675331",
         "user_34557qev2_1775979828604"
       ],
-      "page_views": 193,
+      "page_views": 214,
       "countries": {
-        "vietnam": 143,
+        "vietnam": 164,
         "thailand": 46,
         "india": 4
       },
       "categories": {
-        "real_estate": 111,
+        "real_estate": 124,
         "realestate": 33,
-        "entertainment": 6,
+        "entertainment": 7,
         "exchange": 13,
         "tours": 9,
-        "restaurants": 12,
+        "restaurants": 19,
         "transport": 8,
         "visas": 1
       },
       "hours": {
         "06": 84,
-        "07": 109
+        "07": 130
       },
       "referrers": {},
       "devices": {
-        "mobile": 6,
-        "desktop": 187
+        "mobile": 16,
+        "desktop": 198
       }
     }
   },
@@ -267,7 +267,7 @@
     },
     "user_7nuvio2vr_1775899094735": {
       "first_seen": "2026-04-11",
-      "visits": 183,
+      "visits": 191,
       "last_seen": "2026-04-12"
     },
     "user_ji515khc9_1775899107938": {
@@ -297,12 +297,12 @@
     },
     "user_m1j2dgeog_1775979646131": {
       "first_seen": "2026-04-12",
-      "visits": 7,
+      "visits": 10,
       "last_seen": "2026-04-12"
     },
     "user_8e9xhfoz9_1775979675331": {
       "first_seen": "2026-04-12",
-      "visits": 6,
+      "visits": 16,
       "last_seen": "2026-04-12"
     },
     "user_34557qev2_1775979828604": {

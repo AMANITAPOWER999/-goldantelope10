@@ -1691,6 +1691,15 @@
         html.dark .listing-grid .card [style*="color: #888"] {
             color: #ccc !important;
         }
+        #admin-country-selector {
+            flex-wrap: nowrap !important;
+            overflow-x: auto !important;
+            width: 318px !important;
+            max-width: 318px !important;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
+        }
+        #admin-country-selector::-webkit-scrollbar { display: none; }
         html.dark .country-selector {
             border-color: #2a2a3d;
         }
@@ -1893,7 +1902,7 @@
                     <button class="country-btn active" onclick="switchCountry('vietnam')" style="font-size:15px;padding:8px 18px;font-weight:700;width:140px;text-align:center;">🇻🇳 Вьетнам</button>
                     <button class="country-btn" onclick="switchCountry('thailand')" style="font-size:15px;padding:8px 18px;font-weight:700;width:140px;text-align:center;">🇹🇭 Тайланд</button>
                 </div>
-                <div class="country-selector" id="admin-country-selector" style="display: none; flex-wrap: nowrap; overflow-x: auto; max-width: 318px; -webkit-overflow-scrolling: touch; scrollbar-width: none;">
+                <div class="country-selector" id="admin-country-selector" style="display: none;">
                     <button class="country-btn active" onclick="switchCountry('vietnam')" style="font-size:15px;padding:8px 18px;font-weight:700;width:140px;text-align:center;flex-shrink:0;">🇻🇳 Вьетнам</button>
                     <button class="country-btn" onclick="switchCountry('thailand')" style="font-size:15px;padding:8px 18px;font-weight:700;width:140px;text-align:center;flex-shrink:0;">🇹🇭 Тайланд</button>
                     <button class="country-btn" onclick="switchCountry('india')" style="font-size:15px;padding:8px 18px;font-weight:700;width:140px;text-align:center;flex-shrink:0;">🇮🇳 Индия</button>
