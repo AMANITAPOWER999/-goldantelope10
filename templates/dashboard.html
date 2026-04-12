@@ -2779,6 +2779,9 @@
                         <div id="rates-loading-th" class="rates-card-loading">Загрузка курсов...</div>
                     </div>
                 </div>
+                <div style="text-align: center; padding: 8px 20px 20px 20px;">
+                    <button class="delivery-btn" onclick="openDeliveryModal()">💸 Заказать доставку наличных</button>
+                </div>
             </div>
 
             <!-- Индия - city switcher + доска курсов INR -->
@@ -2800,6 +2803,9 @@
                         <div id="rates-loading-in" class="rates-card-loading">Загрузка курсов...</div>
                     </div>
                 </div>
+                <div style="text-align: center; padding: 8px 20px 20px 20px;">
+                    <button class="delivery-btn" onclick="openDeliveryModal()">💸 Заказать доставку наличных</button>
+                </div>
             </div>
 
             <!-- Индонезия - city switcher + доска курсов IDR -->
@@ -2820,6 +2826,9 @@
                         <div id="rates-table-id" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 6px;"></div>
                         <div id="rates-loading-id" class="rates-card-loading">Загрузка курсов...</div>
                     </div>
+                </div>
+                <div style="text-align: center; padding: 8px 20px 20px 20px;">
+                    <button class="delivery-btn" onclick="openDeliveryModal()">💸 Заказать доставку наличных</button>
                 </div>
             </div>
         </div>
@@ -6335,7 +6344,7 @@
                 // Генерируем city switcher для обменников
                 var exchSuffix = {thailand: 'exch-th', india: 'exch-in', indonesia: 'exch-id'}[country];
                 if (exchSuffix) {
-                    renderOtherCountryCitySwitcher(exchSuffix, 'restaurants', filterExchangeByCity, false);
+                    renderOtherCountryCitySwitcher(exchSuffix, 'exchange', filterExchangeByCity, false);
                 }
             }
             // Загружаем группы для любой страны
@@ -7020,6 +7029,32 @@
                     'Мумбаи': 'https://images.unsplash.com/photo-1529253355930-ddbe423a2ac7?w=300&h=200&fit=crop',
                     'Дели': 'https://images.unsplash.com/photo-1587474260584-136574528ed5?w=300&h=200&fit=crop',
                     'Бангалор': 'https://images.unsplash.com/photo-1596176530529-78163a4f7af2?w=300&h=200&fit=crop'
+                }
+            },
+            exchange: {
+                vietnam: {
+                    'Нячанг': '/static/images/categories/exchange/nhatrang.jpg',
+                    'Хошимин': '/static/images/categories/exchange/saigon.jpg',
+                    'Дананг': '/static/images/categories/exchange/danang.jpg',
+                    'Фукуок': '/static/images/categories/exchange/phuquoc.jpg'
+                },
+                thailand: {
+                    'Бангкок': 'https://images.unsplash.com/photo-1508009603885-50cf7c579365?w=300&h=200&fit=crop',
+                    'Пхукет': 'https://images.unsplash.com/photo-1589394815804-964ed0be2eb5?w=300&h=200&fit=crop',
+                    'Паттайя': 'https://images.unsplash.com/photo-1552465011-b4e21bf6e79a?w=300&h=200&fit=crop',
+                    'Самуи': 'https://images.unsplash.com/photo-1540541338287-41700207dee6?w=300&h=200&fit=crop'
+                },
+                indonesia: {
+                    'Бали': 'https://images.unsplash.com/photo-1537996194471-e657df975ab4?w=300&h=200&fit=crop',
+                    'Джакарта': 'https://images.unsplash.com/photo-1555899434-94d1368aa7af?w=300&h=200&fit=crop',
+                    'Йогьякарта': 'https://images.unsplash.com/photo-1584810359583-96fc3448beaa?w=300&h=200&fit=crop',
+                    'Бандунг': 'https://images.unsplash.com/photo-1596402184320-417e7178b2cd?w=300&h=200&fit=crop'
+                },
+                india: {
+                    'Гоа': 'https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?w=300&h=200&fit=crop',
+                    'Касол': 'https://images.unsplash.com/photo-1529253355930-ddbe423a2ac7?w=300&h=200&fit=crop',
+                    'Мумбаи': 'https://images.unsplash.com/photo-1562979314-bee7453e911c?w=300&h=200&fit=crop',
+                    'Дели': 'https://images.unsplash.com/photo-1587474260584-136574528ed5?w=300&h=200&fit=crop'
                 }
             },
             entertainment: {
