@@ -6,43 +6,45 @@
         "user_m1j2dgeog_1775979646131",
         "user_8e9xhfoz9_1775979675331"
       ],
-      "page_views": 69,
+      "page_views": 101,
       "countries": {
-        "vietnam": 66,
+        "vietnam": 98,
         "thailand": 3
       },
       "categories": {
         "exchange": 3,
-        "real_estate": 44,
+        "real_estate": 64,
         "entertainment": 9,
-        "transport": 5,
-        "tours": 8
+        "transport": 8,
+        "tours": 15,
+        "chat": 1,
+        "visas": 1
       },
       "hours": {
         "08": 1,
-        "09": 68
+        "09": 100
       },
       "referrers": {},
       "devices": {
-        "mobile": 9,
-        "desktop": 60
+        "mobile": 19,
+        "desktop": 82
       }
     }
   },
   "visitors": {
     "user_7nuvio2vr_1775899094735": {
       "first_seen": "2026-04-12",
-      "visits": 40,
+      "visits": 55,
       "last_seen": "2026-04-12"
     },
     "user_m1j2dgeog_1775979646131": {
       "first_seen": "2026-04-12",
-      "visits": 20,
+      "visits": 27,
       "last_seen": "2026-04-12"
     },
     "user_8e9xhfoz9_1775979675331": {
       "first_seen": "2026-04-12",
-      "visits": 9,
+      "visits": 19,
       "last_seen": "2026-04-12"
     }
   }
