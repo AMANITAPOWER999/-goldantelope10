@@ -4047,47 +4047,84 @@ def _gavibeshub_poller():
                                 handle_banner_channel_photo(msg_id_b, fid_b)
                     continue
 
-                # @vibeshub_vn → только Развлечения Вьетнам
-                if chat_username != 'vibeshub_vn':
+                # Роутинг всех каналов → категория + страна
+                _CH_ROUTE = {
+                    'vietnamparsing':  ('real_estate',   'vietnam'),
+                    'thailandparsing': ('real_estate',   'thailand'),
+                    'visarun_vn':      ('visas',         'vietnam'),
+                    'paymens_vn':      ('money_exchange','vietnam'),
+                    'baykivietnam':    ('transport',     'vietnam'),
+                    'gatours_vn':      ('tours',         'vietnam'),
+                    'vibeshub_vn':     ('entertainment', 'vietnam'),
+                    'restoranvietnam': ('restaurants',   'vietnam'),
+                    'obmenvietnam':    ('chat',          'vietnam'),
+                }
+                route = _CH_ROUTE.get(chat_username)
+                if not route:
                     continue
 
-                has_photo = bool(cp.get('photo'))
-                if not has_photo:
+                category_r, country_r = route
+                text_r = cp.get('text', '') or cp.get('caption', '') or ''
+                msg_id = cp.get('message_id', 0)
+
+                # Получаем прямую ссылку на фото через getFile (браузер грузит напрямую)
+                photos_r = []
+                photo_list = cp.get('photo', [])
+                if photo_list and msg_id:
+                    largest = max(photo_list, key=lambda p: p.get('file_size', 0))
+                    fid = largest.get('file_id', '')
+                    if fid:
+                        with _msg_to_file_id_lock:
+                            _msg_to_file_id[(chat_username, msg_id)] = fid
+                        try:
+                            gf = requests.get(
+                                f'https://api.telegram.org/bot{bot_token}/getFile',
+                                params={'file_id': fid}, timeout=8
+                            )
+                            if gf.status_code == 200 and gf.json().get('ok'):
+                                fp = gf.json()['result']['file_path']
+                                photos_r = [f'https://api.telegram.org/file/bot{bot_token}/{fp}']
+                        except Exception:
+                            photos_r = [f'/tg_img/{chat_username}/{msg_id}']
+
+                if not text_r and not photos_r:
                     continue
 
                 try:
-                    from vietnamparsing_parser import process_extra_channel_update, atomic_add_listing
-
-                    msg_id = cp.get('message_id', 0)
-                    photo_list = cp.get('photo', [])
-                    if photo_list and msg_id:
-                        largest = max(photo_list, key=lambda p: p.get('file_size', 0))
-                        fid = largest.get('file_id')
-                        if fid:
-                            with _msg_to_file_id_lock:
-                                _msg_to_file_id[(chat_username, msg_id)] = fid
-                            try:
-                                idx_path = 'file_id_index.json'
-                                idx = {}
-                                if os.path.exists(idx_path):
-                                    with open(idx_path, 'r') as _f:
-                                        idx = json.load(_f)
-                                idx[f'{chat_username}_{msg_id}'] = fid
-                                with open(idx_path, 'w') as _f:
-                                    json.dump(idx, _f, ensure_ascii=False, indent=2)
-                            except Exception:
-                                pass
-
-                    update_wrapped = {'channel_post': cp}
-                    item = process_extra_channel_update(update_wrapped, chat_username, 'entertainment', None)
-                    if item:
-                        added = atomic_add_listing('entertainment', item)
-                        status = 'добавлен' if added else 'дубликат'
-                        logger.info('[entertainment_poller] @%s Пост #%d → entertainment (%s)', chat_username, msg_id, status)
-                    else:
-                        logger.debug('[entertainment_poller] @%s Пост #%d пропущен (нет текста/фото)', chat_username, msg_id)
+                    from vietnamparsing_parser import atomic_add_listing
+                    from datetime import datetime as _dt, timezone as _tz
+                    title_r = text_r[:120].replace('\n', ' ').strip() if text_r else f'Пост {msg_id}'
+                    item_r = {
+                        'id': f'{chat_username}_{msg_id}',
+                        'title': title_r,
+                        'description': text_r,
+                        'text': text_r,
+                        'price': 0,
+                        'price_display': '',
+                        'city': 'Вьетнам' if country_r == 'vietnam' else 'Таиланд',
+                        'city_ru': 'Вьетнам' if country_r == 'vietnam' else 'Таиланд',
+                        'date': _dt.now(_tz.utc).isoformat(),
+                        'contact': f'@{chat_username}',
+                        'contact_name': chat_username,
+                        'source_group': chat_username,
+                        'source_channel': chat_username,
+                        'telegram': f'https://t.me/{chat_username}',
+                        'telegram_link': f'https://t.me/{chat_username}/{msg_id}',
+                        'image_url': photos_r[0] if photos_r else '',
+                        'all_images': photos_r,
+                        'photos': photos_r,
+                        'has_media': bool(photos_r),
+                        'status': 'active',
+                        'country': country_r,
+                        'message_id': msg_id,
+                        'category': category_r,
+                    }
+                    added = atomic_add_listing(category_r, item_r)
+                    if added:
+                        data_cache.pop(country_r, None)
+                    logger.info('[all_ch_poller] @%s #%d → %s (%s)', chat_username, msg_id, category_r, 'добавлен' if added else 'дубликат')
                 except Exception as e:
-                    logger.error('[entertainment_poller] Ошибка обработки поста @%s: %s', chat_username, e)
+                    logger.error('[all_ch_poller] Ошибка @%s #%d: %s', chat_username, msg_id, e)
 
         except Exception as e:
             logger.warning('[gavibeshub_poller] Ошибка поллинга: %s', e)
@@ -4241,6 +4278,99 @@ def _sync_vibeshub_vn_entertainment():
 threading.Thread(target=_gavibeshub_poller, daemon=True, name='GAvibeshubPoller').start()
 threading.Thread(target=_sync_vibeshub_vn_entertainment, daemon=True, name='VibeshubVnSync').start()
 logger.info('GAvibeshub background poller started (every %ds)', GAVIBESHUB_POLL_INTERVAL)
+
+# ─── Периодический скрейпер всех каналов (t.me/s/) ────────────────────────
+_PERIODIC_SCRAPE_CHANNELS = [
+    ('vietnamparsing',  'real_estate',    'listings_vietnam.json',  'vietnam'),
+    ('thailandparsing', 'real_estate',    'listings_thailand.json', 'thailand'),
+    ('visarun_vn',      'visas',          'listings_vietnam.json',  'vietnam'),
+    ('paymens_vn',      'money_exchange', 'listings_vietnam.json',  'vietnam'),
+    ('baykivietnam',    'transport',      'listings_vietnam.json',  'vietnam'),
+    ('GAtours_vn',      'tours',          'listings_vietnam.json',  'vietnam'),
+    ('vibeshub_vn',     'entertainment',  'listings_vietnam.json',  'vietnam'),
+    ('restoranvietnam', 'restaurants',    'listings_vietnam.json',  'vietnam'),
+]
+_CHAT_SCRAPE_CHANNELS = [
+    ('obmenvietnam', 'chat', 'listings_vietnam.json', 'vietnam'),
+]
+ALL_CHANNELS_SCRAPE_INTERVAL = 300  # 5 минут
+CHAT_SCRAPE_INTERVAL = 30           # 30 секунд
+
+
+def _scrape_channel_latest(channel, category, target_file, country):
+    """Скрейпит последнюю страницу канала через t.me/s/, добавляет новые посты."""
+    import time as _t2
+    try:
+        from bot_channel_parser import scrape_channel_page, make_listing, detect_logo_fingerprints
+        scraped = scrape_channel_page(channel)
+        if not scraped:
+            return 0
+        try:
+            with open(target_file, 'r', encoding='utf-8') as _ff:
+                file_data = json.load(_ff)
+        except Exception:
+            file_data = {}
+        existing = file_data.get(category, [])
+        existing_ids = {item['id'] for item in existing}
+        logo_fps = detect_logo_fingerprints(scraped)
+        _SKIP = {'channel created', 'канал создан', 'channel photo updated', 'telegram'}
+        added = 0
+        for msg_id in sorted(scraped.keys(), reverse=True):
+            item_id = f'{channel}_{msg_id}'
+            if item_id in existing_ids:
+                continue
+            post = scraped[msg_id]
+            raw_title = (post.get('text', '') or '')[:40].lower().strip()
+            if not raw_title or raw_title in _SKIP:
+                continue
+            new_item = make_listing(channel, msg_id, post, category, country, logo_fps=logo_fps)
+            # Для туров Вьетнама — добавляем source_group
+            if category == 'tours' and country == 'vietnam':
+                new_item['source_group'] = 'GAtours_vn'
+            existing.insert(0, new_item)
+            existing_ids.add(item_id)
+            added += 1
+        if added > 0:
+            file_data[category] = existing
+            _tmp = target_file + '.tmp'
+            with open(_tmp, 'w', encoding='utf-8') as _ff:
+                json.dump(file_data, _ff, ensure_ascii=False, separators=(',', ':'))
+            os.replace(_tmp, target_file)
+            data_cache.pop(country, None)
+            logger.info('[periodic_scraper] @%s +%d → %s', channel, added, category)
+        return added
+    except Exception as _se:
+        logger.warning('[periodic_scraper] @%s error: %s', channel, _se)
+        return 0
+
+
+def _all_channels_periodic_scraper():
+    """Каждые 5 минут скрейпит последнюю страницу всех каналов."""
+    import time as _t2
+    _t2.sleep(90)  # дать приложению запуститься
+    logger.info('[periodic_scraper] Запущен (все каналы каждые %ds)', ALL_CHANNELS_SCRAPE_INTERVAL)
+    while True:
+        for _ch, _cat, _tf, _co in _PERIODIC_SCRAPE_CHANNELS:
+            _scrape_channel_latest(_ch, _cat, _tf, _co)
+            _t2.sleep(3)
+        _t2.sleep(ALL_CHANNELS_SCRAPE_INTERVAL)
+
+
+def _chat_periodic_scraper():
+    """Каждые 30 секунд обновляет чат-каналы."""
+    import time as _t2
+    _t2.sleep(45)
+    logger.info('[chat_scraper] Запущен (чаты каждые %ds)', CHAT_SCRAPE_INTERVAL)
+    while True:
+        for _ch, _cat, _tf, _co in _CHAT_SCRAPE_CHANNELS:
+            _scrape_channel_latest(_ch, _cat, _tf, _co)
+        _t2.sleep(CHAT_SCRAPE_INTERVAL)
+
+
+threading.Thread(target=_all_channels_periodic_scraper, daemon=True, name='AllChannelsScraper').start()
+threading.Thread(target=_chat_periodic_scraper, daemon=True, name='ChatScraper').start()
+logger.info('[periodic_scraper] Все каналы — каждые %ds, чаты — каждые %ds',
+            ALL_CHANNELS_SCRAPE_INTERVAL, CHAT_SCRAPE_INTERVAL)
 
 
 PARTYHUNT_API_BASE = 'https://api.anbocas.com'
