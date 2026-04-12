@@ -1120,7 +1120,7 @@ def get_exchange_rates_local():
         'KZT': '🇰🇿', 'KRW': '🇰🇷', 'CNY': '🇨🇳'
     }
     want = [
-        ('USD', 1), ('EUR', 1), ('RUB', 100), ('KZT', 1000), ('CNY', 1), ('KRW', 1000)
+        ('USD', 100), ('EUR', 100), ('RUB', 10000), ('KZT', 100000), ('CNY', 100), ('KRW', 100000)
     ]
     try:
         resp = _req.get('https://open.er-api.com/v6/latest/USD', timeout=6)
