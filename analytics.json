@@ -6,14 +6,14 @@
         "user_m1j2dgeog_1775979646131",
         "user_8e9xhfoz9_1775979675331"
       ],
-      "page_views": 101,
+      "page_views": 102,
       "countries": {
-        "vietnam": 98,
+        "vietnam": 99,
         "thailand": 3
       },
       "categories": {
         "exchange": 3,
-        "real_estate": 64,
+        "real_estate": 65,
         "entertainment": 9,
         "transport": 8,
         "tours": 15,
@@ -22,19 +22,19 @@
       },
       "hours": {
         "08": 1,
-        "09": 100
+        "09": 101
       },
       "referrers": {},
       "devices": {
         "mobile": 19,
-        "desktop": 82
+        "desktop": 83
       }
     }
   },
   "visitors": {
     "user_7nuvio2vr_1775899094735": {
       "first_seen": "2026-04-12",
-      "visits": 55,
+      "visits": 56,
       "last_seen": "2026-04-12"
     },
     "user_m1j2dgeog_1775979646131": {
