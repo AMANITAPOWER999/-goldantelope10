@@ -1904,8 +1904,10 @@
             <div class="header-top">
                 <img id="site-logo" src="/static/images/logo.png" alt="Goldantelope" style="height: 100px; width: auto;">
                 <div class="country-selector" id="user-country-selector">
-                    <button class="country-btn active" onclick="switchCountry('vietnam')" style="font-size:15px;padding:8px 18px;font-weight:700;width:140px;text-align:center;">🇻🇳 Вьетнам</button>
-                    <button class="country-btn" onclick="switchCountry('thailand')" style="font-size:15px;padding:8px 18px;font-weight:700;width:140px;text-align:center;">🇹🇭 Тайланд</button>
+                    <button class="country-btn active" onclick="switchCountry('vietnam')" style="font-size:15px;padding:8px 18px;font-weight:700;text-align:center;">🇻🇳 Вьетнам</button>
+                    <button class="country-btn" onclick="switchCountry('thailand')" style="font-size:15px;padding:8px 18px;font-weight:700;text-align:center;">🇹🇭 Тайланд</button>
+                    <button class="country-btn" onclick="switchCountry('india')" style="font-size:15px;padding:8px 18px;font-weight:700;text-align:center;">🇮🇳 Индия</button>
+                    <button class="country-btn" onclick="switchCountry('indonesia')" style="font-size:15px;padding:8px 18px;font-weight:700;text-align:center;">🇮🇩 Индонезия</button>
                 </div>
                 <div class="country-selector" id="admin-country-selector" style="display: none;">
                     <button class="country-btn active" onclick="switchCountry('vietnam')" style="font-size:15px;padding:8px 18px;font-weight:700;text-align:center;">🇻🇳 Вьетнам</button>
@@ -12023,8 +12025,7 @@
             .then(data => {
                 if (data.authenticated) {
                     adminAuthenticated = true;
-                    document.getElementById('user-country-selector').style.display = 'none';
-                    document.getElementById('admin-country-selector').style.display = 'flex';
+                    // user-country-selector теперь содержит все 4 страны — переключение не нужно
                     adminPassword_val = password;
                     adminCountry = data.country;
                     
