@@ -110,26 +110,31 @@
       "unique_visitors": [
         "user_7nuvio2vr_1775899094735",
         "user_720f8xir5_1775975434846",
-        "user_yccmy13pt_1775976158033"
+        "user_yccmy13pt_1775976158033",
+        "user_n6t65ijxd_1775977958640"
       ],
-      "page_views": 49,
+      "page_views": 112,
       "countries": {
-        "vietnam": 37,
-        "thailand": 12
+        "vietnam": 80,
+        "thailand": 32
       },
       "categories": {
-        "real_estate": 33,
-        "realestate": 11,
-        "entertainment": 1,
-        "exchange": 4
+        "real_estate": 72,
+        "realestate": 27,
+        "entertainment": 4,
+        "exchange": 5,
+        "tours": 1,
+        "restaurants": 2,
+        "transport": 1
       },
       "hours": {
-        "06": 49
+        "06": 84,
+        "07": 28
       },
       "referrers": {},
       "devices": {
         "mobile": 0,
-        "desktop": 49
+        "desktop": 112
       }
     }
   },
@@ -256,7 +261,7 @@
     },
     "user_7nuvio2vr_1775899094735": {
       "first_seen": "2026-04-11",
-      "visits": 57,
+      "visits": 119,
       "last_seen": "2026-04-12"
     },
     "user_ji515khc9_1775899107938": {
@@ -270,6 +275,11 @@
       "last_seen": "2026-04-12"
     },
     "user_yccmy13pt_1775976158033": {
+      "first_seen": "2026-04-12",
+      "visits": 1,
+      "last_seen": "2026-04-12"
+    },
+    "user_n6t65ijxd_1775977958640": {
       "first_seen": "2026-04-12",
       "visits": 1,
       "last_seen": "2026-04-12"

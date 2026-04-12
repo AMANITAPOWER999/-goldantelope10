@@ -3021,6 +3021,7 @@
 
         <!-- Развлечения -->
         <div id="entertainment" class="content">
+            <!-- Вьетнам: city switcher -->
             <div id="vietnam-entertainment-buttons" style="padding: 10px 12px 0;">
                 <div style="position:relative;">
                     <div class="tours-city-switcher" id="envn-switcher" onclick="toggleCityDrop('envn')">
@@ -3038,14 +3039,13 @@
                         <div class="tcs-drop-item" onclick="selectCityFromDrop('envn',3)"><img src="/static/images/entertainment/phuquoc.jpg" alt="">Фукуок</div>
                     </div>
                 </div>
-                <!-- 7 кнопок дат — события на ближайшие дни -->
-                <div id="ent-date-bar" style="display:flex;gap:7px;overflow-x:auto;padding:10px 0 4px;scrollbar-width:none;-ms-overflow-style:none;"></div>
             </div>
-            <!-- Другие страны - динамические кнопки городов -->
-            <div id="other-entertainment-buttons" style="display: none; padding: 20px;">
-                <div id="entertainment-city-grid" class="tour-grid-container" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; margin-bottom: 25px;">
-                </div>
+            <!-- Другие страны: city switcher dropdown -->
+            <div id="other-entertainment-buttons" style="display: none; padding: 10px 12px 0;">
+                <div id="ent-oth-switcher-wrap" style="position:relative;"></div>
             </div>
+            <!-- Панель дат — общая для всех стран -->
+            <div id="ent-date-bar" style="display:flex;gap:7px;overflow-x:auto;padding:10px 12px 4px;scrollbar-width:none;-ms-overflow-style:none;"></div>
             <div class="listing-grid" id="entertainment-grid">
                 <div class="loading"><div class="spinner"></div></div>
             </div>
@@ -5812,10 +5812,17 @@
             }
             else if (tabName === 'realestate') { if(typeof loadRealEstateCounts==='function') loadRealEstateCounts(); if(typeof loadListings==='function') loadListings('real_estate'); }
             else if (tabName === 'transport') { if(typeof updateTransportCounts==='function') updateTransportCounts(); if(typeof loadListings==='function') loadListings('transport', currentTransportType); }
-            else if (tabName === 'entertainment') { 
-                if(document.getElementById('vietnam-entertainment-buttons')) document.getElementById('vietnam-entertainment-buttons').style.display = 'block';
+            else if (tabName === 'entertainment') {
+                var isVN = currentCountry === 'vietnam';
+                var vnEnt = document.getElementById('vietnam-entertainment-buttons');
+                var othEnt = document.getElementById('other-entertainment-buttons');
+                if (vnEnt) vnEnt.style.display = isVN ? 'block' : 'none';
+                if (othEnt) othEnt.style.display = isVN ? 'none' : 'block';
+                if (!isVN && typeof renderOtherCountryCitySwitcher === 'function') {
+                    renderOtherCountryCitySwitcher('ent-oth', 'entertainment', filterEntertainmentByCity, false);
+                }
                 if(typeof buildEntDateBar==='function') buildEntDateBar();
-                if(typeof loadListings==='function') loadListings('entertainment'); 
+                if(typeof loadListings==='function') loadListings('entertainment', currentEntertainmentCity);
             }
             else { let category = tabName === 'realestate' ? 'real_estate' : tabName; if(typeof loadListings==='function') loadListings(category); }
         }
@@ -7241,12 +7248,13 @@
             const cities = citiesByCountry[currentCountry] || [];
             const tr = translations[currentLang] || translations['ru'];
 
-            // City switchers for restaurants and realestate (dropdown style)
+            // City switchers for restaurants, realestate and entertainment (dropdown style)
             renderOtherCountryCitySwitcher('rest-oth', 'restaurants', filterRestaurantsByCity, false);
             renderOtherCountryCitySwitcher('re-oth', 'realestate', filterRealEstateByCity, true);
+            renderOtherCountryCitySwitcher('ent-oth', 'entertainment', filterEntertainmentByCity, false);
 
-            // Grid rendering for tours, entertainment, transport only
-            const sections = ['tours', 'entertainment', 'transport'];
+            // Grid rendering for tours, transport only (entertainment uses dropdown now)
+            const sections = ['tours', 'transport'];
             const sectionLabels = tr.sectionLabels || {
                 'tours': 'экскурсий',
                 'entertainment': 'развлечений',
