@@ -1265,6 +1265,10 @@ def get_listings(category):
     
     _GA_TRUSTED_SOURCES = {'gavibeshub', 'gavisarun', 'gatours', 'gafoods', 'gapayments'}
 
+    # Туры Вьетнама — только из группы GAtours_vn
+    if category == 'tours' and country == 'vietnam':
+        filtered = [x for x in filtered if x.get('source_group') == 'GAtours_vn']
+
     if category == 'entertainment':
         _ENT_KEYWORDS = [
             'вечеринк', 'party', 'клуб', 'club', 'ночной клуб', 'night club',
