@@ -2176,9 +2176,9 @@
 
         <!-- Транспорт -->
         <div id="transport" class="content">
-            <div id="vietnam-transport-buttons" class="tr-drop-section" style="margin: 10px 0 0;">
-                <!-- Фильтр по городам -->
-                <div style="position:relative; margin-bottom: 8px;">
+            <!-- Вьетнам: city dropdown -->
+            <div id="vietnam-transport-buttons" style="padding: 10px 12px 0;">
+                <div style="position:relative;">
                     <div class="tours-city-switcher" id="trvn-switcher" onclick="toggleCityDrop('trvn')">
                         <img class="tcs-sw-img" id="trvn-sw-img" src="/static/images/restaurants/nyachang.jpg" alt="">
                         <div class="tcs-sw-info">
@@ -2194,7 +2194,13 @@
                         <div class="tcs-drop-item" onclick="selectCityFromDrop('trvn',3)"><img src="/static/images/restaurants/phuquoc.jpg" alt="">Фукуок</div>
                     </div>
                 </div>
-                <!-- Выбор типа транспорта -->
+            </div>
+            <!-- Другие страны: city dropdown (общий для Thailand, India, Indonesia) -->
+            <div id="other-transport-buttons" style="display: none; padding: 10px 12px 0;">
+                <div id="tr-oth-switcher-wrap" style="position:relative;"></div>
+            </div>
+            <!-- Тип транспорта — общий для всех стран -->
+            <div style="padding: 8px 12px 0;">
                 <div style="position:relative;">
                     <div class="tours-city-switcher" id="trvn-type-switcher" onclick="toggleCityDrop('trvn-type')">
                         <img class="tcs-sw-img" id="trvn-type-sw-img" src="/static/images/transport/bikes.jpg" alt="">
@@ -2210,54 +2216,6 @@
                         <div class="tcs-drop-item" onclick="selectCityFromDrop('trvn-type',2)"><img src="/static/images/transport/yachts.jpg" alt="">⛵ Яхты</div>
                         <div class="tcs-drop-item" onclick="selectCityFromDrop('trvn-type',3)"><img src="/static/images/transport/bicycles.jpg" alt="">🚲 Велосипеды</div>
                     </div>
-                </div>
-            </div>
-            <div id="thailand-transport-buttons" style="display: none; padding: 20px;">
-                <div class="tour-grid-container" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; margin-bottom: 25px;">
-                    <div class="tour-city-btn th-transport-type-btn" data-type="bikes" onclick="filterTransportByType('bikes')" style="cursor: pointer; position: relative; border-radius: 12px; overflow: hidden; aspect-ratio: 4/3; box-shadow: 0 4px 12px rgba(0,0,0,0.15); border: 3px solid #d4af37;">
-                        <img src="/static/images/transport/bikes.jpg" style="width: 100%; height: 100%; object-fit: cover;">
-                        <div class="city-info" style="position: absolute; bottom: 0; left: 0; right: 0; background: rgba(255,255,255,0.95); color: #333; padding: 12px; text-align: center;">
-                            <div class="city-name" style="font-weight: bold; font-size: 18px;">🏍️ Байки</div>
-                            <div class="tour-count" id="th-transport-bikes-count" style="font-size: 14px; margin-top: 4px; color: #666;">0 объявлений</div>
-                        </div>
-                    </div>
-                    <div class="tour-city-btn th-transport-type-btn" data-type="cars" onclick="filterTransportByType('cars')" style="cursor: pointer; position: relative; border-radius: 12px; overflow: hidden; aspect-ratio: 4/3; box-shadow: 0 4px 12px rgba(0,0,0,0.15); border: 3px solid transparent;">
-                        <img src="/static/images/transport/cars.jpg" style="width: 100%; height: 100%; object-fit: cover;">
-                        <div class="city-info" style="position: absolute; bottom: 0; left: 0; right: 0; background: rgba(255,255,255,0.95); color: #333; padding: 12px; text-align: center;">
-                            <div class="city-name" style="font-weight: bold; font-size: 18px;">🚗 Авто</div>
-                            <div class="tour-count" id="th-transport-cars-count" style="font-size: 14px; margin-top: 4px; color: #666;">0 объявлений</div>
-                        </div>
-                    </div>
-                    <div class="tour-city-btn th-transport-type-btn" data-type="yachts" onclick="filterTransportByType('yachts')" style="cursor: pointer; position: relative; border-radius: 12px; overflow: hidden; aspect-ratio: 4/3; box-shadow: 0 4px 12px rgba(0,0,0,0.15); border: 3px solid transparent;">
-                        <img src="/static/images/transport/yachts.jpg" style="width: 100%; height: 100%; object-fit: cover;">
-                        <div class="city-info" style="position: absolute; bottom: 0; left: 0; right: 0; background: rgba(255,255,255,0.95); color: #333; padding: 12px; text-align: center;">
-                            <div class="city-name" style="font-weight: bold; font-size: 18px;">⛵ Яхты</div>
-                            <div class="tour-count" id="th-transport-yachts-count" style="font-size: 14px; margin-top: 4px; color: #666;">0 объявлений</div>
-                        </div>
-                    </div>
-                    <div class="tour-city-btn" onclick="switchTab('submit-transport'); loadTransportCaptcha();" style="cursor: pointer; position: relative; border-radius: 12px; overflow: hidden; aspect-ratio: 4/3; box-shadow: 0 4px 12px rgba(0,0,0,0.15); border: 3px solid #4CAF50;">
-                        <img src="/static/images/submit_listing.jpg" style="width: 100%; height: 100%; object-fit: cover;">
-                        <div class="city-info" style="position: absolute; bottom: 0; left: 0; right: 0; background: rgba(255,255,255,0.95); color: #333; padding: 12px; text-align: center;">
-                            <div class="city-name" style="font-weight: bold; font-size: 18px;">📝 Подать</div>
-                            <div class="tour-count" style="font-size: 13px; margin-top: 4px; color: #4CAF50;">Добавить транспорт</div>
-                        </div>
-                    </div>
-                </div>
-                <div style="margin-top: 10px;">
-                    <div style="font-weight: 600; color: #333; margin-bottom: 8px; font-size: 14px;">🏙️ Город:</div>
-                    <div style="display: flex; gap: 8px; flex-wrap: wrap;">
-                        <button class="th-transport-city-btn" data-city="" onclick="filterTransportCity('')" style="padding: 8px 16px; border: 2px solid #d4af37; background: #d4af37; color: white; border-radius: 20px; cursor: pointer; font-size: 13px; font-weight: 600;">Все</button>
-                        <button class="th-transport-city-btn" data-city="Пхукет" onclick="filterTransportCity('Пхукет')" style="padding: 8px 16px; border: 2px solid #ccc; background: #fff; color: #333; border-radius: 20px; cursor: pointer; font-size: 13px;">Пхукет</button>
-                        <button class="th-transport-city-btn" data-city="Паттайя" onclick="filterTransportCity('Паттайя')" style="padding: 8px 16px; border: 2px solid #ccc; background: #fff; color: #333; border-radius: 20px; cursor: pointer; font-size: 13px;">Паттайя</button>
-                        <button class="th-transport-city-btn" data-city="Самуи" onclick="filterTransportCity('Самуи')" style="padding: 8px 16px; border: 2px solid #ccc; background: #fff; color: #333; border-radius: 20px; cursor: pointer; font-size: 13px;">Самуи</button>
-                        <button class="th-transport-city-btn" data-city="Бангкок" onclick="filterTransportCity('Бангкок')" style="padding: 8px 16px; border: 2px solid #ccc; background: #fff; color: #333; border-radius: 20px; cursor: pointer; font-size: 13px;">Бангкок</button>
-                        <button class="th-transport-city-btn" data-city="Хуахин" onclick="filterTransportCity('Хуахин')" style="padding: 8px 16px; border: 2px solid #ccc; background: #fff; color: #333; border-radius: 20px; cursor: pointer; font-size: 13px;">Хуахин</button>
-                        <button class="th-transport-city-btn" data-city="Краби" onclick="filterTransportCity('Краби')" style="padding: 8px 16px; border: 2px solid #ccc; background: #fff; color: #333; border-radius: 20px; cursor: pointer; font-size: 13px;">Краби</button>
-                    </div>
-                </div>
-            </div>
-            <div id="other-transport-buttons" style="display: none; padding: 20px;">
-                <div id="transport-city-grid" class="tour-grid-container" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; margin-bottom: 25px;">
                 </div>
             </div>
             <div class="listing-grid" id="transport-grid">
@@ -5811,7 +5769,18 @@
                 loadVisasCounts(); 
             }
             else if (tabName === 'realestate') { if(typeof loadRealEstateCounts==='function') loadRealEstateCounts(); if(typeof loadListings==='function') loadListings('real_estate'); }
-            else if (tabName === 'transport') { if(typeof updateTransportCounts==='function') updateTransportCounts(); if(typeof loadListings==='function') loadListings('transport', currentTransportType); }
+            else if (tabName === 'transport') {
+                var isVNtr = currentCountry === 'vietnam';
+                var vnTr = document.getElementById('vietnam-transport-buttons');
+                var othTr = document.getElementById('other-transport-buttons');
+                if (vnTr) vnTr.style.display = isVNtr ? 'block' : 'none';
+                if (othTr) othTr.style.display = isVNtr ? 'none' : 'block';
+                if (!isVNtr && typeof renderOtherCountryCitySwitcher === 'function') {
+                    renderOtherCountryCitySwitcher('tr-oth', 'transport', filterTransportCity, false);
+                }
+                if(typeof updateTransportCounts==='function') updateTransportCounts();
+                if(typeof loadListings==='function') loadListings('transport', currentTransportType);
+            }
             else if (tabName === 'entertainment') {
                 var isVN = currentCountry === 'vietnam';
                 var vnEnt = document.getElementById('vietnam-entertainment-buttons');
@@ -6265,8 +6234,6 @@
                 document.getElementById('vietnam-tours-buttons').style.display = isVietnam ? 'block' : 'none';
             if (document.getElementById('vietnam-transport-buttons'))
                 document.getElementById('vietnam-transport-buttons').style.display = isVietnam ? 'block' : 'none';
-            if (document.getElementById('thailand-transport-buttons'))
-                document.getElementById('thailand-transport-buttons').style.display = (country === 'thailand') ? 'block' : 'none';
             if (document.getElementById('vietnam-restaurants-buttons'))
                 document.getElementById('vietnam-restaurants-buttons').style.display = isVietnam ? 'block' : 'none';
             if (document.getElementById('vietnam-visas-buttons'))
@@ -6284,9 +6251,11 @@
             if (document.getElementById('other-entertainment-buttons'))
                 document.getElementById('other-entertainment-buttons').style.display = isVietnam ? 'none' : 'block';
             if (document.getElementById('other-transport-buttons'))
-                document.getElementById('other-transport-buttons').style.display = (!isVietnam && country !== 'thailand') ? 'block' : 'none';
+                document.getElementById('other-transport-buttons').style.display = isVietnam ? 'none' : 'block';
             currentTransportCity = '';
             currentTransportType = 'bikes';
+            if (typeof currentEntertainmentCity !== 'undefined') currentEntertainmentCity = '';
+            if (typeof currentRestaurantCity !== 'undefined') currentRestaurantCity = '';
             if (document.getElementById('other-realestate-buttons'))
                 document.getElementById('other-realestate-buttons').style.display = isVietnam ? 'none' : 'block';
             if (document.getElementById('vietnam-realestate-filters'))
@@ -7248,13 +7217,14 @@
             const cities = citiesByCountry[currentCountry] || [];
             const tr = translations[currentLang] || translations['ru'];
 
-            // City switchers for restaurants, realestate and entertainment (dropdown style)
+            // City switchers (dropdown style) for restaurants, realestate, entertainment, transport
             renderOtherCountryCitySwitcher('rest-oth', 'restaurants', filterRestaurantsByCity, false);
             renderOtherCountryCitySwitcher('re-oth', 'realestate', filterRealEstateByCity, true);
             renderOtherCountryCitySwitcher('ent-oth', 'entertainment', filterEntertainmentByCity, false);
+            renderOtherCountryCitySwitcher('tr-oth', 'transport', filterTransportCity, false);
 
-            // Grid rendering for tours, transport only (entertainment uses dropdown now)
-            const sections = ['tours', 'transport'];
+            // Grid rendering for tours only (all others use dropdown)
+            const sections = ['tours'];
             const sectionLabels = tr.sectionLabels || {
                 'tours': 'экскурсий',
                 'entertainment': 'развлечений',
@@ -7980,10 +7950,9 @@
                 .then(r => r.json())
                 .then(data => {
                     const types = ['bikes', 'cars', 'yachts', 'bicycles'];
-                    const prefix = currentCountry === 'thailand' ? 'th-transport-' : 'transport-';
                     types.forEach(type => {
                         const count = data.filter(item => item.transport_type === type).length;
-                        const el = document.getElementById(prefix + type + '-count');
+                        const el = document.getElementById('transport-' + type + '-count');
                         if (el) el.textContent = count + ' ' + getListingsWord();
                     });
                 });
