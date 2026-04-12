@@ -2351,6 +2351,7 @@
                     </div>
                 </div>
             </div>
+            <div id="vietnam-re-filters-section">
             <div style="padding: 0 12px;">
                 <button class="extra-filters-btn" id="re-filters-btn" onclick="toggleExtraFilters('re')">Дополнительные фильтры <span class="efb-arrow">▾</span></button>
             </div>
@@ -2377,6 +2378,7 @@
                     </select>
                 </div>
             </div>
+            </div><!-- /vietnam-re-filters-section -->
             <!-- Другие страны - city switcher dropdown для недвижимости -->
             <div id="other-realestate-buttons" style="display: none;">
                 <div style="padding: 10px 12px 0;">
@@ -6268,6 +6270,8 @@
             if (typeof currentToursCity !== 'undefined') currentToursCity = '';
             if (document.getElementById('other-realestate-buttons'))
                 document.getElementById('other-realestate-buttons').style.display = isVietnam ? 'none' : 'block';
+            if (document.getElementById('vietnam-re-filters-section'))
+                document.getElementById('vietnam-re-filters-section').style.display = isVietnam ? 'block' : 'none';
             if (document.getElementById('vietnam-realestate-filters'))
                 document.getElementById('vietnam-realestate-filters').style.display = isVietnam ? 'flex' : 'none';
             if (document.getElementById('vietnam-realestate-groups'))
@@ -6903,9 +6907,9 @@
         
         const citiesByCountry = {
             'vietnam': ['Нячанг', 'Хошимин', 'Дананг', 'Ханой', 'Фукуок', 'Фантьет', 'Муйне', 'Далат', 'Камрань'],
-            'thailand': ['Бангкок', 'Пхукет', 'Паттайя', 'Самуи', 'Чиангмай', 'Хуахин', 'Краби'],
-            'indonesia': ['Бали', 'Джакарта', 'Йогьякарта', 'Бандунг', 'Сурабая'],
-            'india': ['Гоа', 'Касол', 'Мумбаи', 'Дели', 'Бангалор']
+            'thailand': ['Бангкок', 'Пхукет', 'Паттайя', 'Самуи'],
+            'indonesia': ['Бали', 'Джакарта', 'Йогьякарта', 'Бандунг'],
+            'india': ['Гоа', 'Касол', 'Мумбаи', 'Дели']
         };
         
         const sectionCityImages = {
