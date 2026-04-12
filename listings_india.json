@@ -3,6 +3,21 @@
   "tours": [],
   "entertainment": [
     {
+      "id": "partyhunt_a186a7ee-02a6-46bc-a868-d37a1e1c0868",
+      "title": "BASSLINE TRAVELLERS 41.0",
+      "description": "📅 26 Apr 2026, 21:00\n📍 House of Chapora by the bay\n🗺 Chapora Jetty , H.No 340/2 Village Anjuna-Caisua, Chapora, Goa 403509, India\n🏷 Entertainment\n🎟 https://tickets.partyhunt.com/events/bassline-travellers-410-26-apr-2026-house-of-chapora-by-the-bay-buy-tickets",
+      "photos": [
+        "https://api.anbocas.com/storage/event/banner/1IQN31MK7o35LNtnIpkZWWvWh1aXgOFch3bKZzd6.jpg"
+      ],
+      "contact": "@partyhuntgoa",
+      "source_group": "partyhuntgoa",
+      "date": "2026-04-26 21:00:00",
+      "city": "Goa",
+      "realestate_city": "goa",
+      "country": "india",
+      "telegram_link": "https://tickets.partyhunt.com/events/bassline-travellers-410-26-apr-2026-house-of-chapora-by-the-bay-buy-tickets"
+    },
+    {
       "id": "partyhunt_a1866929-4f44-49f6-9c34-06dd86c5920d",
       "title": "Misguided",
       "description": "📅 14 Apr 2026, 19:30\n📍 This Is It Beach Restaurant & Bar\n🗺 Khalcha, Wadda, North of Arambol Beach, Arambol, Goa 403524, India\n🏷 Entertainment\n🎟 https://tickets.partyhunt.com/events/misguided-14-apr-2026-this-is-it-beach-restaurant-bar-buy-tickets",
@@ -543,23 +558,6 @@
       "telegram_link": "https://tickets.partyhunt.com/events/ritual-connection-29-may-2026-parvati-valley-buy-tickets",
       "price": "2500.00",
       "price_display": "from ₹2500.00"
-    },
-    {
-      "id": "partyhunt_a175f1bd-4cff-40ee-ab9b-968544bc18e1",
-      "title": "Chapora Dance Rituals 30.0",
-      "description": "📅 08 Apr 2026, 20:00\n📍 House of Chapora by the bay\n🗺 Chapora Jetty , H.No 340/2 Village Anjuna-Caisua, Chapora, Goa 403509, India\n🏷 Entertainment\n🎟 https://tickets.partyhunt.com/events/chapora-dance-rituals-300-08-apr-2026-house-of-chapora-by-the-bay-buy-tickets",
-      "photos": [
-        "https://api.anbocas.com/storage/event/banner/WQB269frfjIHaghGigzQB3GRmSWZn10yZT85lxHV.png"
-      ],
-      "contact": "@partyhuntgoa",
-      "source_group": "partyhuntgoa",
-      "date": "2026-04-08 20:00:00",
-      "city": "Goa",
-      "realestate_city": "goa",
-      "country": "india",
-      "telegram_link": "https://tickets.partyhunt.com/events/chapora-dance-rituals-300-08-apr-2026-house-of-chapora-by-the-bay-buy-tickets",
-      "price": "1000.00",
-      "price_display": "from ₹1000.00"
     },
     {
       "id": "partyhunt_4e3d1183-684c-4bad-aa31-848a78adf8fc",

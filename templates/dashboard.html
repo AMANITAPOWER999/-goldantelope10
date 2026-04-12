@@ -104,6 +104,7 @@
         .country-btn { padding: 8px 18px; border: 2px solid #ddd; background: #fff; cursor: pointer; border-radius: 6px; font-size: 15px; font-weight: 700; color: #666; transition: all 0.2s; width: 140px; height: 40px; text-align: center; box-sizing: border-box; line-height: 1; display: inline-flex; align-items: center; justify-content: center; white-space: nowrap; }
         .country-btn.active { border-color: #d4af37; background: #d4af37; color: #333; }
         .country-btn:hover { border-color: #d4af37; }
+        .admin-only-country { display: none !important; }
         .rates-display {
             display: flex;
             gap: 20px;
@@ -1923,14 +1924,14 @@
                     <div class="country-selector" id="user-country-selector">
                         <button class="country-btn active" onclick="switchCountry('vietnam')" style="font-size:15px;padding:8px 18px;font-weight:700;text-align:center;">🇻🇳 Вьетнам</button>
                         <button class="country-btn" onclick="switchCountry('thailand')" style="font-size:15px;padding:8px 18px;font-weight:700;text-align:center;">🇹🇭 Тайланд</button>
-                        <button class="country-btn" onclick="switchCountry('india')" style="font-size:15px;padding:8px 18px;font-weight:700;text-align:center;">🇮🇳 Индия</button>
-                        <button class="country-btn" onclick="switchCountry('indonesia')" style="font-size:15px;padding:8px 18px;font-weight:700;text-align:center;white-space:nowrap;">🇮🇩 Индонезия</button>
+                        <button class="country-btn admin-only-country" onclick="switchCountry('india')" style="font-size:15px;padding:8px 18px;font-weight:700;text-align:center;">🇮🇳 Индия</button>
+                        <button class="country-btn admin-only-country" onclick="switchCountry('indonesia')" style="font-size:15px;padding:8px 18px;font-weight:700;text-align:center;white-space:nowrap;">🇮🇩 Индонезия</button>
                     </div>
                     <div class="country-selector" id="admin-country-selector" style="display: none;">
                         <button class="country-btn active" onclick="switchCountry('vietnam')" style="font-size:15px;padding:8px 18px;font-weight:700;text-align:center;white-space:nowrap;">🇻🇳 Вьетнам</button>
                         <button class="country-btn" onclick="switchCountry('thailand')" style="font-size:15px;padding:8px 18px;font-weight:700;text-align:center;white-space:nowrap;">🇹🇭 Тайланд</button>
-                        <button class="country-btn" onclick="switchCountry('india')" style="font-size:15px;padding:8px 18px;font-weight:700;text-align:center;white-space:nowrap;">🇮🇳 Индия</button>
-                        <button class="country-btn" onclick="switchCountry('indonesia')" style="font-size:15px;padding:8px 18px;font-weight:700;text-align:center;white-space:nowrap;">🇮🇩 Индонезия</button>
+                        <button class="country-btn admin-only-country" onclick="switchCountry('india')" style="font-size:15px;padding:8px 18px;font-weight:700;text-align:center;white-space:nowrap;">🇮🇳 Индия</button>
+                        <button class="country-btn admin-only-country" onclick="switchCountry('indonesia')" style="font-size:15px;padding:8px 18px;font-weight:700;text-align:center;white-space:nowrap;">🇮🇩 Индонезия</button>
                     </div>
                     <div class="rates-display" id="rates-display" style="display: inline-flex; align-items: center; gap: 8px; background: rgba(212,175,55,0.1); padding: 6px 14px; border-radius: 25px; white-space: nowrap;">
                         <span style="font-size: 14px;">🌤️</span><span id="weather-city" style="font-size: 12px; color: #666;">TP.HCM</span><span id="weather-temp" style="font-size: 13px; font-weight: 600; color: #d4af37;">--°C</span>
@@ -12188,7 +12189,10 @@
             .then(data => {
                 if (data.authenticated) {
                     adminAuthenticated = true;
-                    // user-country-selector теперь содержит все 4 страны — переключение не нужно
+                    // Показываем Индию и Индонезию только для администратора
+                    document.querySelectorAll('.admin-only-country').forEach(function(el) {
+                        el.style.setProperty('display', 'inline-flex', 'important');
+                    });
                     adminPassword_val = password;
                     adminCountry = data.country;
                     
