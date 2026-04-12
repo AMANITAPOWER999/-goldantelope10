@@ -2769,108 +2769,65 @@
                     💸 Заказать доставку наличных
                 </button>
             </div>
-            <div id="thailand-exchange-buttons" style="display: none; padding: 20px;">
-                <div class="tour-grid-container" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; margin-bottom: 25px;">
-                    <div class="tour-city-btn exchange-city-btn" data-city="bangkok" onclick="filterExchangeByCity('bangkok')" style="cursor: pointer; position: relative; border-radius: 12px; overflow: hidden; aspect-ratio: 4/3; box-shadow: 0 4px 12px rgba(0,0,0,0.15); border: 3px solid #d4af37;">
-                        <img src="https://images.unsplash.com/photo-1508009603885-50cf7c579365?w=300&h=200&fit=crop" style="width: 100%; height: 100%; object-fit: cover;">
-                        <div class="city-info" style="position: absolute; bottom: 0; left: 0; right: 0; background: rgba(255,255,255,0.95); color: #333; padding: 12px; text-align: center;">
-                            <div class="city-name" style="font-weight: bold; font-size: 16px;">Бангкок</div>
+            <!-- Таиланд - city switcher + доска курсов THB -->
+            <div id="thailand-exchange-buttons" style="display: none;">
+                <div style="padding: 10px 12px 0;">
+                    <div id="exch-th-switcher-wrap" style="position:relative;"></div>
+                </div>
+                <div id="exchange-rates-board-th" style="padding: 0 12px 20px 12px;">
+                    <div class="rates-card">
+                        <div class="rates-card-glow"></div>
+                        <div style="display: flex; align-items: center; margin-bottom: 14px; gap: 8px;">
+                            <span style="font-size: 22px;">💱</span>
+                            <div>
+                                <div class="rates-card-title">Курсы валют Таиланд (THB)</div>
+                                <div id="rates-date-th" class="rates-card-date"></div>
+                            </div>
                         </div>
-                    </div>
-                    <div class="tour-city-btn exchange-city-btn" data-city="phuket" onclick="filterExchangeByCity('phuket')" style="cursor: pointer; position: relative; border-radius: 12px; overflow: hidden; aspect-ratio: 4/3; box-shadow: 0 4px 12px rgba(0,0,0,0.15); border: 3px solid transparent;">
-                        <img src="https://images.unsplash.com/photo-1589394815804-964ed0be2eb5?w=300&h=200&fit=crop" style="width: 100%; height: 100%; object-fit: cover;">
-                        <div class="city-info" style="position: absolute; bottom: 0; left: 0; right: 0; background: rgba(255,255,255,0.95); color: #333; padding: 12px; text-align: center;">
-                            <div class="city-name" style="font-weight: bold; font-size: 16px;">Пхукет</div>
-                        </div>
-                    </div>
-                    <div class="tour-city-btn exchange-city-btn" data-city="pattaya" onclick="filterExchangeByCity('pattaya')" style="cursor: pointer; position: relative; border-radius: 12px; overflow: hidden; aspect-ratio: 4/3; box-shadow: 0 4px 12px rgba(0,0,0,0.15); border: 3px solid transparent;">
-                        <img src="https://images.unsplash.com/photo-1552465011-b4e21bf6e79a?w=300&h=200&fit=crop" style="width: 100%; height: 100%; object-fit: cover;">
-                        <div class="city-info" style="position: absolute; bottom: 0; left: 0; right: 0; background: rgba(255,255,255,0.95); color: #333; padding: 12px; text-align: center;">
-                            <div class="city-name" style="font-weight: bold; font-size: 16px;">Паттайя</div>
-                        </div>
-                    </div>
-                    <div class="tour-city-btn exchange-city-btn" data-city="samui" onclick="filterExchangeByCity('samui')" style="cursor: pointer; position: relative; border-radius: 12px; overflow: hidden; aspect-ratio: 4/3; box-shadow: 0 4px 12px rgba(0,0,0,0.15); border: 3px solid transparent;">
-                        <img src="https://images.unsplash.com/photo-1537956965359-7573183d1f57?w=300&h=200&fit=crop" style="width: 100%; height: 100%; object-fit: cover;">
-                        <div class="city-info" style="position: absolute; bottom: 0; left: 0; right: 0; background: rgba(255,255,255,0.95); color: #333; padding: 12px; text-align: center;">
-                            <div class="city-name" style="font-weight: bold; font-size: 16px;">Самуи</div>
-                        </div>
-                    </div>
-                    <div class="tour-city-btn" onclick="switchTab('submit-exchange'); loadExchangeCaptcha();" style="cursor: pointer; position: relative; border-radius: 12px; overflow: hidden; aspect-ratio: 4/3; box-shadow: 0 4px 12px rgba(0,0,0,0.15); border: 3px solid #4CAF50;">
-                        <img src="/static/images/submit_listing.jpg" style="width: 100%; height: 100%; object-fit: cover;">
-                        <div class="city-info" style="position: absolute; bottom: 0; left: 0; right: 0; background: rgba(255,255,255,0.95); color: #333; padding: 12px; text-align: center;">
-                            <div class="city-name" style="font-weight: bold; font-size: 18px;">📝 Подать</div>
-                            <div class="tour-count" style="font-size: 13px; margin-top: 4px; color: #4CAF50;">Добавить обменник</div>
-                        </div>
+                        <div id="rates-table-th" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 6px;"></div>
+                        <div id="rates-loading-th" class="rates-card-loading">Загрузка курсов...</div>
                     </div>
                 </div>
             </div>
-            <div id="india-exchange-buttons" style="display: none; padding: 20px;">
-                <div class="tour-grid-container" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; margin-bottom: 25px;">
-                    <div class="tour-city-btn exchange-city-btn" data-city="goa" onclick="filterExchangeByCity('goa')" style="cursor: pointer; position: relative; border-radius: 12px; overflow: hidden; aspect-ratio: 4/3; box-shadow: 0 4px 12px rgba(0,0,0,0.15); border: 3px solid #d4af37;">
-                        <img src="https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?w=300&h=200&fit=crop" style="width: 100%; height: 100%; object-fit: cover;">
-                        <div class="city-info" style="position: absolute; bottom: 0; left: 0; right: 0; background: rgba(255,255,255,0.95); color: #333; padding: 12px; text-align: center;">
-                            <div class="city-name" style="font-weight: bold; font-size: 16px;">Гоа</div>
+
+            <!-- Индия - city switcher + доска курсов INR -->
+            <div id="india-exchange-buttons" style="display: none;">
+                <div style="padding: 10px 12px 0;">
+                    <div id="exch-in-switcher-wrap" style="position:relative;"></div>
+                </div>
+                <div id="exchange-rates-board-in" style="padding: 0 12px 20px 12px;">
+                    <div class="rates-card">
+                        <div class="rates-card-glow"></div>
+                        <div style="display: flex; align-items: center; margin-bottom: 14px; gap: 8px;">
+                            <span style="font-size: 22px;">💱</span>
+                            <div>
+                                <div class="rates-card-title">Курсы валют Индия (INR)</div>
+                                <div id="rates-date-in" class="rates-card-date"></div>
+                            </div>
                         </div>
-                    </div>
-                    <div class="tour-city-btn exchange-city-btn" data-city="delhi" onclick="filterExchangeByCity('delhi')" style="cursor: pointer; position: relative; border-radius: 12px; overflow: hidden; aspect-ratio: 4/3; box-shadow: 0 4px 12px rgba(0,0,0,0.15); border: 3px solid transparent;">
-                        <img src="https://images.unsplash.com/photo-1587474260584-136574528ed5?w=300&h=200&fit=crop" style="width: 100%; height: 100%; object-fit: cover;">
-                        <div class="city-info" style="position: absolute; bottom: 0; left: 0; right: 0; background: rgba(255,255,255,0.95); color: #333; padding: 12px; text-align: center;">
-                            <div class="city-name" style="font-weight: bold; font-size: 16px;">Дели</div>
-                        </div>
-                    </div>
-                    <div class="tour-city-btn exchange-city-btn" data-city="mumbai" onclick="filterExchangeByCity('mumbai')" style="cursor: pointer; position: relative; border-radius: 12px; overflow: hidden; aspect-ratio: 4/3; box-shadow: 0 4px 12px rgba(0,0,0,0.15); border: 3px solid transparent;">
-                        <img src="https://images.unsplash.com/photo-1570168007204-dfb528c6958f?w=300&h=200&fit=crop" style="width: 100%; height: 100%; object-fit: cover;">
-                        <div class="city-info" style="position: absolute; bottom: 0; left: 0; right: 0; background: rgba(255,255,255,0.95); color: #333; padding: 12px; text-align: center;">
-                            <div class="city-name" style="font-weight: bold; font-size: 16px;">Мумбаи</div>
-                        </div>
-                    </div>
-                    <div class="tour-city-btn exchange-city-btn" data-city="bangalore" onclick="filterExchangeByCity('bangalore')" style="cursor: pointer; position: relative; border-radius: 12px; overflow: hidden; aspect-ratio: 4/3; box-shadow: 0 4px 12px rgba(0,0,0,0.15); border: 3px solid transparent;">
-                        <img src="https://images.unsplash.com/photo-1596176530529-78163a4f7af2?w=300&h=200&fit=crop" style="width: 100%; height: 100%; object-fit: cover;">
-                        <div class="city-info" style="position: absolute; bottom: 0; left: 0; right: 0; background: rgba(255,255,255,0.95); color: #333; padding: 12px; text-align: center;">
-                            <div class="city-name" style="font-weight: bold; font-size: 16px;">Бангалор</div>
-                        </div>
-                    </div>
-                    <div class="tour-city-btn" onclick="switchTab('submit-exchange'); loadExchangeCaptcha();" style="cursor: pointer; position: relative; border-radius: 12px; overflow: hidden; aspect-ratio: 4/3; box-shadow: 0 4px 12px rgba(0,0,0,0.15); border: 3px solid #4CAF50;">
-                        <img src="/static/images/submit_listing.jpg" style="width: 100%; height: 100%; object-fit: cover;">
-                        <div class="city-info" style="position: absolute; bottom: 0; left: 0; right: 0; background: rgba(255,255,255,0.95); color: #333; padding: 12px; text-align: center;">
-                            <div class="city-name" style="font-weight: bold; font-size: 18px;">📝 Подать</div>
-                            <div class="tour-count" style="font-size: 13px; margin-top: 4px; color: #4CAF50;">Добавить обменник</div>
-                        </div>
+                        <div id="rates-table-in" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 6px;"></div>
+                        <div id="rates-loading-in" class="rates-card-loading">Загрузка курсов...</div>
                     </div>
                 </div>
             </div>
-            <div id="indonesia-exchange-buttons" style="display: none; padding: 20px;">
-                <div class="tour-grid-container" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; margin-bottom: 25px;">
-                    <div class="tour-city-btn exchange-city-btn" data-city="bali" onclick="filterExchangeByCity('bali')" style="cursor: pointer; position: relative; border-radius: 12px; overflow: hidden; aspect-ratio: 4/3; box-shadow: 0 4px 12px rgba(0,0,0,0.15); border: 3px solid #d4af37;">
-                        <img src="https://images.unsplash.com/photo-1537996194471-e657df975ab4?w=300&h=200&fit=crop" style="width: 100%; height: 100%; object-fit: cover;">
-                        <div class="city-info" style="position: absolute; bottom: 0; left: 0; right: 0; background: rgba(255,255,255,0.95); color: #333; padding: 12px; text-align: center;">
-                            <div class="city-name" style="font-weight: bold; font-size: 16px;">Бали</div>
+
+            <!-- Индонезия - city switcher + доска курсов IDR -->
+            <div id="indonesia-exchange-buttons" style="display: none;">
+                <div style="padding: 10px 12px 0;">
+                    <div id="exch-id-switcher-wrap" style="position:relative;"></div>
+                </div>
+                <div id="exchange-rates-board-id" style="padding: 0 12px 20px 12px;">
+                    <div class="rates-card">
+                        <div class="rates-card-glow"></div>
+                        <div style="display: flex; align-items: center; margin-bottom: 14px; gap: 8px;">
+                            <span style="font-size: 22px;">💱</span>
+                            <div>
+                                <div class="rates-card-title">Курсы валют Индонезия (IDR)</div>
+                                <div id="rates-date-id" class="rates-card-date"></div>
+                            </div>
                         </div>
-                    </div>
-                    <div class="tour-city-btn exchange-city-btn" data-city="jakarta" onclick="filterExchangeByCity('jakarta')" style="cursor: pointer; position: relative; border-radius: 12px; overflow: hidden; aspect-ratio: 4/3; box-shadow: 0 4px 12px rgba(0,0,0,0.15); border: 3px solid transparent;">
-                        <img src="https://images.unsplash.com/photo-1555899434-94d1368aa7af?w=300&h=200&fit=crop" style="width: 100%; height: 100%; object-fit: cover;">
-                        <div class="city-info" style="position: absolute; bottom: 0; left: 0; right: 0; background: rgba(255,255,255,0.95); color: #333; padding: 12px; text-align: center;">
-                            <div class="city-name" style="font-weight: bold; font-size: 16px;">Джакарта</div>
-                        </div>
-                    </div>
-                    <div class="tour-city-btn exchange-city-btn" data-city="denpasar" onclick="filterExchangeByCity('denpasar')" style="cursor: pointer; position: relative; border-radius: 12px; overflow: hidden; aspect-ratio: 4/3; box-shadow: 0 4px 12px rgba(0,0,0,0.15); border: 3px solid transparent;">
-                        <img src="https://images.unsplash.com/photo-1604999333679-b86d54738315?w=300&h=200&fit=crop" style="width: 100%; height: 100%; object-fit: cover;">
-                        <div class="city-info" style="position: absolute; bottom: 0; left: 0; right: 0; background: rgba(255,255,255,0.95); color: #333; padding: 12px; text-align: center;">
-                            <div class="city-name" style="font-weight: bold; font-size: 16px;">Денпасар</div>
-                        </div>
-                    </div>
-                    <div class="tour-city-btn exchange-city-btn" data-city="ubud" onclick="filterExchangeByCity('ubud')" style="cursor: pointer; position: relative; border-radius: 12px; overflow: hidden; aspect-ratio: 4/3; box-shadow: 0 4px 12px rgba(0,0,0,0.15); border: 3px solid transparent;">
-                        <img src="https://images.unsplash.com/photo-1558005530-a7958896ec60?w=300&h=200&fit=crop" style="width: 100%; height: 100%; object-fit: cover;">
-                        <div class="city-info" style="position: absolute; bottom: 0; left: 0; right: 0; background: rgba(255,255,255,0.95); color: #333; padding: 12px; text-align: center;">
-                            <div class="city-name" style="font-weight: bold; font-size: 16px;">Убуд</div>
-                        </div>
-                    </div>
-                    <div class="tour-city-btn" onclick="switchTab('submit-exchange'); loadExchangeCaptcha();" style="cursor: pointer; position: relative; border-radius: 12px; overflow: hidden; aspect-ratio: 4/3; box-shadow: 0 4px 12px rgba(0,0,0,0.15); border: 3px solid #4CAF50;">
-                        <img src="/static/images/submit_listing.jpg" style="width: 100%; height: 100%; object-fit: cover;">
-                        <div class="city-info" style="position: absolute; bottom: 0; left: 0; right: 0; background: rgba(255,255,255,0.95); color: #333; padding: 12px; text-align: center;">
-                            <div class="city-name" style="font-weight: bold; font-size: 18px;">📝 Подать</div>
-                            <div class="tour-count" style="font-size: 13px; margin-top: 4px; color: #4CAF50;">Добавить обменник</div>
-                        </div>
+                        <div id="rates-table-id" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 6px;"></div>
+                        <div id="rates-loading-id" class="rates-card-loading">Загрузка курсов...</div>
                     </div>
                 </div>
             </div>
@@ -6345,10 +6302,18 @@
                 ratesBoard.style.display = isVietnam ? 'block' : 'none';
                 if (isVietnam) loadExchangeRatesBoard();
             }
+            if (!isVietnam) {
+                loadExchangeRatesBoardLocal(country);
+            }
             
             // Генерируем динамические города для других стран
             if (!isVietnam) {
                 renderDynamicCityButtons();
+                // Генерируем city switcher для обменников
+                var exchSuffix = {thailand: 'exch-th', india: 'exch-in', indonesia: 'exch-id'}[country];
+                if (exchSuffix) {
+                    renderOtherCountryCitySwitcher(exchSuffix, 'restaurants', filterExchangeByCity, false);
+                }
             }
             // Загружаем группы для любой страны
             loadRealEstateGroups();
@@ -8200,6 +8165,75 @@
                     var loading = document.getElementById('rates-loading');
                     if (loading) loading.textContent = 'Ошибка загрузки курсов';
                 });
+        }
+
+        var _localRatesCache = {};
+        function loadExchangeRatesBoardLocal(country) {
+            var suffixMap = {thailand: 'th', india: 'in', indonesia: 'id'};
+            var suffix = suffixMap[country];
+            if (!suffix) return;
+            var table = document.getElementById('rates-table-' + suffix);
+            var loading = document.getElementById('rates-loading-' + suffix);
+            var dateEl = document.getElementById('rates-date-' + suffix);
+            if (!table) return;
+            if (_localRatesCache[country]) {
+                _renderLocalRates(_localRatesCache[country], table, loading, dateEl, suffix);
+                return;
+            }
+            if (loading) { loading.style.display = 'block'; loading.textContent = 'Загрузка курсов...'; }
+            fetch('/api/exchange-rates-local?country=' + country)
+                .then(function(r) { return r.json(); })
+                .then(function(data) {
+                    _localRatesCache[country] = data;
+                    _renderLocalRates(data, table, loading, dateEl, suffix);
+                })
+                .catch(function() {
+                    if (loading) loading.textContent = 'Ошибка загрузки курсов';
+                });
+        }
+
+        function _renderLocalRates(data, table, loading, dateEl, suffix) {
+            if (!data.rates || data.rates.length === 0) {
+                if (loading) loading.textContent = 'Курсы временно недоступны';
+                return;
+            }
+            if (loading) loading.style.display = 'none';
+            if (dateEl && data.date) dateEl.textContent = 'Обновлено: ' + data.date;
+            var lc = data.local_currency || '';
+            var currColors = {
+                'RUB': '#5b8def', 'USD': '#4caf50', 'EUR': '#ff9800',
+                'KZT': '#00bcd4', 'KRW': '#e91e63', 'CNY': '#f44336'
+            };
+            var fmtLocal = function(n, lc) {
+                if (lc === 'IDR') return new Intl.NumberFormat('id-ID').format(n);
+                return new Intl.NumberFormat('ru-RU').format(n);
+            };
+            table.innerHTML = data.rates.map(function(r) {
+                var clr = currColors[r.currency] || '#d4af37';
+                var initLocal = fmtLocal(r.local_num, lc);
+                return '<div class="rate-row" style="display:flex;align-items:center;justify-content:space-between;padding:8px 10px;border-radius:10px;border-left:3px solid ' + clr + ';gap:6px;flex-wrap:nowrap;overflow:hidden;">' +
+                    '<div style="display:flex;align-items:center;gap:6px;flex-shrink:0;">' +
+                        '<span class="rate-flag" style="font-size:20px;line-height:1;">' + r.flag + '</span>' +
+                        '<input type="number" id="calc-inp-' + suffix + '-' + r.currency + '" value="' + r.amount_num + '" min="0" class="rate-input" style="width:70px;padding:4px 6px;border-radius:6px;border:1px solid rgba(212,175,55,0.3);font-size:14px;font-weight:600;text-align:right;outline:none;" oninput="calcRowLocal(\'' + r.currency + '\',\'' + suffix + '\',' + r.local_num + ',' + r.amount_num + ')">' +
+                        '<span class="rate-currency" style="font-size:13px;font-weight:600;white-space:nowrap;">' + r.currency + '</span>' +
+                    '</div>' +
+                    '<div style="display:flex;align-items:center;gap:4px;flex-shrink:0;">' +
+                        '<span style="color:#b8941e;font-size:12px;">➤</span>' +
+                        '<span id="calc-out-' + suffix + '-' + r.currency + '" class="rate-result" style="font-size:14px;font-weight:700;font-variant-numeric:tabular-nums;white-space:nowrap;">' + initLocal + ' ' + lc + '</span>' +
+                    '</div>' +
+                '</div>';
+            }).join('');
+        }
+
+        function calcRowLocal(currency, suffix, ratePerUnit, baseAmount) {
+            var inp = document.getElementById('calc-inp-' + suffix + '-' + currency);
+            var out = document.getElementById('calc-out-' + suffix + '-' + currency);
+            if (!inp || !out) return;
+            var lc = {th: 'THB', 'in': 'INR', id: 'IDR'}[suffix] || '';
+            var val = parseFloat(inp.value) || 0;
+            var result = Math.round(val * ratePerUnit / baseAmount);
+            var fmt = lc === 'IDR' ? new Intl.NumberFormat('id-ID').format(result) : new Intl.NumberFormat('ru-RU').format(result);
+            out.textContent = fmt + ' ' + lc;
         }
 
         function loadExchangeCounts() {

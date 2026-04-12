@@ -1108,6 +1108,47 @@ def _enrich_tg_images(items):
                     item[key] = f'/tg_file/{fid}'
 
 
+@app.route('/api/exchange-rates-local')
+def get_exchange_rates_local():
+    import requests as _req
+    from datetime import datetime as _dt
+    country = request.args.get('country', 'thailand')
+    currency_map = {'vietnam': 'VND', 'thailand': 'THB', 'india': 'INR', 'indonesia': 'IDR'}
+    local_currency = currency_map.get(country, 'THB')
+    flag_map = {
+        'RUB': '🇷🇺', 'USD': '🇺🇸', 'USDT': '🏴', 'EUR': '🇪🇺',
+        'KZT': '🇰🇿', 'KRW': '🇰🇷', 'CNY': '🇨🇳'
+    }
+    want = [
+        ('USD', 1), ('EUR', 1), ('RUB', 100), ('KZT', 1000), ('CNY', 1), ('KRW', 1000)
+    ]
+    try:
+        resp = _req.get('https://open.er-api.com/v6/latest/USD', timeout=6)
+        raw = resp.json()
+        usd_rates = raw.get('rates', {})
+        usd_to_local = usd_rates.get(local_currency)
+        if not usd_to_local:
+            raise ValueError('No local rate')
+        rates = []
+        for cur, amount in want:
+            usd_to_cur = usd_rates.get(cur)
+            if usd_to_cur and usd_to_cur > 0:
+                local_val = round(amount * usd_to_local / usd_to_cur, 2)
+                local_int = int(local_val) if local_val >= 10 else round(local_val, 2)
+                rates.append({
+                    'currency': cur,
+                    'flag': flag_map.get(cur, ''),
+                    'amount_num': amount,
+                    'local_num': local_int,
+                    'local_currency': local_currency,
+                })
+        return jsonify({'date': _dt.now().strftime('%d.%m.%Y %H:%M'), 'rates': rates,
+                        'local_currency': local_currency, 'source': 'open.er-api.com'})
+    except Exception as e:
+        logging.warning(f'[exchange-rates-local] error: {e}')
+        return jsonify({'rates': [], 'local_currency': local_currency, 'error': str(e)})
+
+
 @app.route('/api/exchange-rates')
 def get_exchange_rates():
     import re as _re
