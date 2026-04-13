@@ -79,16 +79,25 @@ def clean_text(text):
     return text
 
 
-def extract_price(text):
+def extract_price(text, country='india'):
     if not text:
         return 0, ''
-    m = re.search(r'(\d[\d\s,.]*)\s*(usd|inr|idr|₹|\$|рупи|rupee|руп)', text, re.I)
+    currency_label = 'INR' if country == 'india' else 'IDR'
+    # Match number followed by currency keywords
+    m = re.search(
+        r'(\d[\d\s,.]*)[\s]*(?:тыс\.?|тысяч|000)?\s*(?:руп|rупи|rupee|inr|idr|₹|\$|usd)',
+        text, re.I
+    )
+    if not m:
+        # Try: "15 000 / месяц" or "15 000 рупий"
+        m = re.search(r'(\d[\d\s]{2,})\s*(?:/\s*мес|рупи|руп|руб)', text, re.I)
     if m:
-        num_str = re.sub(r'[\s,]', '', m.group(1))
+        num_str = re.sub(r'[\s,.]', '', m.group(1))
         try:
-            price = float(num_str)
-            currency = m.group(2).upper()
-            return int(price), f'{int(price):,} {currency}'.replace(',', ' ')
+            price = int(num_str)
+            if 1000 <= price <= 100_000_000:
+                formatted = f'{price:,}'.replace(',', ' ')
+                return price, f'{formatted} {currency_label}'
         except:
             pass
     return 0, ''
@@ -138,7 +147,7 @@ def save_photo(data_bytes, source, msg_id):
 def build_listing(msg, source_group, country, default_city, photo_url, all_photos):
     raw_text = msg.text or msg.message or ''
     cleaned = clean_text(raw_text)
-    price, price_display = extract_price(raw_text)
+    price, price_display = extract_price(raw_text, country=country)
 
     msg_id = msg.id
     listing_id = f'{source_group}_{msg_id}'

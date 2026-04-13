@@ -8824,7 +8824,7 @@
                                     if (item.image_url_4) images.push(item.image_url_4);
                                     if (images.length === 0 && item.photo_url) images.push(item.photo_url);
                                 }
-                                images = images.filter(url => url && typeof url === 'string' && (url.startsWith('http') || url.startsWith('/tg_img/')));
+                                images = images.filter(url => url && typeof url === 'string' && (url.startsWith('http') || url.startsWith('/tg_img/') || url.startsWith('/static/')));
                                 images = images.map(url => {
                                     const tmeMatch = url.match(/^https:\/\/t\.me\/([^\/]+)\/(\d+)$/);
                                     if (tmeMatch) return `/tg_img/${tmeMatch[1]}/${tmeMatch[2]}`;
@@ -9172,6 +9172,20 @@
                                                                 displayStr = (!isNaN(_rawNum) && _rawNum > 1000)
                                                                     ? _rawNum.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ') + ' THB'
                                                                     : '';
+                                                            }
+                                                        } else if (currentCountry === 'india') {
+                                                            if (item.price_display && !/vnd/i.test(item.price_display)) {
+                                                                displayStr = item.price_display;
+                                                            } else {
+                                                                const _rawNum = parseInt(String(realEstatePrice).replace(/[^\d]/g, ''), 10);
+                                                                displayStr = (!isNaN(_rawNum) && _rawNum > 0) ? _rawNum.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ') + ' INR' : '';
+                                                            }
+                                                        } else if (currentCountry === 'indonesia') {
+                                                            if (item.price_display && !/vnd/i.test(item.price_display)) {
+                                                                displayStr = item.price_display;
+                                                            } else {
+                                                                const _rawNum = parseInt(String(realEstatePrice).replace(/[^\d]/g, ''), 10);
+                                                                displayStr = (!isNaN(_rawNum) && _rawNum > 0) ? _rawNum.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ') + ' IDR' : '';
                                                             }
                                                         } else {
                                                             const priceClean = String(realEstatePrice).replace(/\s*VND\s*/gi, '').replace(/₫/g, '').trim();

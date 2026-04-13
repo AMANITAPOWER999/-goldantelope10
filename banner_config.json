@@ -118,11 +118,7 @@
     ]
   },
   "indonesia": {
-    "web": [
-      "/static/images/banners/indonesia_1767258646_ChatGPT_Image_1_._2026_._16_10_17.png"
-    ],
-    "mobile": [
-      "/static/images/banners/indonesia_1767258646_ChatGPT_Image_1_._2026_._16_10_17.png"
-    ]
+    "web": [],
+    "mobile": []
   }
 }
