@@ -3,6 +3,23 @@
   "tours": [],
   "entertainment": [
     {
+      "id": "partyhunt_a17e71ad-6fdf-4b10-9191-897513e68fad",
+      "title": "Calm Chor",
+      "description": "📅 12 Apr 2026, 20:00\n📍 Dynamo\n🗺 Survey number 213, 6, part, Vagator, Anjuna, Goa 403509, India\n🏷 Entertainment\n🎟 https://tickets.partyhunt.com/events/calm-chor-12-apr-2026-dynamo-buy-tickets",
+      "photos": [
+        "https://api.anbocas.com/storage/event/banner/EIzxzTumaUH6ZIKV7P11RqmRn4hvFhpK2fAVc9yO.jpg"
+      ],
+      "contact": "@partyhuntgoa",
+      "source_group": "partyhuntgoa",
+      "date": "2026-04-12 20:00:00",
+      "city": "Goa",
+      "realestate_city": "goa",
+      "country": "india",
+      "telegram_link": "https://tickets.partyhunt.com/events/calm-chor-12-apr-2026-dynamo-buy-tickets",
+      "price": "1999.00",
+      "price_display": "from ₹1999.00"
+    },
+    {
       "id": "partyhunt_a1886623-ceb9-4e92-8c9c-d62d0707c0d0",
       "title": "Maze Of Mystery Vol.1",
       "description": "📅 23 May 2026, 20:00\n📍 Elite 66 - Best Nightclub on Golf Course Extension Road\n🗺 6th Floor, Spaze Business Park, Badshahpur, Sector 66, Gurugram, Haryana 122101, India\n🏷 Entertainment\n🎟 https://tickets.partyhunt.com/events/maze-of-mystery-vol1-23-may-2026-elite-66-best-nightclub-on-golf-course-extension-road-buy-tickets",
@@ -182,23 +199,6 @@
       "telegram_link": "https://tickets.partyhunt.com/events/hungover-monday-06-apr-2026-dynamo-buy-tickets",
       "price": "499.00",
       "price_display": "from ₹499.00"
-    },
-    {
-      "id": "partyhunt_a18470db-1e0a-4566-a2ac-7c588e989302",
-      "title": "Stanley Live",
-      "description": "📅 12 Apr 2026, 19:00\n📍 This Is It Beach Restaurant & Bar\n🗺 Khalcha, Wadda, North of Arambol Beach, Arambol, Goa 403524, India\n🏷 Entertainment\n🎟 https://tickets.partyhunt.com/events/stanley-live-12-apr-2026-this-is-it-beach-restaurant-bar-buy-tickets",
-      "photos": [
-        "https://api.anbocas.com/storage/event/banner/CGH5DNbpYsmJ5AAdV311LgAEPbdt2aCUSpnsMedB.jpg"
-      ],
-      "contact": "@partyhuntgoa",
-      "source_group": "partyhuntgoa",
-      "date": "2026-04-12 19:00:00",
-      "city": "Goa",
-      "realestate_city": "goa",
-      "country": "india",
-      "telegram_link": "https://tickets.partyhunt.com/events/stanley-live-12-apr-2026-this-is-it-beach-restaurant-bar-buy-tickets",
-      "price": "149.00",
-      "price_display": "from ₹149.00"
     },
     {
       "id": "partyhunt_a17e838b-a84a-4f1d-8700-a911aa0fc509",
@@ -437,176 +437,6 @@
       "telegram_link": "https://tickets.partyhunt.com/events/full-spectrum-890-13-apr-2026-house-of-chapora-by-the-bay-buy-tickets",
       "price": "1000.00",
       "price_display": "from ₹1000.00"
-    },
-    {
-      "id": "partyhunt_a17dd897-7835-4ac6-8afa-386e934650e3",
-      "title": "See You",
-      "description": "📅 12 Apr 2026, 22:00\n📍 Morjim Culture\n🗺 Morjim Culture, JPPC+3QF Gawade Wada, H# 763/A, Pernem, Gawde Vaddo, Morjim, Goa, 403512, India\n🏷 Entertainment\n🎟 https://tickets.partyhunt.com/events/see-you-12-apr-2026-morjim-culture-buy-tickets",
-      "photos": [
-        "https://api.anbocas.com/storage/event/banner/gyjv0pDZDpT2jaTDq39WQmjBSFw1gJSIjh4PjGV7.jpg"
-      ],
-      "contact": "@partyhuntgoa",
-      "source_group": "partyhuntgoa",
-      "date": "2026-04-12 22:00:00",
-      "city": "Goa",
-      "realestate_city": "goa",
-      "country": "india",
-      "telegram_link": "https://tickets.partyhunt.com/events/see-you-12-apr-2026-morjim-culture-buy-tickets",
-      "price": "500.00",
-      "price_display": "from ₹500.00"
-    },
-    {
-      "id": "partyhunt_a17e71ad-6fdf-4b10-9191-897513e68fad",
-      "title": "Calm Chor",
-      "description": "📅 12 Apr 2026, 20:00\n📍 Dynamo\n🗺 Survey number 213, 6, part, Vagator, Anjuna, Goa 403509, India\n🏷 Entertainment\n🎟 https://tickets.partyhunt.com/events/calm-chor-12-apr-2026-dynamo-buy-tickets",
-      "photos": [
-        "https://api.anbocas.com/storage/event/banner/EIzxzTumaUH6ZIKV7P11RqmRn4hvFhpK2fAVc9yO.jpg"
-      ],
-      "contact": "@partyhuntgoa",
-      "source_group": "partyhuntgoa",
-      "date": "2026-04-12 20:00:00",
-      "city": "Goa",
-      "realestate_city": "goa",
-      "country": "india",
-      "telegram_link": "https://tickets.partyhunt.com/events/calm-chor-12-apr-2026-dynamo-buy-tickets",
-      "price": "999.00",
-      "price_display": "from ₹999.00"
-    },
-    {
-      "id": "partyhunt_a17c673c-60c3-4a24-9ff7-ccc89e002e53",
-      "title": "Flow Jam",
-      "description": "📅 12 Apr 2026, 19:00\n📍 12 Monks Rishikesh | Backpacker Hostel | Music Events | Cafe | Private Rooms\n🗺 near Inter College, Upper Tapovan, Tapovan, Rishikesh, Uttarakhand 249192, India\n🏷 Entertainment\n🎟 https://tickets.partyhunt.com/events/flow-jam-12-apr-2026-12-monks-rishikesh-backpacker-hostel-music-events-cafe-private-rooms-buy-tickets",
-      "photos": [
-        "https://api.anbocas.com/storage/event/banner/R2WvCwkU5dzEXBmjbwhYhcEVDN8Gz31WNw2Q6qi1.jpg"
-      ],
-      "contact": "@partyhuntgoa",
-      "source_group": "partyhuntgoa",
-      "date": "2026-04-12 19:00:00",
-      "city": "Rishikesh",
-      "realestate_city": "rishikesh",
-      "country": "india",
-      "telegram_link": "https://tickets.partyhunt.com/events/flow-jam-12-apr-2026-12-monks-rishikesh-backpacker-hostel-music-events-cafe-private-rooms-buy-tickets",
-      "price": "500.00",
-      "price_display": "from ₹500.00"
-    },
-    {
-      "id": "partyhunt_a1842dbc-20ec-4b2d-8456-a825c6c8136d",
-      "title": "VIRTUA NOISE LIVE (day 1)",
-      "description": "📅 11 Apr 2026, 21:00\n📍 House of Chapora by the bay\n🗺 Chapora Jetty , H.No 340/2 Village Anjuna-Caisua, Chapora, Goa 403509, India\n🏷 Entertainment\n🎟 https://tickets.partyhunt.com/events/virtua-noise-live-day-1-11-apr-2026-house-of-chapora-by-the-bay-buy-tickets",
-      "photos": [
-        "https://firebasestorage.googleapis.com/v0/b/partyhunt-production.appspot.com/o/eventsPicture%2F400f563b-8bea-4c34-bdfe-f760cd57be67%2Ffull_400f563b-8bea-4c34-bdfe-f760cd57be67?alt=media&token=37660273-a5a8-4575-98e0-010c109a79e2"
-      ],
-      "contact": "@partyhuntgoa",
-      "source_group": "partyhuntgoa",
-      "date": "2026-04-11 21:00:00",
-      "city": "Goa",
-      "realestate_city": "goa",
-      "country": "india",
-      "telegram_link": "https://tickets.partyhunt.com/events/virtua-noise-live-day-1-11-apr-2026-house-of-chapora-by-the-bay-buy-tickets",
-      "price": "1100.00",
-      "price_display": "from ₹1100.00"
-    },
-    {
-      "id": "partyhunt_a184024b-316b-45df-9965-4ad782afa45f",
-      "title": "Sonic Sands",
-      "description": "📅 11 Apr 2026, 20:00\n📍 SECRET CAVE- THE HOGGER'S DEN\n🗺 OGNAJ CIRCLE, Sardar Patel Ring Rd, Ognaj, Ahmedabad, Gujarat 380060, India\n🏷 Entertainment\n🎟 https://tickets.partyhunt.com/events/sonic-sands-11-apr-2026-secret-cave-the-hoggers-den-buy-tickets",
-      "photos": [
-        "https://api.anbocas.com/storage/event/banner/g0WZCfkm9r4MvDyHwOmZmMs95LbZchCAPj6bWsQ6.jpg"
-      ],
-      "contact": "@partyhuntgoa",
-      "source_group": "partyhuntgoa",
-      "date": "2026-04-11 20:00:00",
-      "city": "Ahmedabad",
-      "realestate_city": "ahmedabad",
-      "country": "india",
-      "telegram_link": "https://tickets.partyhunt.com/events/sonic-sands-11-apr-2026-secret-cave-the-hoggers-den-buy-tickets",
-      "price": "500.00",
-      "price_display": "from ₹500.00"
-    },
-    {
-      "id": "partyhunt_a17c6349-ff41-4150-9806-42785eea93e3",
-      "title": "Dobé Live",
-      "description": "📅 11 Apr 2026, 20:00\n📍 Dynamo\n🗺 Survey number 213, 6, part, Vagator, Anjuna, Goa 403509, India\n🏷 Entertainment\n🎟 https://tickets.partyhunt.com/events/dobe-live-11-apr-2026-dynamo-buy-tickets-1",
-      "photos": [
-        "https://api.anbocas.com/storage/event/banner/BqIyS8TjBT3mRDFJjUMtEoN5PbAKIftTjdFMirIJ.jpg"
-      ],
-      "contact": "@partyhuntgoa",
-      "source_group": "partyhuntgoa",
-      "date": "2026-04-11 20:00:00",
-      "city": "Goa",
-      "realestate_city": "goa",
-      "country": "india",
-      "telegram_link": "https://tickets.partyhunt.com/events/dobe-live-11-apr-2026-dynamo-buy-tickets-1",
-      "price": "1499.00",
-      "price_display": "from ₹1499.00"
-    },
-    {
-      "id": "partyhunt_a182ab08-30d7-4a7c-b965-70351db27e15",
-      "title": "Melody Nights",
-      "description": "📅 11 Apr 2026, 19:00\n📍 Fiturr\n🗺 73/41, Monteiro Vaddo, Anjuna, Goa 403509, India\n🏷 Entertainment\n🎟 https://tickets.partyhunt.com/events/melody-nights-11-apr-2026-fiturr-buy-tickets",
-      "photos": [
-        "https://api.anbocas.com/storage/event/banner/PQ3ePWkmYQbHgQccXhpB81utxB8NA96U5mToXAkN.jpg"
-      ],
-      "contact": "@partyhuntgoa",
-      "source_group": "partyhuntgoa",
-      "date": "2026-04-11 19:00:00",
-      "city": "Goa",
-      "realestate_city": "goa",
-      "country": "india",
-      "telegram_link": "https://tickets.partyhunt.com/events/melody-nights-11-apr-2026-fiturr-buy-tickets",
-      "price": "999.00",
-      "price_display": "from ₹999.00"
-    },
-    {
-      "id": "partyhunt_a18200c7-7d8d-49d7-8f4c-c8fd1a6eadea",
-      "title": "Ecstatic Dance",
-      "description": "📅 11 Apr 2026, 19:00\n📍 Arambolians\n🗺 116/3 Deulwada, Next to Pirata Pizzeria, Wildeflower Road Pernem, Road, Arambol, Goa 403524, India\n🏷 Entertainment\n🎟 https://tickets.partyhunt.com/events/ecstatic-dance-11-apr-2026-arambolians-buy-tickets",
-      "photos": [
-        "https://firebasestorage.googleapis.com/v0/b/partyhunt-production.appspot.com/o/eventsPicture%2Fd7b5bc3c-de17-4ff3-96b9-86632e8c24df%2Ffull_d7b5bc3c-de17-4ff3-96b9-86632e8c24df?alt=media&token=44f74e2e-8321-4c4d-97af-751eba27b505"
-      ],
-      "contact": "@partyhuntgoa",
-      "source_group": "partyhuntgoa",
-      "date": "2026-04-11 19:00:00",
-      "city": "Goa",
-      "realestate_city": "goa",
-      "country": "india",
-      "telegram_link": "https://tickets.partyhunt.com/events/ecstatic-dance-11-apr-2026-arambolians-buy-tickets",
-      "price": "600.00",
-      "price_display": "from ₹600.00"
-    },
-    {
-      "id": "partyhunt_a17c66d3-c1e9-4522-acc9-14734b886b52",
-      "title": "Ecstatic Dance",
-      "description": "📅 11 Apr 2026, 18:00\n📍 12 Monks Rishikesh | Backpacker Hostel | Music Events | Cafe | Private Rooms\n🗺 near Inter College, Upper Tapovan, Tapovan, Rishikesh, Uttarakhand 249192, India\n🏷 Entertainment\n🎟 https://tickets.partyhunt.com/events/ecstatic-dance-11-apr-2026-12-monks-rishikesh-backpacker-hostel-music-events-cafe-private-rooms-buy-tickets",
-      "photos": [
-        "https://api.anbocas.com/storage/event/banner/yLn9S85EhMMVLASMQZXlXZRuNkcdna9rNhEoaDJU.jpg"
-      ],
-      "contact": "@partyhuntgoa",
-      "source_group": "partyhuntgoa",
-      "date": "2026-04-11 18:00:00",
-      "city": "Rishikesh",
-      "realestate_city": "rishikesh",
-      "country": "india",
-      "telegram_link": "https://tickets.partyhunt.com/events/ecstatic-dance-11-apr-2026-12-monks-rishikesh-backpacker-hostel-music-events-cafe-private-rooms-buy-tickets",
-      "price": "500.00",
-      "price_display": "from ₹500.00"
-    },
-    {
-      "id": "partyhunt_a1803429-e04b-4d38-a8bd-ab1e92639975",
-      "title": "The Groove Water",
-      "description": "📅 11 Apr 2026, 16:30\n📍 The River Inn.\n🗺 Rai, Siolim, Gude, Goa 403517, India\n🏷 Entertainment\n🎟 https://tickets.partyhunt.com/events/the-groove-water-11-apr-2026-the-river-inn-buy-tickets",
-      "photos": [
-        "https://api.anbocas.com/storage/event/banner/w237N7HfGr6Tyv4zowrL5DeYFzHXuMKpGaVEWTsu.jpg"
-      ],
-      "contact": "@partyhuntgoa",
-      "source_group": "partyhuntgoa",
-      "date": "2026-04-11 16:30:00",
-      "city": "Goa",
-      "realestate_city": "goa",
-      "country": "india",
-      "telegram_link": "https://tickets.partyhunt.com/events/the-groove-water-11-apr-2026-the-river-inn-buy-tickets",
-      "price": "2499.00",
-      "price_display": "from ₹2499.00"
     },
     {
       "id": "partyhunt_a1765f5e-d9e3-4924-9a13-8d2239f19c57",
@@ -977,91 +807,6 @@
       "telegram_link": "https://tickets.partyhunt.com/events/sonic-sands-high-tech-edition-17-apr-2026-pebble-the-jungle-lounge-buy-tickets",
       "price": "499.00",
       "price_display": "from ₹499.00"
-    },
-    {
-      "id": "partyhunt_a171d915-1a90-4a99-b5a9-4dc6abeee28c",
-      "title": "Dobe Live",
-      "description": "📅 11 Apr 2026, 21:00\n📍 Dynamo\n🗺 Survey number 213, 6, part, Vagator, Anjuna, Goa 403509, India\n🏷 Entertainment\n🎟 https://tickets.partyhunt.com/events/dobe-live-11-apr-2026-dynamo-buy-tickets",
-      "photos": [
-        "https://api.anbocas.com/storage/event/banner/wBV2ToKPy97D5NazxlbUSeDy2NyzrXJrbwr6hQfk.jpg"
-      ],
-      "contact": "@partyhuntgoa",
-      "source_group": "partyhuntgoa",
-      "date": "2026-04-11 21:00:00",
-      "city": "Goa",
-      "realestate_city": "goa",
-      "country": "india",
-      "telegram_link": "https://tickets.partyhunt.com/events/dobe-live-11-apr-2026-dynamo-buy-tickets",
-      "price": "1499.00",
-      "price_display": "from ₹1499.00"
-    },
-    {
-      "id": "partyhunt_a16e8181-c245-425a-b453-5a5ef7b54d34",
-      "title": "T AND T (2 Days Festival )",
-      "description": "📅 11 Apr 2026, 21:00\n📍 House of Chapora by the bay\n🗺 Chapora Jetty , H.No 340/2 Village Anjuna-Caisua, Chapora, Goa 403509, India\n🏷 Entertainment\n🎟 https://tickets.partyhunt.com/events/t-and-t-2-days-festival-11-apr-2026-house-of-chapora-by-the-bay-buy-tickets",
-      "photos": [
-        "https://api.anbocas.com/storage/event/banner/sOEsOhtKU7leIcQRP6ykRdFokmHhtMKeUwsDtrDq.jpg"
-      ],
-      "contact": "@partyhuntgoa",
-      "source_group": "partyhuntgoa",
-      "date": "2026-04-11 21:00:00",
-      "city": "Goa",
-      "realestate_city": "goa",
-      "country": "india",
-      "telegram_link": "https://tickets.partyhunt.com/events/t-and-t-2-days-festival-11-apr-2026-house-of-chapora-by-the-bay-buy-tickets",
-      "price": "1100.00",
-      "price_display": "from ₹1100.00"
-    },
-    {
-      "id": "partyhunt_a1728bb4-ee9e-40d2-a3a0-231ba76cb9f4",
-      "title": "Artic White Live",
-      "description": "📅 10 Apr 2026, 21:00\n📍 Dynamo\n🗺 Survey number 213, 6, part, Vagator, Anjuna, Goa 403509, India\n🏷 Entertainment\n🎟 https://tickets.partyhunt.com/events/artic-white-live-10-apr-2026-dynamo-buy-tickets",
-      "photos": [
-        "https://api.anbocas.com/storage/event/banner/3p7kErRkfAoCMmQK3yiyTVBY4Aeloa9ktqJ2aHac.jpg"
-      ],
-      "contact": "@partyhuntgoa",
-      "source_group": "partyhuntgoa",
-      "date": "2026-04-10 21:00:00",
-      "city": "Goa",
-      "realestate_city": "goa",
-      "country": "india",
-      "telegram_link": "https://tickets.partyhunt.com/events/artic-white-live-10-apr-2026-dynamo-buy-tickets",
-      "price": "799.00",
-      "price_display": "from ₹799.00"
-    },
-    {
-      "id": "partyhunt_a1721ff9-6340-45ec-aba1-35fe8823a65d",
-      "title": "STOMP 12 YEARS ANNIVERSARY",
-      "description": "📅 10 Apr 2026, 21:00\n📍 House of Chapora by the bay\n🗺 Chapora Jetty , H.No 340/2 Village Anjuna-Caisua, Chapora, Goa 403509, India\n🏷 Entertainment\n🎟 https://tickets.partyhunt.com/events/stomp-12-years-anniversary-10-apr-2026-house-of-chapora-by-the-bay-buy-tickets",
-      "photos": [
-        "https://api.anbocas.com/storage/event/banner/u2Kdy3vMAj301l2LBLq9WcXQfnhqUVXBqOlUYkQK.jpg"
-      ],
-      "contact": "@partyhuntgoa",
-      "source_group": "partyhuntgoa",
-      "date": "2026-04-10 21:00:00",
-      "city": "Goa",
-      "realestate_city": "goa",
-      "country": "india",
-      "telegram_link": "https://tickets.partyhunt.com/events/stomp-12-years-anniversary-10-apr-2026-house-of-chapora-by-the-bay-buy-tickets",
-      "price": "1000.00",
-      "price_display": "from ₹1000.00"
-    },
-    {
-      "id": "partyhunt_a1504699-e44b-4238-bad0-575df684166d",
-      "title": "Pirates On TECHNO",
-      "description": "📅 10 Apr 2026, 20:00\n📍 Pirates of Parvati\n🗺 Pirates of Parvati, Freedom Cafe, Village Chhalal P.O Kasol, taisil, Bhuntar, Himachal Pradesh 175105, India\n🏷 Entertainment\n🎟 https://tickets.partyhunt.com/events/pop-festival-time-travel-10-apr-2026-pirates-of-parvati-buy-tickets",
-      "photos": [
-        "https://api.anbocas.com/storage/event/banner/PWXyORwioz0lLOsfQx3Pp2cX1qa25xf3zvxjE0h0.jpg"
-      ],
-      "contact": "@partyhuntgoa",
-      "source_group": "partyhuntgoa",
-      "date": "2026-04-10 20:00:00",
-      "city": "Bhuntar",
-      "realestate_city": "kasol",
-      "country": "india",
-      "telegram_link": "https://tickets.partyhunt.com/events/pop-festival-time-travel-10-apr-2026-pirates-of-parvati-buy-tickets",
-      "price": "1500.00",
-      "price_display": "from ₹1500.00"
     }
   ],
   "transport": [],
