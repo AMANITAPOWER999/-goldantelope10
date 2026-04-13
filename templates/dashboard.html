@@ -6470,6 +6470,9 @@
             updateRates();
             updateAllCityCounts();
             if (document.getElementById('chat').classList.contains('active')) { loadChatFeed(); loadVnChatFeed(''); loadChatiparsing(); }
+            // Сбрасываем фильтр даты развлечений и перестраиваем бар при смене страны
+            currentEntertainmentDate = '';
+            if (typeof buildEntDateBar === 'function') buildEntDateBar();
             loadListings('restaurants');
             loadListings('real_estate');
         }
@@ -8771,8 +8774,21 @@
                             }
                             // Фильтр по дате для развлечений
                             if (category === 'entertainment' && currentEntertainmentDate) {
-                                const haystack = ((item.title || '') + ' ' + (item.description || item.text || '') + ' ' + (item.date || '') + ' ' + (item.event_date || '')).toLowerCase();
-                                if (!haystack.includes(currentEntertainmentDate)) return false;
+                                let _dateMatch = false;
+                                // Пробуем разобрать item.date вида "2026-04-13 19:00:00" или "2026-04-13T19:00:00"
+                                if (item.date) {
+                                    const _m = String(item.date).match(/(\d{4})-(\d{2})-(\d{2})/);
+                                    if (_m) {
+                                        const _itemDay = _m[3] + '.' + _m[2]; // → "13.04"
+                                        _dateMatch = (_itemDay === currentEntertainmentDate);
+                                    }
+                                }
+                                // Fallback: ищем в event_date и тексте (для Вьетнама)
+                                if (!_dateMatch) {
+                                    const _hay = ((item.event_date || '') + ' ' + (item.text || '') + ' ' + (item.description || '')).toLowerCase();
+                                    _dateMatch = _hay.includes(currentEntertainmentDate);
+                                }
+                                if (!_dateMatch) return false;
                             }
                             return true;
                         }
