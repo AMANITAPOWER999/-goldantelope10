@@ -17,7 +17,6 @@
   },
   "india": {
     "web": [
-      "https://api.anbocas.com/storage/event/banner/EIzxzTumaUH6ZIKV7P11RqmRn4hvFhpK2fAVc9yO.jpg",
       "https://api.anbocas.com/storage/event/banner/XCRBo72Qtu2ATqlFbuftRj5wZULIdX0FvbTRu3fk.jpg",
       "https://firebasestorage.googleapis.com/v0/b/partyhunt-production.appspot.com/o/eventsPicture%2F8e917ad5-bce9-46e8-b545-533222ca69f3%2Ffull_8e917ad5-bce9-46e8-b545-533222ca69f3?alt=media&token=2219ce4a-3723-4d81-bb53-d5687ad57b27",
       "https://firebasestorage.googleapis.com/v0/b/partyhunt-production.appspot.com/o/eventsPicture%2Ffc73e85b-bf6c-4fc9-be3e-d671d20b229a%2Ffull_fc73e85b-bf6c-4fc9-be3e-d671d20b229a?alt=media&token=35773814-496b-4ec8-a350-4d3ff78d6253",
@@ -39,6 +38,7 @@
       "https://firebasestorage.googleapis.com/v0/b/partyhunt-production.appspot.com/o/eventsPicture%2F808f8adc-83c5-4b40-8b1c-e1f9f8964a9b%2Ffull_808f8adc-83c5-4b40-8b1c-e1f9f8964a9b?alt=media&token=c9b1157d-73ba-48a5-bf17-9d538e43fdb2",
       "https://api.anbocas.com/storage/event/banner/XNadXI81F9RqAzXDFVelPCnD0PZT9sWLjH3SBoZD.jpg",
       "https://firebasestorage.googleapis.com/v0/b/partyhunt-production.appspot.com/o/eventsPicture%2F281a0a70-13b2-4487-b49d-0e55d21c3347%2Ffull_281a0a70-13b2-4487-b49d-0e55d21c3347?alt=media&token=a8e345a5-e396-4f4d-9f2a-e8d9ce9dbdd3",
+      "https://api.anbocas.com/storage/event/banner/lQpy2zZiLf5BKyUDJTEA4Ioz22DOodo6C3IR6J7l.jpg",
       "https://api.anbocas.com/storage/event/banner/F28MEGrFWr3sE3ayjMK5Vx2a7Y4iIw6GUss6XrAs.jpg",
       "https://api.anbocas.com/storage/event/banner/wwvznAuVonhGv5I0F2zAFm0HimDoykiBKdX9ijMQ.png",
       "https://api.anbocas.com/storage/event/banner/AfGHwGnNpsLKLNteWoK9ccrZ2JusksTjylhidNaS.jpg",
@@ -67,7 +67,6 @@
       "https://firebasestorage.googleapis.com/v0/b/partyhunt-production.appspot.com/o/eventsPicture%2F427508bd-a841-4bd9-9549-81eefa8eb724%2Ffull_f1bdc200-b244-11ef-93b6-fd708638e0cf?alt=media&token=d734452c-14c3-4702-8958-1c43425ca211"
     ],
     "mobile": [
-      "https://api.anbocas.com/storage/event/banner/EIzxzTumaUH6ZIKV7P11RqmRn4hvFhpK2fAVc9yO.jpg",
       "https://api.anbocas.com/storage/event/banner/XCRBo72Qtu2ATqlFbuftRj5wZULIdX0FvbTRu3fk.jpg",
       "https://firebasestorage.googleapis.com/v0/b/partyhunt-production.appspot.com/o/eventsPicture%2F8e917ad5-bce9-46e8-b545-533222ca69f3%2Ffull_8e917ad5-bce9-46e8-b545-533222ca69f3?alt=media&token=2219ce4a-3723-4d81-bb53-d5687ad57b27",
       "https://firebasestorage.googleapis.com/v0/b/partyhunt-production.appspot.com/o/eventsPicture%2Ffc73e85b-bf6c-4fc9-be3e-d671d20b229a%2Ffull_fc73e85b-bf6c-4fc9-be3e-d671d20b229a?alt=media&token=35773814-496b-4ec8-a350-4d3ff78d6253",
@@ -89,6 +88,7 @@
       "https://firebasestorage.googleapis.com/v0/b/partyhunt-production.appspot.com/o/eventsPicture%2F808f8adc-83c5-4b40-8b1c-e1f9f8964a9b%2Ffull_808f8adc-83c5-4b40-8b1c-e1f9f8964a9b?alt=media&token=c9b1157d-73ba-48a5-bf17-9d538e43fdb2",
       "https://api.anbocas.com/storage/event/banner/XNadXI81F9RqAzXDFVelPCnD0PZT9sWLjH3SBoZD.jpg",
       "https://firebasestorage.googleapis.com/v0/b/partyhunt-production.appspot.com/o/eventsPicture%2F281a0a70-13b2-4487-b49d-0e55d21c3347%2Ffull_281a0a70-13b2-4487-b49d-0e55d21c3347?alt=media&token=a8e345a5-e396-4f4d-9f2a-e8d9ce9dbdd3",
+      "https://api.anbocas.com/storage/event/banner/lQpy2zZiLf5BKyUDJTEA4Ioz22DOodo6C3IR6J7l.jpg",
       "https://api.anbocas.com/storage/event/banner/F28MEGrFWr3sE3ayjMK5Vx2a7Y4iIw6GUss6XrAs.jpg",
       "https://api.anbocas.com/storage/event/banner/wwvznAuVonhGv5I0F2zAFm0HimDoykiBKdX9ijMQ.png",
       "https://api.anbocas.com/storage/event/banner/AfGHwGnNpsLKLNteWoK9ccrZ2JusksTjylhidNaS.jpg",

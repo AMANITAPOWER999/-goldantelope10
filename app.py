@@ -8025,6 +8025,50 @@ import threading
 threading.Thread(target=_bg_chatiparsing_poller, daemon=True, name='ChatiparsingPoller').start()
 logger.info('Chatiparsing background poller started (every 5s)')
 
+# ─── Автоочистка Индия/entertainment: удаляем события вне окна 14 дней ──────
+def _india_entertainment_cleanup():
+    """Каждые 6 часов удаляет из listings_india.json[entertainment]
+    события, которые уже прошли или начнутся позже чем через 14 дней."""
+    import time as _time
+    from datetime import datetime as _dt, timezone as _tz, timedelta as _td
+    INTERVAL = 6 * 3600
+    INDIA_FILE = os.path.join(os.path.dirname(__file__), 'listings_india.json')
+    while True:
+        try:
+            with open(INDIA_FILE) as _f:
+                _data = json.load(_f)
+            _ent = _data.get('entertainment', [])
+            _now = _dt.now(_tz.utc)
+            _cutoff = _now + _td(days=14)
+            _kept = []
+            _removed = 0
+            for _item in _ent:
+                _d_str = _item.get('date')
+                if not _d_str:
+                    _kept.append(_item)
+                    continue
+                try:
+                    _d = _dt.fromisoformat(str(_d_str).replace(' ', 'T'))
+                    if _d.tzinfo is None:
+                        _d = _d.replace(tzinfo=_tz.utc)
+                    if _now <= _d <= _cutoff:
+                        _kept.append(_item)
+                    else:
+                        _removed += 1
+                except Exception:
+                    _kept.append(_item)
+            if _removed > 0:
+                _data['entertainment'] = _kept
+                with open(INDIA_FILE, 'w') as _f:
+                    json.dump(_data, _f, ensure_ascii=False, indent=2)
+                logger.info('[india_ent_cleanup] Removed %d events outside 14-day window, kept %d', _removed, len(_kept))
+        except Exception as _e:
+            logger.warning('[india_ent_cleanup] Error: %s', _e)
+        _time.sleep(INTERVAL)
+
+threading.Thread(target=_india_entertainment_cleanup, daemon=True, name='IndiaEntCleanup').start()
+logger.info('[india_ent_cleanup] Auto-cleanup started (every 6h, window=14d)')
+
 @app.route('/api/chatiparsing/feed')
 def chatiparsing_feed():
     """Живая лента из канала chatiparsing (кэш 60 с)"""
