@@ -7,16 +7,16 @@
         "user_wfkjt6juo_1776076058238",
         "user_shx7ysfqi_1776077556675"
       ],
-      "page_views": 81,
+      "page_views": 102,
       "countries": {
-        "india": 9,
-        "vietnam": 25,
-        "indonesia": 40,
+        "india": 12,
+        "vietnam": 40,
+        "indonesia": 43,
         "thailand": 7
       },
       "categories": {
-        "real_estate": 26,
-        "realestate": 30,
+        "real_estate": 42,
+        "realestate": 35,
         "chat": 1,
         "entertainment": 17,
         "tours": 1,
@@ -24,24 +24,25 @@
         "transport": 5
       },
       "hours": {
-        "10": 81
+        "10": 83,
+        "11": 19
       },
       "referrers": {},
       "devices": {
-        "mobile": 24,
-        "desktop": 57
+        "mobile": 29,
+        "desktop": 73
       }
     }
   },
   "visitors": {
     "user_8e9xhfoz9_1775979675331": {
       "first_seen": "2026-04-13",
-      "visits": 24,
+      "visits": 29,
       "last_seen": "2026-04-13"
     },
     "user_aazl70g7k_1776027407849": {
       "first_seen": "2026-04-13",
-      "visits": 55,
+      "visits": 71,
       "last_seen": "2026-04-13"
     },
     "user_wfkjt6juo_1776076058238": {
