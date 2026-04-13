@@ -48,12 +48,14 @@
       "unique_visitors": [
         "user_aazl70g7k_1776027407849"
       ],
-      "page_views": 667,
+      "page_views": 684,
       "countries": {
-        "vietnam": 667
+        "vietnam": 683,
+        "india": 1
       },
       "categories": {
-        "real_estate": 667
+        "real_estate": 683,
+        "entertainment": 1
       },
       "hours": {
         "00": 120,
@@ -63,12 +65,12 @@
         "04": 72,
         "07": 30,
         "08": 79,
-        "09": 6
+        "09": 23
       },
       "referrers": {},
       "devices": {
         "mobile": 0,
-        "desktop": 667
+        "desktop": 684
       }
     }
   },
@@ -90,7 +92,7 @@
     },
     "user_aazl70g7k_1776027407849": {
       "first_seen": "2026-04-12",
-      "visits": 1031,
+      "visits": 1048,
       "last_seen": "2026-04-13"
     },
     "user_vsisy9sx6_1776028146715": {
