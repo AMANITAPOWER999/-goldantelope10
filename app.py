@@ -4517,6 +4517,20 @@ def _partyhunt_poller():
                     item['price'] = price_val
                     item['price_display'] = price_display
 
+                # Фильтр 14 дней: не добавляем события за пределами окна
+                _item_date_str = item.get('date')
+                try:
+                    _item_dt = datetime.fromisoformat(str(_item_date_str).replace(' ', 'T'))
+                    if _item_dt.tzinfo is None:
+                        _item_dt = _item_dt.replace(tzinfo=timezone.utc)
+                    _now_ph = datetime.now(timezone.utc)
+                    if _item_dt < _now_ph or _item_dt > _now_ph + timedelta(days=14):
+                        _partyhunt_sent_ids.add(ev_id)
+                        logger.debug('[partyhunt_poller] Skipped (outside 14d window): %s (%s)', name, _item_date_str)
+                        continue
+                except Exception:
+                    pass  # если дата не парсится — добавляем как обычно
+
                 with _ph_lock:
                     try:
                         with open(india_file, 'r', encoding='utf-8') as f:
