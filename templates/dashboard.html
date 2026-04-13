@@ -8800,12 +8800,24 @@
                         let images = [...new Set([..._p2, ..._a2])].filter(u => u && !u.includes('/img/emoji') && !u.includes('telegram.org/img/emoji'));
                         if (category === 'real_estate' || category === 'realestate') {
                             images = images.filter(url => url && typeof url === 'string' &&
-                                (/^https:\/\/t\.me\/(vietnamparsing|thailandparsing)\/\d+$/.test(url) || url.includes('telesco.pe') || url.startsWith('/tg_img/')));
+                                (/^https:\/\/t\.me\/(vietnamparsing|thailandparsing)\/\d+$/.test(url) || url.includes('telesco.pe') || url.startsWith('/tg_img/') || url.startsWith('/static/')));
                             images = images.map(url => {
                                 const tmeMatch = url.match(/^https:\/\/t\.me\/([^\/]+)\/(\d+)$/);
                                 if (tmeMatch) return `/tg_img/${tmeMatch[1]}/${tmeMatch[2]}`;
                                 return url;
                             }).filter(Boolean);
+                            // India/Indonesia listings use image_url pointing to /static/channel_photos/
+                            if (images.length === 0 && item.image_url && item.image_url.startsWith('/static/')) {
+                                images.push(item.image_url);
+                                if (item.image_url_2 && item.image_url_2.startsWith('/static/')) images.push(item.image_url_2);
+                                if (item.image_url_3 && item.image_url_3.startsWith('/static/')) images.push(item.image_url_3);
+                                if (item.image_url_4 && item.image_url_4.startsWith('/static/')) images.push(item.image_url_4);
+                            }
+                            // Also support all_photos array (local static paths)
+                            if (images.length === 0 && Array.isArray(item.all_photos)) {
+                                const localPhotos = item.all_photos.filter(u => u && u.startsWith('/static/'));
+                                images.push(...localPhotos);
+                            }
                         } else {
                             // Restaurants: prefer photo_album_urls (group proxy), fallback to tg_file_ids / photo_msg_ids
                             if (category === 'restaurants' && Array.isArray(item.photo_album_urls) && item.photo_album_urls.length > 0) {
