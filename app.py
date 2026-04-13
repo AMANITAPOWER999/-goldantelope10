@@ -1364,6 +1364,12 @@ def get_listings(category):
                 # Если город не указан, считаем что подходит для всех городов (показываем всё)
                 if not item_city and not item_location and not item_realestate_city:
                     return True
+                
+                # Туры/экскурсии с общестрановым городом ("вьетнам", "vietnam", "thailand" и т.п.)
+                # показываем для любого выбранного города этой страны
+                _country_level = ['вьетнам', 'vietnam', 'thailand', 'таиланд', 'india', 'индия', 'indonesia', 'индонезия']
+                if category == 'tours' and any(cl in item_city for cl in _country_level):
+                    return True
 
                 # Проверяем поля city, location и realestate_city
                 for t in targets:
