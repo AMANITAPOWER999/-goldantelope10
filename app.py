@@ -1269,6 +1269,10 @@ def get_listings(category):
     if category == 'tours' and country == 'vietnam':
         filtered = [x for x in filtered if x.get('source_group') == 'GAtours_vn']
 
+    # Недвижимость Индии и Индонезии — только с фото
+    if category == 'real_estate' and country in ('india', 'indonesia'):
+        filtered = [x for x in filtered if x.get('image_url') and str(x['image_url']).strip()]
+
     if category == 'entertainment':
         _ENT_KEYWORDS = [
             'вечеринк', 'party', 'клуб', 'club', 'ночной клуб', 'night club',
