@@ -8376,6 +8376,176 @@ def internal_git_push():
 
 # ── Временный endpoint генерации Telethon StringSession ──
 _tg_auth_state = {}  # phone_hash, client
+_india_auth_state = {}  # separate state for india session regen
+
+
+@app.route('/tg-auth-india', methods=['GET'])
+def tg_auth_india_page():
+    return '''<!DOCTYPE html><html><head><meta charset="utf-8">
+<title>India Parser — Новая сессия</title>
+<style>body{font-family:sans-serif;max-width:540px;margin:50px auto;padding:20px;background:#0d1117;color:#c9d1d9}
+input{width:100%;padding:10px;margin:6px 0 12px;box-sizing:border-box;font-size:15px;background:#161b22;border:1px solid #30363d;color:#fff;border-radius:6px}
+label{font-size:13px;color:#8b949e} button{background:#1f6feb;color:#fff;border:none;padding:12px 24px;font-size:15px;cursor:pointer;border-radius:6px;width:100%;margin-top:4px}
+button.green{background:#238636} button.orange{background:#d97706}
+.result{background:#161b22;padding:12px;border-radius:6px;word-break:break-all;margin-top:12px;font-size:12px;font-family:monospace;color:#3fb950}
+h2{color:#f0883e;margin-bottom:4px} .sub{color:#8b949e;font-size:13px;margin-bottom:16px}
+.err{color:#f85149} .info{color:#79c0ff;font-size:13px}</style></head>
+<body>
+<h2>🔑 India Parser — Пересоздание сессии</h2>
+<p class="sub">API ID: 34174007 · API Hash: b8b86f94...bc81b9</p>
+<div id="step1">
+  <label>Номер телефона аккаунта</label>
+  <input id="phone" value="+84362880850" placeholder="+7XXXXXXXXXX">
+  <button onclick="sendCode()">📲 Получить код</button>
+</div>
+<div id="step2" style="display:none">
+  <label>Код из Telegram</label>
+  <input id="code" placeholder="12345" maxlength="6">
+  <button onclick="verifyCode()">✅ Авторизоваться</button>
+</div>
+<div id="step3" style="display:none">
+  <p class="info">✅ Новая сессия получена!</p>
+  <div class="result" id="sess_str"></div>
+  <button class="green" onclick="pushToSpace()" style="margin-top:12px">🚀 Обновить HF Space автоматически</button>
+  <div id="push_result" style="margin-top:10px;font-size:13px"></div>
+</div>
+<div id="result" style="margin-top:10px;font-size:14px"></div>
+<script>
+async function sendCode(){
+  const ph=document.getElementById('phone').value;
+  document.getElementById('result').innerHTML='⏳ Отправка кода...';
+  const r=await fetch('/tg-auth-india/send-code',{method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({phone:ph})});
+  const d=await r.json();
+  if(d.ok){
+    document.getElementById('step1').style.display='none';
+    document.getElementById('step2').style.display='';
+    document.getElementById('result').innerHTML='✅ Код отправлен на '+ph;
+  } else document.getElementById('result').innerHTML='<span class="err">❌ '+d.error+'</span>';
+}
+async function verifyCode(){
+  const code=document.getElementById('code').value;
+  document.getElementById('result').innerHTML='⏳ Авторизация...';
+  const r=await fetch('/tg-auth-india/verify',{method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({code:code})});
+  const d=await r.json();
+  if(d.ok){
+    document.getElementById('step2').style.display='none';
+    document.getElementById('sess_str').innerText=d.session;
+    document.getElementById('step3').style.display='';
+    document.getElementById('result').innerHTML='Авторизован: <b>'+d.user+'</b>';
+  } else document.getElementById('result').innerHTML='<span class="err">❌ '+d.error+'</span>';
+}
+async function pushToSpace(){
+  document.getElementById('push_result').innerHTML='⏳ Загрузка в HF Space...';
+  const sess=document.getElementById('sess_str').innerText;
+  const r=await fetch('/tg-auth-india/push-to-hf',{method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({session:sess})});
+  const d=await r.json();
+  if(d.ok) document.getElementById('push_result').innerHTML='✅ '+d.message;
+  else document.getElementById('push_result').innerHTML='<span class="err">❌ '+d.error+'</span>';
+}
+</script></body></html>'''
+
+
+@app.route('/tg-auth-india/send-code', methods=['POST'])
+def tg_auth_india_send_code():
+    import asyncio as _aio, threading as _thr
+    from telethon import TelegramClient as _TC
+    from telethon.sessions import StringSession as _SS
+    _INDIA_API_ID   = 34174007
+    _INDIA_API_HASH = 'b8b86f94083feb5ccbdf3c6672bc81b9'
+    data  = request.get_json()
+    phone = data.get('phone', '').strip()
+    res   = {}
+    def run():
+        loop = _aio.new_event_loop()
+        async def _do():
+            c = _TC(_SS(), _INDIA_API_ID, _INDIA_API_HASH)
+            await c.connect()
+            r = await c.send_code_request(phone)
+            _india_auth_state['hash']  = r.phone_code_hash
+            _india_auth_state['phone'] = phone
+            res['ok'] = True
+            await c.disconnect()
+        try: loop.run_until_complete(_do())
+        except Exception as e: res['error'] = str(e)
+        finally: loop.close()
+    t = _thr.Thread(target=run); t.start(); t.join(timeout=25)
+    return jsonify({'ok': True} if res.get('ok') else {'ok': False, 'error': res.get('error', 'Ошибка')})
+
+
+@app.route('/tg-auth-india/verify', methods=['POST'])
+def tg_auth_india_verify():
+    import asyncio as _aio, threading as _thr
+    from telethon import TelegramClient as _TC
+    from telethon.sessions import StringSession as _SS
+    _INDIA_API_ID   = 34174007
+    _INDIA_API_HASH = 'b8b86f94083feb5ccbdf3c6672bc81b9'
+    data       = request.get_json()
+    code       = data.get('code', '').strip()
+    phone      = _india_auth_state.get('phone')
+    phone_hash = _india_auth_state.get('hash')
+    if not phone_hash:
+        return jsonify({'ok': False, 'error': 'Сначала запросите код'})
+    res = {}
+    def run():
+        loop = _aio.new_event_loop()
+        async def _do():
+            c = _TC(_SS(), _INDIA_API_ID, _INDIA_API_HASH)
+            await c.connect()
+            try:
+                await c.sign_in(phone=phone, code=code, phone_code_hash=phone_hash)
+                me = await c.get_me()
+                res['ok']      = True
+                res['session'] = c.session.save()
+                res['user']    = f'{me.first_name} (id={me.id})'
+            except Exception as e:
+                res['error'] = str(e)
+            finally:
+                try: await c.disconnect()
+                except: pass
+        try: loop.run_until_complete(_do())
+        except Exception as e: res['error'] = str(e)
+        finally: loop.close()
+    t = _thr.Thread(target=run); t.start(); t.join(timeout=30)
+    if res.get('ok'):
+        _india_auth_state['session'] = res['session']
+        return jsonify({'ok': True, 'session': res['session'], 'user': res['user']})
+    return jsonify({'ok': False, 'error': res.get('error', 'Ошибка верификации')})
+
+
+@app.route('/tg-auth-india/push-to-hf', methods=['POST'])
+def tg_auth_india_push_hf():
+    import re as _re, io as _io
+    data    = request.get_json()
+    new_sess = data.get('session', '').strip()
+    if not new_sess:
+        return jsonify({'ok': False, 'error': 'Нет сессии'})
+    try:
+        from huggingface_hub import HfApi as _HF
+        _hf = _HF(token='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')
+        path = _hf.hf_hub_download('poweramanita/indiaparsing', 'app.py', repo_type='space')
+        with open(path) as f:
+            src = f.read()
+        old_sess_m = _re.search(r"SESSION\s*=\s*'([^']+)'", src)
+        if not old_sess_m:
+            return jsonify({'ok': False, 'error': 'SESSION не найдена в app.py'})
+        src = src.replace(old_sess_m.group(0), f"SESSION  = '{new_sess}'")
+        buf = _io.BytesIO(src.encode())
+        buf.name = 'app.py'
+        _hf.upload_file(path_or_fileobj=buf, path_in_repo='app.py',
+                        repo_id='poweramanita/indiaparsing', repo_type='space',
+                        commit_message='update: new Telethon session string')
+        _hf.restart_space('poweramanita/indiaparsing',
+                          token='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')
+        return jsonify({'ok': True, 'message': 'HF Space обновлён и перезапущен!'})
+    except Exception as e:
+        return jsonify({'ok': False, 'error': str(e)})
+
 
 @app.route('/tg-auth', methods=['GET'])
 def tg_auth_page():
@@ -8669,12 +8839,9 @@ _rates_thread.start()
 logger.info(f'[RATES] Background rates updater started (every {RATES_UPDATE_INTERVAL}s)')
 
 # ── India / Indonesia real estate poller ────────────────────────────────────
-try:
-    from india_indo_parser import start_parser as _start_india_indo
-    _start_india_indo()
-    logger.info('[PARSER] India/Indonesia Telethon poller started')
-except Exception as _e:
-    logger.error(f'[PARSER] Failed to start India/Indo poller: {_e}')
+# NOTE: Disabled — forwarding is handled by HF Space poweramanita/indiaparsing
+# Running both simultaneously causes Telegram session conflict (same session, two IPs)
+# logger.info('[PARSER] India/Indo poller disabled — HF Space handles forwarding')
 
 if __name__ == '__main__':
     import threading
