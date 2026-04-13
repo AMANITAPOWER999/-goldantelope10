@@ -8513,6 +8513,15 @@ def tg_auth_verify():
     return jsonify({'ok': False, 'error': result.get('error', 'Ошибка')})
 
 
+@app.route('/api/admin/india-indo-parser-status')
+def india_indo_parser_status():
+    try:
+        from india_indo_parser import status as ps
+        return jsonify(ps)
+    except Exception as e:
+        return jsonify({'error': str(e)})
+
+
 @app.route('/parser-status')
 def parser_status_page():
     try:
@@ -8654,6 +8663,14 @@ def update_paymens_rates():
 _rates_thread = threading.Thread(target=update_paymens_rates, daemon=True)
 _rates_thread.start()
 logger.info(f'[RATES] Background rates updater started (every {RATES_UPDATE_INTERVAL}s)')
+
+# ── India / Indonesia real estate poller ────────────────────────────────────
+try:
+    from india_indo_parser import start_parser as _start_india_indo
+    _start_india_indo()
+    logger.info('[PARSER] India/Indonesia Telethon poller started')
+except Exception as _e:
+    logger.error(f'[PARSER] Failed to start India/Indo poller: {_e}')
 
 if __name__ == '__main__':
     import threading
