@@ -1273,6 +1273,24 @@ def get_listings(category):
     if category == 'real_estate' and country in ('india', 'indonesia'):
         filtered = [x for x in filtered if x.get('image_url') and str(x['image_url']).strip()]
 
+    # Развлечения Индии — только события в окне 14 дней (не прошедшие и не слишком далёкие)
+    if category == 'entertainment' and country == 'india':
+        from datetime import timezone as _tz14, timedelta as _td14
+        _now_ent = datetime.now(_tz14.utc)
+        _cut_ent = _now_ent + _td14(days=14)
+        def _india_ent_ok(item):
+            d_str = item.get('date')
+            if not d_str:
+                return True
+            try:
+                import re as _re2
+                _ds = _re2.sub(r'[+-]\d{2}:\d{2}$', '', str(d_str).strip()).rstrip('Z').replace(' ', 'T')
+                _d = datetime.fromisoformat(_ds).replace(tzinfo=_tz14.utc)
+                return _now_ent <= _d <= _cut_ent
+            except Exception:
+                return True
+        filtered = [x for x in filtered if _india_ent_ok(x)]
+
     if category == 'entertainment':
         _ENT_KEYWORDS = [
             'вечеринк', 'party', 'клуб', 'club', 'ночной клуб', 'night club',
@@ -4518,18 +4536,20 @@ def _partyhunt_poller():
                     item['price_display'] = price_display
 
                 # Фильтр 14 дней: не добавляем события за пределами окна
-                _item_date_str = item.get('date')
+                _item_date_str = start  # используем сырую дату из API
                 try:
-                    _item_dt = datetime.fromisoformat(str(_item_date_str).replace(' ', 'T'))
-                    if _item_dt.tzinfo is None:
-                        _item_dt = _item_dt.replace(tzinfo=timezone.utc)
+                    import re as _re
+                    _ds = str(_item_date_str).strip()
+                    # Убираем timezone offset вида +05:30 или -07:00 → заменяем на UTC
+                    _ds_clean = _re.sub(r'[+-]\d{2}:\d{2}$', '', _ds).replace(' ', 'T')
+                    _item_dt = datetime.fromisoformat(_ds_clean).replace(tzinfo=timezone.utc)
                     _now_ph = datetime.now(timezone.utc)
                     if _item_dt < _now_ph or _item_dt > _now_ph + timedelta(days=14):
                         _partyhunt_sent_ids.add(ev_id)
-                        logger.debug('[partyhunt_poller] Skipped (outside 14d window): %s (%s)', name, _item_date_str)
+                        logger.info('[partyhunt_poller] Skipped (outside 14d): %s (%s)', name, _item_date_str)
                         continue
-                except Exception:
-                    pass  # если дата не парсится — добавляем как обычно
+                except Exception as _fe:
+                    logger.debug('[partyhunt_poller] Date parse error for %s: %s', name, _fe)
 
                 with _ph_lock:
                     try:
@@ -8047,7 +8067,10 @@ def _india_entertainment_cleanup():
     from datetime import datetime as _dt, timezone as _tz, timedelta as _td
     INTERVAL = 6 * 3600
     INDIA_FILE = os.path.join(os.path.dirname(__file__), 'listings_india.json')
+    _first = True
     while True:
+        _time.sleep(120 if _first else INTERVAL)  # при первом запуске ждём 2 мин (после поллера), далее каждые 6ч
+        _first = False
         try:
             with open(INDIA_FILE) as _f:
                 _data = json.load(_f)
