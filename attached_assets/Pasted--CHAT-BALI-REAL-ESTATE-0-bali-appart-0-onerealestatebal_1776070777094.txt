@@ -1,0 +1,132 @@
+
+Группа	Переслано
+@CHAT_BALI_REAL_ESTATE	0
+@bali_appart	0
+@onerealestatebali	0
+@baliveruspraedium	0
+@bali_arenda1	0
+@estetico_estate	0
+@kvartira_bali	0
+@rentbali_villa	0
+📋 Лог пересылки (121 записей)
+[08:56:07] [INFO] ── ЗАДАЧА 2: слушаю новые сообщения ──
+[08:56:07] [OK] ── [INDO] Задача 1 завершена ──
+[08:56:05] [INFO] 📤 [INDO] @rentbali_villa: 0 сообщений
+[08:56:05] [ERR] ❌ @rentbali_villa → @indonasiaparsing: You can't write in this chat (caused by SendMessageRequest)
+[08:56:02] [INFO] 📤 [INDO] @kvartira_bali: 0 сообщений
+[08:56:02] [ERR] ❌ @kvartira_bali → @indonasiaparsing: You can't write in this chat (caused by SendMessageRequest)
+[08:55:59] [INFO] 📤 [INDO] @estetico_estate: 0 сообщений
+[08:55:59] [ERR] ❌ @estetico_estate → @indonasiaparsing: You can't write in this chat (caused by SendMessageRequest)
+[08:55:59] [ERR] ❌ @estetico_estate → @indonasiaparsing: You can't write in this chat (caused by SendMessageRequest)
+[08:55:57] [INFO] 📤 [INDO] @bali_arenda1: 0 сообщений
+[08:55:57] [ERR] ❌ @bali_arenda1 → @indonasiaparsing: You can't write in this chat (caused by SendMessageRequest)
+[08:55:56] [ERR] ❌ @bali_arenda1 → @indonasiaparsing: You can't write in this chat (caused by SendMessageRequest)
+[08:55:56] [ERR] ❌ @bali_arenda1 → @indonasiaparsing: You can't write in this chat (caused by SendMessageRequest)
+[08:55:56] [ERR] ❌ @bali_arenda1 → @indonasiaparsing: You can't write in this chat (caused by SendMessageRequest)
+[08:55:56] [ERR] ❌ @bali_arenda1 → @indonasiaparsing: You can't write in this chat (caused by SendMessageRequest)
+[08:55:55] [ERR] ❌ @bali_arenda1 → @indonasiaparsing: You can't write in this chat (caused by SendMessageRequest)
+[08:55:55] [ERR] ❌ @bali_arenda1 → @indonasiaparsing: You can't write in this chat (caused by SendMessageRequest)
+[08:55:55] [ERR] ❌ @bali_arenda1 → @indonasiaparsing: You can't write in this chat (caused by SendMessageRequest)
+[08:55:55] [ERR] ❌ @bali_arenda1 → @indonasiaparsing: You can't write in this chat (caused by SendMessageRequest)
+[08:55:54] [ERR] ❌ @bali_arenda1 → @indonasiaparsing: You can't write in this chat (caused by SendMessageRequest)
+[08:55:54] [ERR] ❌ [INDO] @baliveruspraedium: No user has "baliveruspraedium" as username
+[08:55:52] [INFO] 📤 [INDO] @onerealestatebali: 0 сообщений
+[08:55:52] [ERR] ❌ @onerealestatebali → @indonasiaparsing: You can't write in this chat (caused by SendMessageRequest)
+[08:55:52] [ERR] ❌ @onerealestatebali → @indonasiaparsing: You can't write in this chat (caused by SendMessageRequest)
+[08:55:51] [ERR] ❌ @onerealestatebali → @indonasiaparsing: You can't write in this chat (caused by SendMessageRequest)
+[08:55:51] [ERR] ❌ @onerealestatebali → @indonasiaparsing: You can't write in this chat (caused by SendMessageRequest)
+[08:55:51] [ERR] ❌ @onerealestatebali → @indonasiaparsing: You can't write in this chat (caused by SendMessageRequest)
+[08:55:48] [INFO] 📤 [INDO] @bali_appart: 0 сообщений
+[08:55:48] [ERR] ❌ @bali_appart → @indonasiaparsing: You can't write in this chat (caused by SendMessageRequest)
+[08:55:46] [INFO] 📤 [INDO] @CHAT_BALI_REAL_ESTATE: 0 сообщений
+[08:55:46] [ERR] ❌ @CHAT_BALI_REAL_ESTATE → @indonasiaparsing: You can't write in this chat (caused by SendMessageRequest)
+[08:55:46] [ERR] ❌ @CHAT_BALI_REAL_ESTATE → @indonasiaparsing: You can't write in this chat (caused by SendMessageRequest)
+[08:55:45] [ERR] ❌ @CHAT_BALI_REAL_ESTATE → @indonasiaparsing: You can't write in this chat (caused by SendMessageRequest)
+[08:55:45] [ERR] ❌ @CHAT_BALI_REAL_ESTATE → @indonasiaparsing: You can't write in this chat (caused by SendMessageRequest)
+[08:55:45] [ERR] ❌ @CHAT_BALI_REAL_ESTATE → @indonasiaparsing: You can't write in this chat (caused by SendMessageRequest)
+[08:55:45] [ERR] ❌ @CHAT_BALI_REAL_ESTATE → @indonasiaparsing: You can't write in this chat (caused by SendMessageRequest)
+[08:55:44] [ERR] ❌ @CHAT_BALI_REAL_ESTATE → @indonasiaparsing: You can't write in this chat (caused by SendMessageRequest)
+[08:55:44] [ERR] ❌ @CHAT_BALI_REAL_ESTATE → @indonasiaparsing: You can't write in this chat (caused by SendMessageRequest)
+[08:55:43] [OK] ── [INDIA] Задача 1 завершена ──
+[08:55:41] [INFO] 📤 [INDIA] @homegoa: 0 сообщений
+[08:55:41] [ERR] ❌ @homegoa → @indiaparsing: You can't write in this chat (caused by SendMessageRequest)
+[08:55:39] [INFO] 📤 [INDIA] @arendagoaarambol: 0 сообщений
+[08:55:39] [ERR] ❌ @arendagoaarambol → @indiaparsing: You can't write in this chat (caused by SendMessageRequest)
+[08:55:36] [INFO] 📤 [INDIA] @House_for_rent_Goa: 0 сообщений
+[08:55:36] [ERR] ❌ @House_for_rent_Goa → @indiaparsing: You can't write in this chat (caused by SendMessageRequest)
+[08:55:36] [ERR] ❌ @House_for_rent_Goa → @indiaparsing: You can't write in this chat (caused by SendMessageRequest)
+[08:55:34] [INFO] 📤 [INDIA] @goa_appart: 0 сообщений
+[08:55:34] [ERR] ❌ @goa_appart → @indiaparsing: You can't write in this chat (caused by SendMessageRequest)
+[08:55:33] [ERR] ❌ @goa_appart → @indiaparsing: You can't write in this chat (caused by SendMessageRequest)
+[08:55:33] [ERR] ❌ @goa_appart → @indiaparsing: You can't write in this chat (caused by SendMessageRequest)
+[08:55:33] [ERR] ❌ @goa_appart → @indiaparsing: You can't write in this chat (caused by SendMessageRequest)
+[08:55:30] [INFO] 📤 [INDIA] @Arenda_Zhilya_Indiya: 0 сообщений
+[08:55:30] [ERR] ❌ @Arenda_Zhilya_Indiya → @indiaparsing: You can't write in this chat (caused by SendMessageRequest)
+[08:55:30] [ERR] ❌ @Arenda_Zhilya_Indiya → @indiaparsing: You can't write in this chat (caused by SendMessageRequest)
+[08:55:30] [ERR] ❌ @Arenda_Zhilya_Indiya → @indiaparsing: You can't write in this chat (caused by SendMessageRequest)
+[08:55:30] [ERR] ❌ @Arenda_Zhilya_Indiya → @indiaparsing: You can't write in this chat (caused by SendMessageRequest)
+[08:55:29] [ERR] ❌ @Arenda_Zhilya_Indiya → @indiaparsing: You can't write in this chat (caused by SendMessageRequest)
+[08:55:27] [INFO] 📤 [INDIA] @HousingBangalore: 0 сообщений
+[08:55:27] [ERR] ❌ @HousingBangalore → @indiaparsing: You can't write in this chat (caused by SendMessageRequest)
+[08:55:27] [ERR] ❌ @HousingBangalore → @indiaparsing: You can't write in this chat (caused by SendMessageRequest)
+[08:55:26] [ERR] ❌ @HousingBangalore → @indiaparsing: You can't write in this chat (caused by SendMessageRequest)
+[08:55:26] [ERR] ❌ @HousingBangalore → @indiaparsing: You can't write in this chat (caused by SendMessageRequest)
+[08:55:26] [ERR] ❌ @HousingBangalore → @indiaparsing: You can't write in this chat (caused by SendMessageRequest)
+[08:55:25] [ERR] ❌ @HousingBangalore → @indiaparsing: You can't write in this chat (caused by SendMessageRequest)
+[08:55:25] [ERR] ❌ @HousingBangalore → @indiaparsing: You can't write in this chat (caused by SendMessageRequest)
+[08:55:25] [ERR] ❌ @HousingBangalore → @indiaparsing: You can't write in this chat (caused by SendMessageRequest)
+[08:55:25] [ERR] ❌ @HousingBangalore → @indiaparsing: You can't write in this chat (caused by SendMessageRequest)
+[08:55:24] [ERR] ❌ @HousingBangalore → @indiaparsing: You can't write in this chat (caused by SendMessageRequest)
+[08:55:22] [INFO] 📤 [INDIA] @goa_siolim_realty: 0 сообщений
+[08:55:22] [ERR] ❌ @goa_siolim_realty → @indiaparsing: You can't write in this chat (caused by SendMessageRequest)
+[08:55:22] [ERR] ❌ @goa_siolim_realty → @indiaparsing: You can't write in this chat (caused by SendMessageRequest)
+[08:55:19] [INFO] 📤 [INDIA] @myflats: 0 сообщений
+[08:55:19] [ERR] ❌ @myflats → @indiaparsing: You can't write in this chat (caused by SendMessageRequest)
+[08:55:19] [ERR] ❌ @myflats → @indiaparsing: You can't write in this chat (caused by SendMessageRequest)
+[08:55:19] [ERR] ❌ @myflats → @indiaparsing: You can't write in this chat (caused by SendMessageRequest)
+[08:55:18] [ERR] ❌ @myflats → @indiaparsing: You can't write in this chat (caused by SendMessageRequest)
+[08:55:18] [ERR] ❌ @myflats → @indiaparsing: You can't write in this chat (caused by SendMessageRequest)
+[08:55:18] [ERR] ❌ @myflats → @indiaparsing: You can't write in this chat (caused by SendMessageRequest)
+[08:55:15] [INFO] 📤 [INDIA] @GoaRentl: 0 сообщений
+[08:55:15] [ERR] ❌ @GoaRentl → @indiaparsing: You can't write in this chat (caused by SendMessageRequest)
+[08:55:15] [ERR] ❌ @GoaRentl → @indiaparsing: You can't write in this chat (caused by SendMessageRequest)
+[08:55:15] [ERR] ❌ @GoaRentl → @indiaparsing: You can't write in this chat (caused by SendMessageRequest)
+[08:55:15] [ERR] ❌ @GoaRentl → @indiaparsing: You can't write in this chat (caused by SendMessageRequest)
+[08:55:14] [ERR] ❌ @GoaRentl → @indiaparsing: You can't write in this chat (caused by SendMessageRequest)
+[08:55:14] [ERR] ❌ @GoaRentl → @indiaparsing: You can't write in this chat (caused by SendMessageRequest)
+[08:55:14] [ERR] ❌ @GoaRentl → @indiaparsing: You can't write in this chat (caused by SendMessageRequest)
+[08:55:14] [ERR] ❌ @GoaRentl → @indiaparsing: You can't write in this chat (caused by SendMessageRequest)
+[08:55:13] [ERR] ❌ @GoaRentl → @indiaparsing: You can't write in this chat (caused by SendMessageRequest)
+[08:55:13] [ERR] ❌ @GoaRentl → @indiaparsing: You can't write in this chat (caused by SendMessageRequest)
+[08:55:11] [INFO] 📤 [INDIA] @goaRentAll: 0 сообщений
+[08:55:11] [ERR] ❌ @goaRentAll → @indiaparsing: You can't write in this chat (caused by SendMessageRequest)
+[08:55:10] [ERR] ❌ @goaRentAll → @indiaparsing: You can't write in this chat (caused by SendMessageRequest)
+[08:55:10] [ERR] ❌ @goaRentAll → @indiaparsing: You can't write in this chat (caused by SendMessageRequest)
+[08:55:10] [ERR] ❌ [INDIA] @arenda_goa_gub: No user has "arenda_goa_gub" as username
+[08:55:07] [INFO] 📤 [INDIA] @goa_rent_house: 0 сообщений
+[08:55:07] [ERR] ❌ @goa_rent_house → @indiaparsing: You can't write in this chat (caused by SendMessageRequest)
+[08:55:05] [INFO] 📤 [INDIA] @goa_arendaa: 0 сообщений
+[08:55:04] [INFO] ── ЗАДАЧА 1: принудительная пересылка истории ──
+[08:55:04] [WARN] ⚠️ @rentbali_villa: A wait of 1283 seconds is required (caused by JoinChannelRequest)
+[08:55:04] [WARN] ⚠️ @kvartira_bali: A wait of 1283 seconds is required (caused by JoinChannelRequest)
+[08:55:04] [WARN] ⚠️ @estetico_estate: A wait of 1283 seconds is required (caused by JoinChannelRequest)
+[08:55:04] [WARN] ⚠️ @bali_arenda1: A wait of 1283 seconds is required (caused by JoinChannelRequest)
+[08:55:03] [WARN] ⚠️ @baliveruspraedium: No user has "baliveruspraedium" as username
+[08:55:03] [WARN] ⚠️ @onerealestatebali: A wait of 1284 seconds is required (caused by JoinChannelRequest)
+[08:55:03] [WARN] ⚠️ @bali_appart: A wait of 1284 seconds is required (caused by JoinChannelRequest)
+[08:55:01] [OK] ✅ @CHAT_BALI_REAL_ESTATE
+[08:54:56] [WARN] ⚠️ @homegoa: You have successfully requested to join this chat or channel (caused by JoinChannelRequest)
+[08:54:54] [OK] ✅ @arendagoaarambol
+[08:54:52] [OK] ✅ @House_for_rent_Goa
+[08:54:51] [WARN] ⚠️ @goa_appart: You have successfully requested to join this chat or channel (caused by JoinChannelRequest)
+[08:54:49] [OK] ✅ @Arenda_Zhilya_Indiya
+[08:54:47] [OK] ✅ @HousingBangalore
+[08:54:45] [OK] ✅ @goa_siolim_realty
+[08:54:45] [WARN] ⚠️ @myflats: You have successfully requested to join this chat or channel (caused by JoinChannelRequest)
+[08:54:43] [OK] ✅ @GoaRentl
+[08:54:41] [OK] ✅ @goaRentAll
+[08:54:40] [WARN] ⚠️ @arenda_goa_gub: No user has "arenda_goa_gub" as username
+[08:54:40] [WARN] ⚠️ @goa_rent_house: You have successfully requested to join this chat or channel (caused by JoinChannelRequest)
+[08:54:38] [OK] ✅ @goa_arendaa
+[08:54:37] [OK] ✅ Подключено к Telegram
+[08:54:36] [INFO] === PARSER START ===
