@@ -8613,8 +8613,9 @@ def tg_auth_india_push_hf():
     if not new_sess:
         return jsonify({'ok': False, 'error': 'Нет сессии'})
     try:
+        _hf_token = os.environ.get('HF_TOKEN', '')
         from huggingface_hub import HfApi as _HF
-        _hf = _HF(token='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')
+        _hf = _HF(token=_hf_token)
         path = _hf.hf_hub_download('poweramanita/indiaparsing', 'app.py', repo_type='space')
         with open(path) as f:
             src = f.read()
@@ -8627,8 +8628,7 @@ def tg_auth_india_push_hf():
         _hf.upload_file(path_or_fileobj=buf, path_in_repo='app.py',
                         repo_id='poweramanita/indiaparsing', repo_type='space',
                         commit_message='update: new Telethon session string')
-        _hf.restart_space('poweramanita/indiaparsing',
-                          token='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')
+        _hf.restart_space('poweramanita/indiaparsing', token=_hf_token)
         return jsonify({'ok': True, 'message': 'HF Space обновлён и перезапущен!'})
     except Exception as e:
         return jsonify({'ok': False, 'error': str(e)})

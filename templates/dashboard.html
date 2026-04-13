@@ -9261,7 +9261,13 @@
                                                 mapsHref = 'https://www.google.com/maps/search/?api=1&query=' + _query;
                                             }
                                             const _ui2 = (translations[currentLang] || translations['ru']).ui;
-                                            const _btnLabel = category === 'restaurants' ? (_ui2.locationMap || '📍Локация Google Maps') : (_ui2.venue || '📍Место проведения Google Maps');
+                                            const _btnLabel = category === 'restaurants' ? (_ui2.locationMap || '📍Локация Google Maps') : '🗺 Google Maps';
+                                            if (category === 'entertainment' && currentCountry === 'india' && item.telegram_link) {
+                                                return '<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">'
+                                                    + '<a href="' + mapsHref + '" target="_blank" onclick="event.stopPropagation()" style="display:block;background:transparent;border:2px solid #d4af37;color:#d4af37;padding:11px;border-radius:8px;text-align:center;text-decoration:none;font-weight:700;font-size:14px;box-sizing:border-box;">🗺 Google Maps</a>'
+                                                    + '<a href="' + item.telegram_link + '" target="_blank" onclick="event.stopPropagation()" style="display:block;background:transparent;border:2px solid #d4af37;color:#d4af37;padding:11px;border-radius:8px;text-align:center;text-decoration:none;font-weight:700;font-size:14px;box-sizing:border-box;">🎟 Билеты</a>'
+                                                    + '</div>';
+                                            }
                                             return '<a href="' + mapsHref + '" target="_blank" onclick="event.stopPropagation()" style="display:block;width:100%;background:transparent;border:2px solid #d4af37;color:#d4af37;padding:11px;border-radius:8px;text-align:center;text-decoration:none;font-weight:700;font-size:14px;box-sizing:border-box;">' + _btnLabel + '</a>';
                                         })()
                                         : `<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 10px;">
