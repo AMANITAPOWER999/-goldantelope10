@@ -1269,9 +1269,50 @@ def get_listings(category):
     if category == 'tours' and country == 'vietnam':
         filtered = [x for x in filtered if x.get('source_group') == 'GAtours_vn']
 
-    # Недвижимость Индии и Индонезии — только с фото
-    if category == 'real_estate' and country in ('india', 'indonesia'):
-        filtered = [x for x in filtered if x.get('image_url') and str(x['image_url']).strip()]
+    # Недвижимость — убираем посты от самих каналов-агрегаторов (не из источника)
+    _OWN_PARSE_CH = {'@parsing_vn', '@parsing_th', '@baikeparsing_vn', '@baikeparsing_th',
+                     '@chatparsing_vn', '@tusaparsing_vn'}
+    if category == 'real_estate':
+        filtered = [x for x in filtered if x.get('contact', '').lower() not in {c.lower() for c in _OWN_PARSE_CH}]
+
+    # Недвижимость — определяем логотип канала (фото встречающееся в 3+ объявлениях) и удаляем его
+    if category == 'real_estate':
+        from collections import Counter as _Counter
+        _fp_counter = _Counter()
+        for _x in filtered:
+            _seen = set()
+            for _p in ([_x.get('image_url')] if _x.get('image_url') else []) + list(_x.get('photos', [])):
+                if not _p:
+                    continue
+                _fp = _p.split('/file/')[-1][:40] if '/file/' in str(_p) else str(_p)[:40]
+                if _fp not in _seen:
+                    _fp_counter[_fp] += 1
+                    _seen.add(_fp)
+        _logo_fps = {fp for fp, cnt in _fp_counter.items() if cnt >= 3}
+
+        def _strip_logos(item):
+            if not _logo_fps:
+                return item
+            item = dict(item)
+            def _is_logo(url):
+                if not url:
+                    return False
+                fp = url.split('/file/')[-1][:40] if '/file/' in str(url) else str(url)[:40]
+                return fp in _logo_fps
+            if _is_logo(item.get('image_url')):
+                # Попробуем взять следующее фото
+                remaining = [p for p in item.get('photos', []) if not _is_logo(p)]
+                item['image_url'] = remaining[0] if remaining else None
+                item['photos'] = remaining
+            else:
+                item['photos'] = [p for p in item.get('photos', []) if not _is_logo(p)]
+            return item
+
+        filtered = [_strip_logos(x) for x in filtered]
+
+    # Недвижимость всех стран — только с фото
+    if category == 'real_estate':
+        filtered = [x for x in filtered if x.get('image_url') and str(x.get('image_url', '')).strip()]
 
     # Развлечения Индии — только события в окне 14 дней (не прошедшие и не слишком далёкие)
     if category == 'entertainment' and country == 'india':
