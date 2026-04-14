@@ -42,3 +42,4 @@ run = ["gunicorn", "--bind", "0.0.0.0:5000", "main:app"]
 
 [userenv.shared]
 TELEGRAM_BOT_TOKEN = "7908739225:AAGIHeOxAi5Lr3rVcFnhsuq7JsTcItYzXSw"
+HF_TOKEN = "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"
