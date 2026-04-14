@@ -32,7 +32,7 @@ online_users = {}
 ONLINE_TIMEOUT = 60
 BASE_ONLINE = 287
 
-TELEGRAM_BOT_TOKEN = os.environ.get('TELEGRAM_BOT_TOKEN', '')
+TELEGRAM_BOT_TOKEN = os.environ.get('TELEGRAM_BOT_TOKEN', '').strip().strip()
 TELEGRAM_CHAT_ID = os.environ.get('TELEGRAM_CHAT_ID', '')
 
 def send_telegram_notification(message):
@@ -2058,7 +2058,7 @@ def banner_image_proxy(msg_id):
 
     # 1) Попробуем Bot API (полное качество) если есть file_id
     file_id = _get_banner_file_id(msg_id)
-    tg_token = os.environ.get('TELEGRAM_BOT_TOKEN', '')
+    tg_token = os.environ.get('TELEGRAM_BOT_TOKEN', '').strip()
     if file_id and tg_token:
         try:
             gf = requests.get(
@@ -2235,7 +2235,7 @@ def delivery_order():
     }
     _save_delivery_order(order)
 
-    bot_token = os.environ.get('TELEGRAM_BOT_TOKEN', '')
+    bot_token = os.environ.get('TELEGRAM_BOT_TOKEN', '').strip()
     admin_chat = os.environ.get('DELIVERY_ADMIN_CHAT', '-1003927701676')
     msg_text = (
         f"💸 Заявка на доставку наличных\n\n"
@@ -2325,7 +2325,7 @@ def book_tour():
     }
     _save_tour_order(order)
 
-    bot_token = os.environ.get('TELEGRAM_BOT_TOKEN', '')
+    bot_token = os.environ.get('TELEGRAM_BOT_TOKEN', '').strip()
     admin_chat = os.environ.get('TOUR_ADMIN_CHAT', os.environ.get('DELIVERY_ADMIN_CHAT', '-1003927701676'))
     msg_text = (
         f"🧳 Заявка на Экскурсию\n\n"
@@ -2401,7 +2401,7 @@ def book_visarun():
     }
     _save_visarun_order(order)
 
-    bot_token = os.environ.get('TELEGRAM_BOT_TOKEN', '')
+    bot_token = os.environ.get('TELEGRAM_BOT_TOKEN', '').strip()
     admin_chat = os.environ.get('VISARUN_ADMIN_CHAT', os.environ.get('DELIVERY_ADMIN_CHAT', '-1003927701676'))
     msg_text = (
         f"🛂 Заявка на Визаран\n\n"
@@ -3632,7 +3632,7 @@ def bot_webhook():
 @app.route('/bot/setup', methods=['POST'])
 def setup_bot_webhook():
     import requests
-    bot_token = os.environ.get('TELEGRAM_BOT_TOKEN')
+    bot_token = os.environ.get('TELEGRAM_BOT_TOKEN', '').strip()
     domains = os.environ.get('REPLIT_DOMAINS', '')
     
     if domains:
@@ -3771,7 +3771,7 @@ def _prewarm_restaurant_file_paths():
     from concurrent.futures import ThreadPoolExecutor, as_completed
     import time as _time
     _time.sleep(10)
-    bot_token = os.environ.get('TELEGRAM_BOT_TOKEN', '')
+    bot_token = os.environ.get('TELEGRAM_BOT_TOKEN', '').strip()
     if not bot_token:
         return
     try:
@@ -3826,7 +3826,7 @@ def _prewarm_restaurant_disk_photos():
     После этого /tg_img/ отдаёт с диска — CDN не используется совсем."""
     import time as _t
     _t.sleep(25)  # подождать пока индекс file_id построится
-    bot_token = os.environ.get('TELEGRAM_BOT_TOKEN', '')
+    bot_token = os.environ.get('TELEGRAM_BOT_TOKEN', '').strip()
     if not bot_token:
         logger.warning('[disk_prewarm] Нет TELEGRAM_BOT_TOKEN, прогрев пропущен')
         return
@@ -3872,7 +3872,7 @@ threading.Thread(target=_prewarm_restaurant_disk_photos, daemon=True, name='Disk
 def tg_photo_redirect(file_id):
     """Редирект на прямую ссылку Telegram CDN через Bot API getFile.
     Браузер скачивает фото напрямую с серверов Telegram — без серверного скачивания."""
-    bot_token = os.environ.get('TELEGRAM_BOT_TOKEN', '')
+    bot_token = os.environ.get('TELEGRAM_BOT_TOKEN', '').strip()
     if not bot_token:
         return Response(status=503)
     try:
@@ -3900,7 +3900,7 @@ def tg_photo_redirect(file_id):
 @app.route('/tg_file/<path:file_id>')
 def tg_file_proxy(file_id):
     """Get direct Telegram file via Bot API (admin) and stream to browser. No CDN."""
-    bot_token = os.environ.get('TELEGRAM_BOT_TOKEN', '')
+    bot_token = os.environ.get('TELEGRAM_BOT_TOKEN', '').strip()
     if not bot_token:
         return Response(status=503)
     try:
@@ -3983,7 +3983,7 @@ def _auto_delete_webhook():
     import time as _time
     _time.sleep(3)
     try:
-        bot_token = os.environ.get('TELEGRAM_BOT_TOKEN', '')
+        bot_token = os.environ.get('TELEGRAM_BOT_TOKEN', '').strip()
         if not bot_token:
             return
         r = requests.post(
@@ -4017,7 +4017,7 @@ def _gavibeshub_poller():
 
     _time.sleep(10)  # дать приложению запуститься
 
-    bot_token = os.environ.get('TELEGRAM_BOT_TOKEN', '')
+    bot_token = os.environ.get('TELEGRAM_BOT_TOKEN', '').strip()
     if not bot_token:
         logger.warning('[gavibeshub_poller] TELEGRAM_BOT_TOKEN не задан — поллер отключён')
         return
@@ -4726,7 +4726,7 @@ def tg_photo_proxy(channel, post_id):
         except Exception:
             pass
 
-    bot_token = os.environ.get('TELEGRAM_BOT_TOKEN', '')
+    bot_token = os.environ.get('TELEGRAM_BOT_TOKEN', '').strip()
     img_data = None
 
     # 2. CDN scraping — полноразмерные фото из публичного viewer t.me/s/channel
@@ -5314,7 +5314,7 @@ def manual_parse():
 TELEGRAM_PHOTO_CHANNEL = '-1003577636318'
 
 def send_photo_to_group(image_data, listing, chat_id):
-    bot_token = os.environ.get('TELEGRAM_BOT_TOKEN')
+    bot_token = os.environ.get('TELEGRAM_BOT_TOKEN', '').strip()
     if not bot_token:
         return None
     try:
@@ -5355,7 +5355,7 @@ def send_photo_to_group(image_data, listing, chat_id):
 
 def send_photo_to_channel(image_data, caption=''):
     """Отправить фото в Telegram канал и получить file_id для постоянного хранения"""
-    bot_token = os.environ.get('TELEGRAM_BOT_TOKEN')
+    bot_token = os.environ.get('TELEGRAM_BOT_TOKEN', '').strip()
     if not bot_token:
         print("TELEGRAM: Bot token not found!")
         return None
@@ -5394,7 +5394,7 @@ _TG_URL_TTL = 3000  # seconds (~50 min, Telegram links valid ~1 hour)
 
 def get_telegram_photo_url(file_id):
     """Получить актуальный URL фото по file_id (с кешированием на 50 мин)"""
-    bot_token = os.environ.get('TELEGRAM_BOT_TOKEN')
+    bot_token = os.environ.get('TELEGRAM_BOT_TOKEN', '').strip()
     if not bot_token or not file_id:
         return None
     # Check cache
@@ -5432,7 +5432,7 @@ def _refresh_photo_urls_parallel(items):
     1. If image_url has a Telegram file path, replace the (possibly old) bot token.
     2. Otherwise, call getFile API with telegram_file_id to get a fresh path.
     """
-    bot_token = os.environ.get('TELEGRAM_BOT_TOKEN', '')
+    bot_token = os.environ.get('TELEGRAM_BOT_TOKEN', '').strip()
     if not bot_token:
         return
 
@@ -5526,7 +5526,7 @@ def find_chat_id_by_username(username):
     if username_lower in users:
         return users[username_lower]
     
-    bot_token = os.environ.get('TELEGRAM_BOT_TOKEN')
+    bot_token = os.environ.get('TELEGRAM_BOT_TOKEN', '').strip()
     if not bot_token:
         return None
     
@@ -5570,7 +5570,7 @@ def request_chat_code():
     message = f"🔐 Ваш код для чата GoldAntelope:\n\n<b>{code}</b>\n\nКод действителен 10 минут."
     
     try:
-        bot_token = os.environ.get('TELEGRAM_BOT_TOKEN')
+        bot_token = os.environ.get('TELEGRAM_BOT_TOKEN', '').strip()
         if bot_token:
             url = f"https://api.telegram.org/bot{bot_token}/sendMessage"
             resp = requests.post(url, json={'chat_id': chat_id, 'text': message, 'parse_mode': 'HTML'}, timeout=10)
@@ -6201,7 +6201,7 @@ def _run_fetch_empty():
     def _post_to_channel(grp, item):
         """Отправляет одно объявление в нужный Telegram-канал через Bot API."""
         import requests as _req
-        bot_token = os.environ.get('VIETNAMPARSING_BOT_TOKEN') or os.environ.get('TELEGRAM_BOT_TOKEN', '')
+        bot_token = os.environ.get('VIETNAMPARSING_BOT_TOKEN') or os.environ.get('TELEGRAM_BOT_TOKEN', '').strip()
         if not bot_token:
             return
         dst = _DST_CHANNELS.get(grp)
@@ -6442,7 +6442,7 @@ def _run_forward_100(only_groups=None):
         'error': None,
     })
 
-    bot_token = os.environ.get('VIETNAMPARSING_BOT_TOKEN') or os.environ.get('TELEGRAM_BOT_TOKEN', '')
+    bot_token = os.environ.get('VIETNAMPARSING_BOT_TOKEN') or os.environ.get('TELEGRAM_BOT_TOKEN', '').strip()
     if not bot_token:
         _FWD100_STATE.update({'running': False, 'done': True, 'error': 'no bot token'})
         return
@@ -6737,7 +6737,7 @@ def _run_forward_custom(channels, dst_channel, limit_per_channel):
         'current': 'init', 'results': {}, 'error': None,
     })
 
-    bot_token = os.environ.get('VIETNAMPARSING_BOT_TOKEN') or os.environ.get('TELEGRAM_BOT_TOKEN', '')
+    bot_token = os.environ.get('VIETNAMPARSING_BOT_TOKEN') or os.environ.get('TELEGRAM_BOT_TOKEN', '').strip()
     if not bot_token:
         _FWDCUSTOM_STATE.update({'running': False, 'done': True, 'error': 'no bot token'})
         return
@@ -8228,7 +8228,7 @@ def _run_restaurant_poster():
 
     CHANNEL = '@restoranvietnam'
     PROGRESS_FILE = 'post_progress.json'
-    bot_token = os.environ.get('TELEGRAM_BOT_TOKEN', '')
+    bot_token = os.environ.get('TELEGRAM_BOT_TOKEN', '').strip()
     if not bot_token:
         _poster_status['running'] = False
         return
