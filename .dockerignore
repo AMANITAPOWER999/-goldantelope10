@@ -1,0 +1,14 @@
+.git
+.gitattributes
+.local
+.cache
+.pythonlibs
+__pycache__
+*.pyc
+*.pyo
+node_modules
+tg_users_database.json
+tg_photo_cache.json
+raw_dump.json
+post_progress.json
+*.session

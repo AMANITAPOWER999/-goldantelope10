@@ -1,0 +1,5 @@
+tg_users_database.json filter=lfs diff=lfs merge=lfs -text
+tg_photo_cache.json filter=lfs diff=lfs merge=lfs -text
+listings_data.json filter=lfs diff=lfs merge=lfs -text
+raw_dump.json filter=lfs diff=lfs merge=lfs -text
+*.session filter=lfs diff=lfs merge=lfs -text
