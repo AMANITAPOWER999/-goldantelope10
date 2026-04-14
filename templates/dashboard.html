@@ -6585,8 +6585,8 @@
                 });
                 const isDark = document.documentElement.classList.contains('dark');
                 feed.innerHTML = sorted.slice(0, 60).map(item => {
-                    const src = (item.source_channel || '').replace('@','');
-                    const link = item.tg_link || (src && item.message_id ? `https://t.me/${src}/${item.message_id}` : null);
+                    const src = _resolveChannelName(item);
+                    const link = item.telegram_link || item.tg_link || (src && item.message_id ? `https://t.me/${src}/${item.message_id}` : null);
                     let dateStr = '';
                     if (item.date) {
                         const d = new Date(item.date);
@@ -6737,8 +6737,8 @@
                 });
                 const isDark = document.documentElement.classList.contains('dark');
                 feed.innerHTML = sorted.slice(0, 60).map(item => {
-                    const src = (item.source_channel || '').replace('@','');
-                    const link = item.tg_link || (src && item.message_id ? `https://t.me/${src}/${item.message_id}` : null);
+                    const src = _resolveChannelName(item);
+                    const link = item.telegram_link || item.tg_link || (src && item.message_id ? `https://t.me/${src}/${item.message_id}` : null);
                     let dateStr = '';
                     if (item.date) {
                         const d = new Date(item.date);

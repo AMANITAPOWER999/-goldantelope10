@@ -61,9 +61,9 @@
         "user_7gw0kaw37_1776174900459",
         "user_ofimmeywr_1776176889423"
       ],
-      "page_views": 941,
+      "page_views": 947,
       "countries": {
-        "vietnam": 919,
+        "vietnam": 925,
         "thailand": 20,
         "india": 2
       },
@@ -75,8 +75,8 @@
         "realestate": 78,
         "restaurants": 15,
         "visas": 2,
-        "exchange": 3,
-        "chat": 9
+        "exchange": 4,
+        "chat": 14
       },
       "hours": {
         "03": 27,
@@ -90,12 +90,12 @@
         "11": 122,
         "12": 119,
         "13": 130,
-        "14": 74
+        "14": 80
       },
       "referrers": {},
       "devices": {
         "mobile": 10,
-        "desktop": 931
+        "desktop": 937
       }
     }
   },
@@ -107,7 +107,7 @@
     },
     "user_aazl70g7k_1776027407849": {
       "first_seen": "2026-04-13",
-      "visits": 1987,
+      "visits": 1993,
       "last_seen": "2026-04-14"
     },
     "user_wfkjt6juo_1776076058238": {
