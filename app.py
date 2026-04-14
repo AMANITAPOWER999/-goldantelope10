@@ -1906,6 +1906,12 @@ def add_listing():
     
     category = listing.get('category')
     if category and category in data:
+        # Запрет: недвижимость без фото не принимаем
+        if category == 'real_estate':
+            photos = listing.get('photos', []) or []
+            img = listing.get('image_url', '') or ''
+            if not photos and not img:
+                return jsonify({'error': 'Объявления недвижимости без фото не принимаются'}), 400
         listing['added_at'] = datetime.now().isoformat()
         data[category].append(listing)
         save_data(country, data)
@@ -7916,6 +7922,11 @@ async def _fetch_history_telethon():
                     continue
                 text = (msg.text or msg.message or '') if hasattr(msg, 'text') else ''
                 if not text or len(text) < 20 or is_spam(text):
+                    continue
+
+                # Запрет: недвижимость без фото не добавляем
+                has_photo = bool(msg.photo or (hasattr(msg, 'media') and msg.media and hasattr(msg.media, 'photo') and msg.media.photo))
+                if not has_photo:
                     continue
 
                 item_id = f'thailand_{msg.id}'

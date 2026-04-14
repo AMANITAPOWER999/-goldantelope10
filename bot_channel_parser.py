@@ -429,6 +429,10 @@ def run():
             if not raw_title or raw_title in SKIP_TITLES:
                 logger.info(f'[{channel}] Пропуск системного поста {msg_id}: «{raw_title}»')
                 continue
+            # Запрет: недвижимость без фото не добавляем
+            if category == 'real_estate' and not post.get('photos'):
+                logger.info(f'[{channel}] Пропуск real_estate без фото: msg_id={msg_id}')
+                continue
             new_item = make_listing(channel, msg_id, post, category, country, logo_fps=logo_fps)
             updated_listings.insert(0, new_item)
             existing_ids.add(item_id)
