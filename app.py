@@ -1371,25 +1371,40 @@ def get_listings(category):
                 'Бангалор': ['бангалор', 'bangalore', 'bengaluru'],
             }
             
-            targets = city_keywords_map.get(city_filter, [city_filter.lower()])
-            
+            # Нормализуем city_filter: 'nhatrang' → 'Нячанг' через обратный маппинг
+            _alias_to_ru = {}
+            for _ru_name, _variants in city_keywords_map.items():
+                for _v in _variants:
+                    _alias_to_ru[_v] = _ru_name
+            city_filter_norm = _alias_to_ru.get(city_filter.lower(), city_filter)
+            targets = city_keywords_map.get(city_filter_norm, city_keywords_map.get(city_filter, [city_filter.lower()]))
+
             def matches_city(item):
                 item_city = str(item.get('city', '')).lower()
                 item_location = str(item.get('location', '')).lower()
                 item_realestate_city = str(item.get('realestate_city', '')).lower()
-                search_text = f"{item.get('title', '')} {item.get('description', '')}".lower()
-                
-                # Если город не указан, считаем что подходит для всех городов (показываем всё)
+                # Ищем в title + description + text (description может быть пустым)
+                search_text = (
+                    str(item.get('title', '')) + ' ' +
+                    str(item.get('description', '')) + ' ' +
+                    str(item.get('text', ''))
+                ).lower()
+
+                # Если город не указан — показываем для любого города
                 if not item_city and not item_location and not item_realestate_city:
                     return True
-                
-                # Туры/экскурсии с общестрановым городом ("вьетнам", "vietnam", "thailand" и т.п.)
-                # показываем для любого выбранного города этой страны
+
+                # Страновой уровень ("вьетнам", "таиланд") — показываем для любого города этой страны
                 _country_level = ['вьетнам', 'vietnam', 'thailand', 'таиланд', 'india', 'индия', 'indonesia', 'индонезия']
-                if category == 'tours' and any(cl in item_city for cl in _country_level):
+                if any(cl in item_city for cl in _country_level):
+                    # Ищем город хотя бы в тексте объявления
+                    for t in targets:
+                        if t in search_text:
+                            return True
+                    # Если в тексте не нашли — всё равно показываем (общестрановое объявление)
                     return True
 
-                # Проверяем поля city, location и realestate_city
+                # Проверяем поля city, location, realestate_city
                 for t in targets:
                     if t in item_city or t in item_location or t in item_realestate_city:
                         return True
@@ -1641,7 +1656,20 @@ def get_listings(category):
                     'тайланд': ['тайланд', 'thailand'],
                 }
                 targets = city_mapping.get(city_filter, [city_filter])
-                filtered = [x for x in filtered if any(t in str(x.get('city', '')).lower() or t in str(x.get('city_ru', '')).lower() for t in targets)]
+                _country_lvl = ['вьетнам', 'vietnam', 'thailand', 'таиланд', 'india', 'индия', 'indonesia', 'индонезия']
+                def _re_city_match(x):
+                    item_city = str(x.get('city', '')).lower()
+                    item_city_ru = str(x.get('city_ru', '')).lower()
+                    # Страновой уровень — показываем для любого города страны
+                    if any(cl in item_city or cl in item_city_ru for cl in _country_lvl):
+                        return True
+                    # Проверяем city/city_ru
+                    if any(t in item_city or t in item_city_ru for t in targets):
+                        return True
+                    # Проверяем в тексте объявления
+                    _txt = (str(x.get('title', '')) + ' ' + str(x.get('text', ''))).lower()
+                    return any(t in _txt for t in targets)
+                filtered = [x for x in filtered if _re_city_match(x)]
         
         if 'listing_type' in filters and filters['listing_type']:
             type_filter = filters['listing_type']
