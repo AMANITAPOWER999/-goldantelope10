@@ -1063,12 +1063,12 @@ def _enrich_tg_images(items):
         # Real estate: convert expired telesco.pe CDN URLs to /tg_img/ proxy
         item_id = item.get('id', '') or ''
         tg_link = item.get('telegram_link', '') or ''
-        m_vn = re.search(r't\.me/(vietnamparsing)/(\d+)', tg_link)
+        m_vn = re.search(r't\.me/(vietnamparsing|dom_vn)/(\d+)', tg_link)
         if not m_vn:
-            m_vn = re.match(r'(vietnamparsing)_(\d+)', item_id)
-        m_th = re.search(r't\.me/(thailandparsing)/(\d+)', tg_link)
+            m_vn = re.match(r'(vietnamparsing|dom_vn)_(\d+)', item_id)
+        m_th = re.search(r't\.me/(thailandparsing|doma_th)/(\d+)', tg_link)
         if not m_th:
-            m_th = re.match(r'(thailandparsing)_(\d+)', item_id)
+            m_th = re.match(r'(thailandparsing|doma_th)_(\d+)', item_id)
         m_chan = m_vn or m_th
         if m_chan:
             chan = m_chan.group(1)
@@ -3379,12 +3379,12 @@ def admin_moderate():
                 'vietnam': '@restoranvietnam',
             },
             'real_estate': {
-                'vietnam': '@vietnamparsing',
-                'thailand': '@thailandparsing',
+                'vietnam': '@dom_vn',
+                'thailand': '@doma_th',
             },
             'transport': {
-                'vietnam': '@baykivietnam',
-                'thailand': '@baykithailand',
+                'vietnam': '@bayk_vn',
+                'thailand': '@bayk_th',
             },
             'visas': {
                 'vietnam': '@vizaranvietnam',
@@ -4309,11 +4309,11 @@ logger.info('GAvibeshub background poller started (every %ds)', GAVIBESHUB_POLL_
 
 # ─── Периодический скрейпер всех каналов (t.me/s/) ────────────────────────
 _PERIODIC_SCRAPE_CHANNELS = [
-    ('vietnamparsing',  'real_estate',    'listings_vietnam.json',  'vietnam'),
-    ('thailandparsing', 'real_estate',    'listings_thailand.json', 'thailand'),
+    ('dom_vn',          'real_estate',    'listings_vietnam.json',  'vietnam'),
+    ('doma_th',         'real_estate',    'listings_thailand.json', 'thailand'),
     ('visarun_vn',      'visas',          'listings_vietnam.json',  'vietnam'),
     ('paymens_vn',      'money_exchange', 'listings_vietnam.json',  'vietnam'),
-    ('baykivietnam',    'transport',      'listings_vietnam.json',  'vietnam'),
+    ('bayk_vn',         'transport',      'listings_vietnam.json',  'vietnam'),
     ('GAtours_vn',      'tours',          'listings_vietnam.json',  'vietnam'),
     ('vibeshub_vn',     'entertainment',  'listings_vietnam.json',  'vietnam'),
     ('restoranvietnam', 'restaurants',    'listings_vietnam.json',  'vietnam'),
@@ -6190,9 +6190,11 @@ def _run_fetch_empty():
 
     # Маппинг группы → канал-получатель
     _DST_CHANNELS = {
-        'BIKE': 'baykivietnam',
-        'VIET': 'vietnamparsing',
-        'THAI': 'thailandparsing',
+        'BIKE':    'bayk_vn',
+        'BIKE_TH': 'bayk_th',
+        'VIET':    'dom_vn',
+        'THAI':    'doma_th',
+        'CHAT':    'chati_vn',
     }
 
     def _post_to_channel(grp, item):

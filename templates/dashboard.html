@@ -5969,7 +5969,7 @@
             let images = [...new Set([..._p, ..._a, ..._img, ..._single])].filter(isRealPhoto);
             if (category === 'real_estate') {
                 images = images.filter(url => url && typeof url === 'string' &&
-                    (/^https:\/\/t\.me\/(vietnamparsing|thailandparsing)\/\d+$/.test(url) || url.includes('telesco.pe') || url.startsWith('/tg_img/')));
+                    (/^https:\/\/t\.me\/(vietnamparsing|dom_vn|thailandparsing|doma_th)\/\d+$/.test(url) || url.includes('telesco.pe') || url.startsWith('/tg_img/')));
                 images = images.map(url => {
                     const tmeMatch = url.match(/^https:\/\/t\.me\/([^\/]+)\/(\d+)$/);
                     if (tmeMatch) return `/tg_img/${tmeMatch[1]}/${tmeMatch[2]}`;
@@ -8816,7 +8816,7 @@
                         let images = [...new Set([..._p2, ..._a2])].filter(u => u && !u.includes('/img/emoji') && !u.includes('telegram.org/img/emoji'));
                         if (category === 'real_estate' || category === 'realestate') {
                             images = images.filter(url => url && typeof url === 'string' &&
-                                (/^https:\/\/t\.me\/(vietnamparsing|thailandparsing)\/\d+$/.test(url) || url.includes('telesco.pe') || url.startsWith('/tg_img/') || url.startsWith('/static/')));
+                                (/^https:\/\/t\.me\/(vietnamparsing|dom_vn|thailandparsing|doma_th)\/\d+$/.test(url) || url.includes('telesco.pe') || url.startsWith('/tg_img/') || url.startsWith('/static/')));
                             images = images.map(url => {
                                 const tmeMatch = url.match(/^https:\/\/t\.me\/([^\/]+)\/(\d+)$/);
                                 if (tmeMatch) return `/tg_img/${tmeMatch[1]}/${tmeMatch[2]}`;
@@ -9275,7 +9275,7 @@
                                             if (category === 'entertainment' && currentCountry === 'india') {
                                                 return '';
                                             }
-                                            const tgGroup = currentCountry === 'thailand' ? 'https://t.me/thailandparsing' : (category === 'restaurants' ? 'https://t.me/restoranvietnam' : 'https://t.me/vietnamparsing');
+                                            const tgGroup = currentCountry === 'thailand' ? 'https://t.me/doma_th' : (category === 'restaurants' ? 'https://t.me/restoranvietnam' : 'https://t.me/dom_vn');
                                             return '<a href="' + tgGroup + '" target="_blank" style="display: block; background: transparent; border: 2px solid #0088cc; color: #0088cc; padding: 10px; border-radius: 6px; text-align: center; text-decoration: none; font-weight: 600;">\u2708\uFE0F Group TG</a>';
                                         })()}
                                         ${(function() {
@@ -10248,7 +10248,7 @@
                             ${contactSource ? `<p style="margin:0;font-size:13px;color:#666;">👤 Источник: <b>${contactSource}</b></p>` : ''}
                         </div>
                         <div style="display:flex;flex-direction:column;gap:10px;">
-                            <a href="${currentCountry === 'thailand' ? 'https://t.me/thailandparsing' : (category === 'restaurants' ? 'https://t.me/restoranvietnam' : 'https://t.me/vietnamparsing')}" target="_blank" style="display:block;background:#0088cc;text-decoration:none;text-align:center;padding:12px;border-radius:8px;color:white;font-size:14px;font-weight:600;">✈️ Group TG — ${currentCountry === 'thailand' ? '@thailandparsing' : (category === 'restaurants' ? '@restoranvietnam' : '@vietnamparsing')}</a>
+                            <a href="${currentCountry === 'thailand' ? 'https://t.me/doma_th' : (category === 'restaurants' ? 'https://t.me/restoranvietnam' : 'https://t.me/dom_vn')}" target="_blank" style="display:block;background:#0088cc;text-decoration:none;text-align:center;padding:12px;border-radius:8px;color:white;font-size:14px;font-weight:600;">✈️ Group TG — ${currentCountry === 'thailand' ? '@doma_th' : (category === 'restaurants' ? '@restoranvietnam' : '@dom_vn')}</a>
                             ${contactChannelUrl ? `<a href="${contactChannelUrl}" target="_blank" style="display:block;background:#0088cc;text-decoration:none;text-align:center;padding:12px;border-radius:8px;color:white;font-size:14px;font-weight:600;">✈️ Написать в Telegram: ${contactSource}</a>` : ''}
                             ${postLink ? `<a href="${postLink}" target="_blank" style="display:block;background:#d4af37;text-decoration:none;text-align:center;padding:12px;border-radius:8px;color:white;font-size:14px;font-weight:600;">🔗 Оригинал объявления</a>` : ''}
                         </div>
@@ -11675,7 +11675,7 @@
             marketplace: 'Барахолка', money_exchange: 'Финансы',
         };
         const COUNTRY_FLAGS = {vietnam:'🇻🇳', thailand:'🇹🇭', india:'🇮🇳', indonesia:'🇮🇩'};
-        const HF_DEST = {THAI:'@thailandparsing', VIET:'@vietnamparsing', BIKE:'@visaranvietnam'};
+        const HF_DEST = {THAI:'@doma_th', VIET:'@dom_vn', BIKE:'@bayk_vn', BIKE_TH:'@bayk_th', CHAT:'@chati_vn'};
 
         function toggleMonAutoRefresh(on) {
             clearInterval(_monAutoTimer);
@@ -11733,9 +11733,9 @@
             const c = ch.toLowerCase();
             if (CHAT_VN_SET.has(c)) return {country:'🇻🇳 Вьетнам', dest:'@chatiparsing'};
             if (CHAT_TH_SET.has(c)) return {country:'🇹🇭 Таиланд', dest:'@chatiparsing'};
-            if (RE_VN_SET.has(c)) return {country:'🇻🇳 Вьетнам', dest:'@vietnamparsing'};
-            if (RE_TH_SET.has(c)) return {country:'🇹🇭 Таиланд', dest:'@thailandparsing'};
-            if (BIKE_SET.has(c)) return {country:'🇻🇳 Байки', dest:'@baykivietnam'};
+            if (RE_VN_SET.has(c)) return {country:'🇻🇳 Вьетнам', dest:'@dom_vn'};
+            if (RE_TH_SET.has(c)) return {country:'🇹🇭 Таиланд', dest:'@doma_th'};
+            if (BIKE_SET.has(c)) return {country:'🇻🇳 Байки', dest:'@bayk_vn'};
             return {country:'—', dest:'—'};
         }
 
@@ -12179,8 +12179,8 @@
                 const vnChannels = hfSrcs.VIET?.length ? hfSrcs.VIET : [...RE_VN_SET];
                 const thChannels = hfSrcs.THAI?.length ? hfSrcs.THAI : [...RE_TH_SET];
                 statusDiv.innerHTML =
-                    makeMonBlock('Недвижимость Вьетнам', '🇻🇳', vnChannels, failedViet, '@vietnamparsing') +
-                    makeMonBlock('Недвижимость Таиланд', '🇹🇭', thChannels, failedThai, '@thailandparsing');
+                    makeMonBlock('Недвижимость Вьетнам', '🇻🇳', vnChannels, failedViet, '@dom_vn') +
+                    makeMonBlock('Недвижимость Таиланд', '🇹🇭', thChannels, failedThai, '@doma_th');
                 const allFailed = [...failedViet, ...failedThai];
                 if (allFailed.length) {
                     statusDiv.innerHTML += `<div style="grid-column:1/-1;background:#2a1a1a;border-radius:8px;padding:12px;border:1px solid #5a2a2a;">
@@ -12206,9 +12206,9 @@
                 const failedBike = (data.hf_space?.failed?.BIKE || []);
                 const BIKE_VN = hfSrcs.BIKE?.length ? hfSrcs.BIKE : ['bike_nhatrang','motohub_nhatrang','NhaTrang_moto_market','RentBikeUniq','BK_rental','nha_trang_rent','RentTwentyTwo22NhaTrang'];
                 const BIKE_TH = hfSrcs.BIKE_TH || [];
-                statusDiv.innerHTML = makeMonBlock('Байки Вьетнам', '🇻🇳', BIKE_VN, failedBike, '@baykivietnam');
+                statusDiv.innerHTML = makeMonBlock('Байки Вьетнам', '🇻🇳', BIKE_VN, failedBike, '@bayk_vn');
                 if (BIKE_TH.length) {
-                    statusDiv.innerHTML += makeMonBlock('Байки Таиланд', '🇹🇭', BIKE_TH, [], '@baykithailand');
+                    statusDiv.innerHTML += makeMonBlock('Байки Таиланд', '🇹🇭', BIKE_TH, [], '@bayk_th');
                 } else {
                     statusDiv.innerHTML += `<div style="background:#1a1a2e;border-radius:8px;padding:12px;border:1px solid #2a2a3d;display:flex;align-items:center;justify-content:center;">
                         <span style="color:#444;font-size:13px;">🇹🇭 Тайланд — каналы не добавлены</span>
