@@ -1920,7 +1920,7 @@ def save_banner_config(config):
     with open(BANNER_CONFIG_FILE, 'w', encoding='utf-8') as f:
         json.dump(config, f, ensure_ascii=False, indent=2)
 
-_BANNER_TG_GROUP = 'media_vn'
+_BANNER_TG_GROUP = 'banner_vn'
 _BANNER_TG_CHAT_ID = -1003825420004
 _BANNER_DATA_FILE = 'banner_data.json'
 
@@ -4135,8 +4135,8 @@ def _gavibeshub_poller():
                 chat_username = cp.get('chat', {}).get('username', '').lower()
                 chat_id_val = cp.get('chat', {}).get('id', 0)
 
-                # @media_vn → только баннеры Вьетнам, без Развлечений
-                if chat_username == 'media_vn':
+                # @banner_vn → только баннеры Вьетнам, без Развлечений
+                if chat_username == _BANNER_TG_GROUP:
                     if cp.get('photo'):
                         msg_id_b = cp.get('message_id', 0)
                         photo_list_b = cp.get('photo', [])
