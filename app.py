@@ -4100,12 +4100,46 @@ def _gavibeshub_poller():
                 text_r = cp.get('text', '') or cp.get('caption', '') or ''
                 msg_id = cp.get('message_id', 0)
 
-                # Для пересланных сообщений — берём оригинальный источник
+                # Первоисточник: forward_from_chat → ссылки в entities → ссылки в тексте
+                _AGGR = {'parsing_vn', 'parsing_th', 'chatparsing_vn', 'tusaparsing_vn',
+                         'baikeparsing_vn', 'baikeparsing_th', 'dom_vn', 'doma_th'}
+                orig_username, orig_msg_id = '', 0
+
+                # 1) Telegram forward header
                 fwd_chat = cp.get('forward_from_chat', {})
-                fwd_username = fwd_chat.get('username', '') if fwd_chat else ''
-                fwd_msg_id = cp.get('forward_from_message_id', 0)
-                orig_username = fwd_username or chat_username
-                orig_msg_id = fwd_msg_id or msg_id
+                fwd_username = (fwd_chat.get('username', '') if fwd_chat else '').lower()
+                if fwd_username and fwd_username not in _AGGR and not fwd_username.startswith('parsing_'):
+                    orig_username = fwd_username
+                    orig_msg_id = cp.get('forward_from_message_id', 0)
+
+                # 2) URL entities в тексте или подписи
+                if not orig_username:
+                    import re as _re
+                    _full_text = (cp.get('text', '') or cp.get('caption', '') or '')
+                    for _ent in (cp.get('entities') or cp.get('caption_entities') or []):
+                        _url = _ent.get('url', '')
+                        if not _url:
+                            # type=url — извлекаем из текста
+                            _off, _len = _ent.get('offset', 0), _ent.get('length', 0)
+                            _url = _full_text[_off:_off+_len]
+                        _m = _re.search(r't\.me/([^/"?\s]+)/(\d+)', _url)
+                        if _m and _m.group(1).lower() not in _AGGR and not _m.group(1).lower().startswith('parsing_'):
+                            orig_username, orig_msg_id = _m.group(1), int(_m.group(2))
+                            break
+
+                # 3) Прямой поиск t.me-ссылок в тексте
+                if not orig_username:
+                    import re as _re2
+                    _full_text2 = cp.get('text', '') or cp.get('caption', '') or ''
+                    for _m2 in _re2.finditer(r'https://t\.me/([^/"?\s]+)/(\d+)', _full_text2):
+                        _ch2 = _m2.group(1).lower()
+                        if _ch2 not in _AGGR and not _ch2.startswith('parsing_'):
+                            orig_username, orig_msg_id = _m2.group(1), int(_m2.group(2))
+                            break
+
+                # Fallback: сам агрегирующий канал
+                orig_username = orig_username or chat_username
+                orig_msg_id = orig_msg_id or msg_id
 
                 # Получаем прямую ссылку на фото через getFile (браузер грузит напрямую)
                 photos_r = []
@@ -4314,8 +4348,8 @@ logger.info('GAvibeshub background poller started (every %ds)', GAVIBESHUB_POLL_
 
 # ─── Периодический скрейпер всех каналов (t.me/s/) ────────────────────────
 _PERIODIC_SCRAPE_CHANNELS = [
-    ('dom_vn',          'real_estate',    'listings_vietnam.json',  'vietnam'),
-    ('doma_th',         'real_estate',    'listings_thailand.json', 'thailand'),
+    ('parsing_vn',      'real_estate',    'listings_vietnam.json',  'vietnam'),
+    ('parsing_th',      'real_estate',    'listings_thailand.json', 'thailand'),
     ('visarun_vn',      'visas',          'listings_vietnam.json',  'vietnam'),
     ('paymens_vn',      'money_exchange', 'listings_vietnam.json',  'vietnam'),
     ('bayk_vn',         'transport',      'listings_vietnam.json',  'vietnam'),

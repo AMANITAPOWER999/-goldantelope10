@@ -96,10 +96,25 @@ def scrape_channel_page(channel: str, before: int = None) -> dict:
         bg_urls = re.findall(r'tgme_widget_message_photo[^>]*>.*?background-image:url\(\'(https://cdn\d*\.telesco\.pe/file/[^\']+)\'\)', block_no_header, re.DOTALL)
         all_photos = list(dict.fromkeys(cdn_urls + bg_urls))  # уникальные, порядок сохранён
 
+        # Первоисточник поста: сначала "Forwarded from", потом первая t.me-ссылка не на агрегатор
+        _AGG_CHANNELS = {'parsing_vn', 'parsing_th', 'chatparsing_vn', 'tusaparsing_vn',
+                         'baikeparsing_vn', 'baikeparsing_th', 'dom_vn', 'doma_th'}
+        src_ch, src_id = '', 0
+        fwd_m = re.search(r'tgme_widget_message_forwarded_from.*?href="https://t\.me/([^/"?]+)/(\d+)"', block, re.DOTALL)
+        if fwd_m:
+            src_ch, src_id = fwd_m.group(1), int(fwd_m.group(2))
+        else:
+            for _ch, _mid in re.findall(r'href="https://t\.me/([^/"?]+)/(\d+)"', block):
+                if _ch.lower() not in _AGG_CHANNELS and not _ch.lower().startswith('parsing_'):
+                    src_ch, src_id = _ch, int(_mid)
+                    break
+
         posts[msg_id] = {
             'text': text,
             'photos': all_photos,
             'date': date_str,
+            'src_ch': src_ch,
+            'src_id': src_id,
         }
 
     return posts
@@ -243,8 +258,12 @@ def make_listing(channel: str, msg_id: int, post: dict, category: str, country: 
             for fp in logo_fps
         )]
 
+    # Первоисточник: если пост переслан из другого канала — берём его
+    src_ch = post.get('src_ch') or channel
+    src_id = post.get('src_id') or msg_id
+
     listing = {
-        'id': f'{channel}_{msg_id}',
+        'id': f'{src_ch}_{src_id}',
         'title': title,
         'description': '',
         'text': text,
@@ -253,11 +272,12 @@ def make_listing(channel: str, msg_id: int, post: dict, category: str, country: 
         'city': 'Вьетнам' if country == 'vietnam' else 'Таиланд',
         'city_ru': 'Вьетнам' if country == 'vietnam' else 'Таиланд',
         'date': date,
-        'contact': f'@{channel}',
-        'contact_name': channel,
-        'source_group': channel,
-        'telegram': f'https://t.me/{channel}',
-        'telegram_link': f'https://t.me/{channel}/{msg_id}',
+        'contact': f'@{src_ch}',
+        'contact_name': src_ch,
+        'source_group': src_ch,
+        'source_channel': channel,
+        'telegram': f'https://t.me/{src_ch}',
+        'telegram_link': f'https://t.me/{src_ch}/{src_id}',
         'image_url': photos[0] if photos else '',
         'all_images': photos,
         'photos': photos,
