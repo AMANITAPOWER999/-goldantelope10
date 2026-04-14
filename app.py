@@ -1201,6 +1201,35 @@ def get_exchange_rates():
             break
     if not date_str:
         date_str = _dt.now().strftime('%d.%m.%Y')
+
+    # Если из базы курсов нет — берём с open.er-api.com
+    if not rates:
+        import requests as _req2
+        flag_map2 = {'RUB': '🇷🇺', 'USD': '🇺🇸', 'USDT': '🏴', 'EUR': '🇪🇺',
+                     'KZT': '🇰🇿', 'KRW': '🇰🇷', 'CNY': '🇨🇳', 'THB': '🇹🇭'}
+        want2 = [('USD', 100), ('EUR', 100), ('RUB', 10000), ('KZT', 100000), ('CNY', 100), ('KRW', 100000)]
+        try:
+            resp2 = _req2.get('https://open.er-api.com/v6/latest/USD', timeout=6)
+            raw2 = resp2.json()
+            usd_rates2 = raw2.get('rates', {})
+            usd_to_vnd = usd_rates2.get('VND')
+            if usd_to_vnd:
+                for cur2, amount2 in want2:
+                    usd_to_cur2 = usd_rates2.get(cur2)
+                    if usd_to_cur2 and usd_to_cur2 > 0:
+                        vnd_val = int(round(amount2 * usd_to_vnd / usd_to_cur2))
+                        rates.append({
+                            'currency': cur2,
+                            'flag': flag_map2.get(cur2, ''),
+                            'amount': str(amount2),
+                            'vnd': f'{vnd_val:,}'.replace(',', ' '),
+                            'amount_num': amount2,
+                            'vnd_num': vnd_val,
+                        })
+                date_str = _dt.now().strftime('%d.%m.%Y %H:%M')
+        except Exception as _e2:
+            logger.warning(f'[exchange-rates fallback] {_e2}')
+
     return jsonify({
         'date': date_str,
         'rates': rates,
