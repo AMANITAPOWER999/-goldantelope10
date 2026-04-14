@@ -115,6 +115,35 @@
   ],
   "real_estate": [
     {
+      "id": "pattaya_realty_estate_780084",
+      "title": "Паттайя. Продается 1 спальня квартира в кондоминиуме Siam Tropical Garden, 37 кв.м, 4 этаж, полностью меблирована и обор",
+      "description": "Паттайя. Продается 1 спальня квартира в кондоминиуме Siam Tropical Garden, 37 кв.м, 4 этаж, полностью меблирована и оборудована, название тайской компании. Стоимость объекта: 1 200 000 бат. Так же есть другие квартиры в новостройках и на вторичном рынке Паттайи. За подробной информацией пишите нашему менеджеру: AK_SUMMER_992\n\nhttps://t.me/pattaya_realty_estate/780084",
+      "text": "Паттайя. Продается 1 спальня квартира в кондоминиуме Siam Tropical Garden, 37 кв.м, 4 этаж, полностью меблирована и оборудована, название тайской компании. Стоимость объекта: 1 200 000 бат. Так же есть другие квартиры в новостройках и на вторичном рынке Паттайи. За подробной информацией пишите нашему менеджеру: AK_SUMMER_992\n\nhttps://t.me/pattaya_realty_estate/780084",
+      "price": 0,
+      "price_display": "",
+      "city": "Таиланд",
+      "city_ru": "Таиланд",
+      "date": "2026-04-14T14:17:16.754252+00:00",
+      "contact": "@pattaya_realty_estate",
+      "contact_name": "pattaya_realty_estate",
+      "source_group": "pattaya_realty_estate",
+      "source_channel": "parsing_th",
+      "telegram": "https://t.me/pattaya_realty_estate",
+      "telegram_link": "https://t.me/pattaya_realty_estate/780084",
+      "image_url": "/api/tgphoto/AgACAgIAAyEFAATLWO3sAAIBx2neTGt_XXfSMGuVGIhmlbrcnx07AAKmFWsbXWvpSiHdXCfSJ_mrAQADAgADeQADOwQ",
+      "all_images": [
+        "/api/tgphoto/AgACAgIAAyEFAATLWO3sAAIBx2neTGt_XXfSMGuVGIhmlbrcnx07AAKmFWsbXWvpSiHdXCfSJ_mrAQADAgADeQADOwQ"
+      ],
+      "photos": [
+        "/api/tgphoto/AgACAgIAAyEFAATLWO3sAAIBx2neTGt_XXfSMGuVGIhmlbrcnx07AAKmFWsbXWvpSiHdXCfSJ_mrAQADAgADeQADOwQ"
+      ],
+      "has_media": true,
+      "status": "active",
+      "country": "thailand",
+      "message_id": 780084,
+      "category": "real_estate"
+    },
+    {
       "id": "nychang_arenda_502092",
       "title": "Свободна Сдаётся квартира на улице Thích Quảng Đức, VCN Phước Long Цена: 8 млн донгов/месяц (4 этаж) Площадь: 40 м² Полн",
       "description": "",
