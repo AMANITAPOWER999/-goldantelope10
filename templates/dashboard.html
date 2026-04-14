@@ -6068,9 +6068,8 @@
                                 <div style="font-size:12px;font-weight:600;color:#333;">${item.contact_name || item.contact || channelName || '-'}</div>
                             </div>
                         </div>
-                        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
-                            <a href="${tgGroupLink || '#'}" target="_blank" onclick="event.stopPropagation()" style="background:transparent;color:${tgGroupLink ? '#0088cc' : '#aaa'};padding:10px;border-radius:6px;text-align:center;text-decoration:none;font-weight:700;font-size:14px;border:1px solid ${tgGroupLink ? '#0088cc' : '#ddd'};">✈️ Group TG</a>
-                            <a href="${tgContactLink || tgGroupLink || '#'}" target="_blank" onclick="event.stopPropagation()" style="background:transparent;color:${(tgContactLink || tgGroupLink) ? '#0088cc' : '#aaa'};padding:10px;border-radius:6px;text-align:center;text-decoration:none;font-weight:700;font-size:14px;border:1px solid ${(tgContactLink || tgGroupLink) ? '#0088cc' : '#ddd'};">✈️ Telegram</a>
+                        <div>
+                            <a href="${tgContactLink || tgGroupLink || '#'}" target="_blank" onclick="event.stopPropagation()" style="display:block;background:transparent;color:${(tgContactLink || tgGroupLink) ? '#0088cc' : '#aaa'};padding:13px;border-radius:8px;text-align:center;text-decoration:none;font-weight:700;font-size:16px;border:2px solid ${(tgContactLink || tgGroupLink) ? '#0088cc' : '#ddd'};">✈️ Telegram</a>
                         </div>
                     </div>`;
             } else if (category === 'medicine') {
@@ -9235,7 +9234,7 @@
                                             )
                                         )
                                     }
-                                    <!-- Group TG и Telegram кнопки / Кнопка бронирования для туров -->
+                                    <!-- Telegram кнопка / Кнопка бронирования для туров -->
                                     ${category === 'tours'
                                         ? `<button onclick="openTourModal(this.dataset.tour, this.dataset.city)" data-tour="${escapeHtml(item.title || item.name || '')}" data-city="${escapeHtml(item.city || '')}" style="display:block; width:100%; background:transparent; color:#d4af37; border:2px solid #d4af37; padding:13px; border-radius:10px; text-align:center; font-weight:700; font-size:16px; cursor:pointer; margin-bottom:10px; letter-spacing:0.3px;">${((translations[currentLang]||translations['ru']).ui||{}).book||'🧳 Забронировать'}</button>`
                                         : (category === 'entertainment' || category === 'restaurants') ? (function() {
@@ -9262,40 +9261,28 @@
                                             }
                                             const _ui2 = (translations[currentLang] || translations['ru']).ui;
                                             const _btnLabel = category === 'restaurants' ? (_ui2.locationMap || '📍Локация Google Maps') : '🗺 Google Maps';
-                                            const _tgGroupEnt = currentCountry === 'thailand' ? 'https://t.me/doma_th' : (category === 'restaurants' ? 'https://t.me/restoranvietnam' : 'https://t.me/razvlecheniyavietnam');
                                             const _tgEntHref = item.telegram_link || (item.telegram ? 'https://t.me/' + item.telegram.replace('@','') : '') || tgLink || '';
                                             if (category === 'entertainment' && currentCountry === 'india' && item.telegram_link) {
                                                 return '<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px;">'
                                                     + '<a href="' + mapsHref + '" target="_blank" onclick="event.stopPropagation()" style="display:block;background:transparent;border:2px solid #d4af37;color:#d4af37;padding:11px;border-radius:8px;text-align:center;text-decoration:none;font-weight:700;font-size:14px;box-sizing:border-box;">🗺 Google Maps</a>'
                                                     + '<a href="' + item.telegram_link + '" target="_blank" onclick="event.stopPropagation()" style="display:block;background:transparent;border:2px solid #d4af37;color:#d4af37;padding:11px;border-radius:8px;text-align:center;text-decoration:none;font-weight:700;font-size:14px;box-sizing:border-box;">🎟 Билеты</a>'
-                                                    + '</div>'
-                                                    + '<a href="' + _tgGroupEnt + '" target="_blank" onclick="event.stopPropagation()" style="display:block;width:100%;background:transparent;border:2px solid #0088cc;color:#0088cc;padding:10px;border-radius:8px;text-align:center;text-decoration:none;font-weight:600;font-size:14px;box-sizing:border-box;">✈️ Group TG</a>';
+                                                    + '</div>';
                                             }
                                             if (_tgEntHref) {
-                                                return '<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">'
-                                                    + '<a href="' + mapsHref + '" target="_blank" onclick="event.stopPropagation()" style="display:block;background:transparent;border:2px solid #d4af37;color:#d4af37;padding:11px;border-radius:8px;text-align:center;text-decoration:none;font-weight:700;font-size:14px;box-sizing:border-box;">' + _btnLabel + '</a>'
-                                                    + '<a href="' + _tgGroupEnt + '" target="_blank" onclick="event.stopPropagation()" style="display:block;background:transparent;border:2px solid #0088cc;color:#0088cc;padding:11px;border-radius:8px;text-align:center;text-decoration:none;font-weight:600;font-size:14px;box-sizing:border-box;">✈️ Group TG</a>'
-                                                    + '</div>';
+                                                return '<a href="' + mapsHref + '" target="_blank" onclick="event.stopPropagation()" style="display:block;width:100%;background:transparent;border:2px solid #d4af37;color:#d4af37;padding:11px;border-radius:8px;text-align:center;text-decoration:none;font-weight:700;font-size:14px;box-sizing:border-box;">' + _btnLabel + '</a>';
                                             }
                                             return '<a href="' + mapsHref + '" target="_blank" onclick="event.stopPropagation()" style="display:block;width:100%;background:transparent;border:2px solid #d4af37;color:#d4af37;padding:11px;border-radius:8px;text-align:center;text-decoration:none;font-weight:700;font-size:14px;box-sizing:border-box;">' + _btnLabel + '</a>';
                                         })()
-                                        : `<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 10px;">
-                                        ${(function() {
-                                            if (category === 'entertainment' && currentCountry === 'india') {
-                                                return '';
-                                            }
-                                            const tgGroup = currentCountry === 'thailand' ? 'https://t.me/doma_th' : (category === 'restaurants' ? 'https://t.me/restoranvietnam' : 'https://t.me/dom_vn');
-                                            return '<a href="' + tgGroup + '" target="_blank" style="display: block; background: transparent; border: 2px solid #0088cc; color: #0088cc; padding: 10px; border-radius: 6px; text-align: center; text-decoration: none; font-weight: 600;">\u2708\uFE0F Group TG</a>';
-                                        })()}
+                                        : `<div style="margin-bottom: 10px;">
                                         ${(function() {
                                             if (category === 'entertainment' && currentCountry === 'india' && item.telegram_link) {
-                                                return '<a href="' + item.telegram_link + '" target="_blank" style="display: block; background: transparent; border: 2px solid #0088cc; color: #0088cc; padding: 8px; border-radius: 6px; text-align: center; text-decoration: none; font-weight: 600; font-size: 13px;">\uD83C\uDFAB Buy Tickets</a>';
+                                                return '<a href="' + item.telegram_link + '" target="_blank" style="display: block; width: 100%; background: transparent; border: 2px solid #0088cc; color: #0088cc; padding: 13px; border-radius: 8px; text-align: center; text-decoration: none; font-weight: 700; font-size: 16px; box-sizing: border-box;">\uD83C\uDFAB Buy Tickets</a>';
                                             }
                                             const _tg = item.telegram ? item.telegram.replace('@','') : '';
                                             const tgHref = item.telegram_link || (_tg ? 'https://t.me/' + _tg : '') || tgLink || '';
                                             return tgHref
-                                                ? '<a href="' + tgHref + '" target="_blank" style="display: block; background: transparent; border: 2px solid #0088cc; color: #0088cc; padding: 10px; border-radius: 6px; text-align: center; text-decoration: none; font-weight: 600;">\u2708\uFE0F Telegram</a>'
-                                                : '<div style="display: block; background: transparent; border: 2px solid #ccc; color: #999; padding: 10px; border-radius: 6px; text-align: center; font-weight: 600;">\u2708\uFE0F Telegram</div>';
+                                                ? '<a href="' + tgHref + '" target="_blank" style="display: block; width: 100%; background: transparent; border: 2px solid #0088cc; color: #0088cc; padding: 13px; border-radius: 8px; text-align: center; text-decoration: none; font-weight: 700; font-size: 16px; box-sizing: border-box;">\u2708\uFE0F Telegram</a>'
+                                                : '<div style="display: block; background: transparent; border: 2px solid #ccc; color: #999; padding: 13px; border-radius: 8px; text-align: center; font-weight: 700; font-size: 16px;">\u2708\uFE0F Telegram</div>';
                                         })()}
                                     </div>`
                                     }
@@ -10257,7 +10244,6 @@
                             ${contactSource ? `<p style="margin:0;font-size:13px;color:#666;">👤 Источник: <b>${contactSource}</b></p>` : ''}
                         </div>
                         <div style="display:flex;flex-direction:column;gap:10px;">
-                            <a href="${currentCountry === 'thailand' ? 'https://t.me/doma_th' : (category === 'restaurants' ? 'https://t.me/restoranvietnam' : 'https://t.me/dom_vn')}" target="_blank" style="display:block;background:#0088cc;text-decoration:none;text-align:center;padding:12px;border-radius:8px;color:white;font-size:14px;font-weight:600;">✈️ Group TG — ${currentCountry === 'thailand' ? '@doma_th' : (category === 'restaurants' ? '@restoranvietnam' : '@dom_vn')}</a>
                             ${contactChannelUrl ? `<a href="${contactChannelUrl}" target="_blank" style="display:block;background:#0088cc;text-decoration:none;text-align:center;padding:12px;border-radius:8px;color:white;font-size:14px;font-weight:600;">✈️ Написать в Telegram: ${contactSource}</a>` : ''}
                             ${postLink ? `<a href="${postLink}" target="_blank" style="display:block;background:#d4af37;text-decoration:none;text-align:center;padding:12px;border-radius:8px;color:white;font-size:14px;font-weight:600;">🔗 Оригинал объявления</a>` : ''}
                         </div>
