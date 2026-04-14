@@ -4086,6 +4086,11 @@ def _gavibeshub_poller():
                     'vibeshub_vn':     ('entertainment', 'vietnam'),
                     'restoranvietnam': ('restaurants',   'vietnam'),
                     'obmenvietnam':    ('chat',          'vietnam'),
+                    # Агрегаторы-приёмники (HF Space пересылает сюда)
+                    'parsing_vn':      ('real_estate',   'vietnam'),
+                    'parsing_th':      ('real_estate',   'thailand'),
+                    'chatparsing_vn':  ('chat',          'vietnam'),
+                    'tusaparsing_vn':  ('entertainment', 'vietnam'),
                 }
                 route = _CH_ROUTE.get(chat_username)
                 if not route:
@@ -4094,6 +4099,13 @@ def _gavibeshub_poller():
                 category_r, country_r = route
                 text_r = cp.get('text', '') or cp.get('caption', '') or ''
                 msg_id = cp.get('message_id', 0)
+
+                # Для пересланных сообщений — берём оригинальный источник
+                fwd_chat = cp.get('forward_from_chat', {})
+                fwd_username = fwd_chat.get('username', '') if fwd_chat else ''
+                fwd_msg_id = cp.get('forward_from_message_id', 0)
+                orig_username = fwd_username or chat_username
+                orig_msg_id = fwd_msg_id or msg_id
 
                 # Получаем прямую ссылку на фото через getFile (браузер грузит напрямую)
                 photos_r = []
@@ -4104,16 +4116,9 @@ def _gavibeshub_poller():
                     if fid:
                         with _msg_to_file_id_lock:
                             _msg_to_file_id[(chat_username, msg_id)] = fid
-                        try:
-                            gf = requests.get(
-                                f'https://api.telegram.org/bot{bot_token}/getFile',
-                                params={'file_id': fid}, timeout=8
-                            )
-                            if gf.status_code == 200 and gf.json().get('ok'):
-                                fp = gf.json()['result']['file_path']
-                                photos_r = [f'https://api.telegram.org/file/bot{bot_token}/{fp}']
-                        except Exception:
-                            photos_r = [f'/tg_img/{chat_username}/{msg_id}']
+                        # Храним file_id → браузер редиректится через /api/tgphoto/
+                        # (токен НЕ попадает в JSON, нет серверного скачивания)
+                        photos_r = [f'/api/tgphoto/{fid}']
 
                 if not text_r and not photos_r:
                     continue
@@ -4121,9 +4126,9 @@ def _gavibeshub_poller():
                 try:
                     from vietnamparsing_parser import atomic_add_listing
                     from datetime import datetime as _dt, timezone as _tz
-                    title_r = text_r[:120].replace('\n', ' ').strip() if text_r else f'Пост {msg_id}'
+                    title_r = text_r[:120].replace('\n', ' ').strip() if text_r else f'Пост {orig_msg_id}'
                     item_r = {
-                        'id': f'{chat_username}_{msg_id}',
+                        'id': f'{orig_username}_{orig_msg_id}',
                         'title': title_r,
                         'description': text_r,
                         'text': text_r,
@@ -4132,19 +4137,19 @@ def _gavibeshub_poller():
                         'city': 'Вьетнам' if country_r == 'vietnam' else 'Таиланд',
                         'city_ru': 'Вьетнам' if country_r == 'vietnam' else 'Таиланд',
                         'date': _dt.now(_tz.utc).isoformat(),
-                        'contact': f'@{chat_username}',
-                        'contact_name': chat_username,
-                        'source_group': chat_username,
+                        'contact': f'@{orig_username}',
+                        'contact_name': orig_username,
+                        'source_group': orig_username,
                         'source_channel': chat_username,
-                        'telegram': f'https://t.me/{chat_username}',
-                        'telegram_link': f'https://t.me/{chat_username}/{msg_id}',
+                        'telegram': f'https://t.me/{orig_username}',
+                        'telegram_link': f'https://t.me/{orig_username}/{orig_msg_id}',
                         'image_url': photos_r[0] if photos_r else '',
                         'all_images': photos_r,
                         'photos': photos_r,
                         'has_media': bool(photos_r),
                         'status': 'active',
                         'country': country_r,
-                        'message_id': msg_id,
+                        'message_id': orig_msg_id,
                         'category': category_r,
                     }
                     added = atomic_add_listing(category_r, item_r)
