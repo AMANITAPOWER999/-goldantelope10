@@ -1910,7 +1910,8 @@ def add_listing():
         if category == 'real_estate':
             photos = listing.get('photos', []) or []
             img = listing.get('image_url', '') or ''
-            if not photos and not img:
+            all_imgs = listing.get('all_images', []) or []
+            if not photos and not img and not all_imgs:
                 return jsonify({'error': 'Объявления недвижимости без фото не принимаются'}), 400
         listing['added_at'] = datetime.now().isoformat()
         data[category].append(listing)
