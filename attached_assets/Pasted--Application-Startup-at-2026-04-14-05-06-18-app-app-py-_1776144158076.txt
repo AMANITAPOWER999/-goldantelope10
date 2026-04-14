@@ -1,0 +1,147 @@
+===== Application Startup at 2026-04-14 05:06:18 =====
+
+/app/app.py:699: DeprecationWarning: 
+        on_event is deprecated, use lifespan event handlers instead.
+
+        Read more about it in the
+        [FastAPI docs for Lifespan Events](https://fastapi.tiangolo.com/advanced/events/).
+        
+  @app.on_event("startup")
+INFO:     Started server process [1]
+INFO:     Waiting for application startup.
+INFO:telethon.network.mtprotosender:Connecting to 91.108.56.114:443/TcpFull...
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:7860 (Press CTRL+C to quit)
+INFO:telethon.network.mtprotosender:Connection to 91.108.56.114:443/TcpFull complete!
+INFO:parser:Authorized: 1 (id=8755035125)
+INFO:parser:Loading dialogs...
+INFO:parser:Dialogs loaded: 206
+INFO:parser:[THAI] -> @doma_th: 20/23 ok, 3 failed
+INFO:parser:[VIET] -> @dom_vn: 35/36 ok, 1 failed
+INFO:parser:[BIKE] -> @bayk_vn: 10/10 ok, 0 failed
+INFO:parser:[CHAT] -> @chati_vn: 17/51 ok, 34 failed
+INFO:parser:[ENTERTAIN] -> @razvlecheniyavietnam: 14/19 ok, 5 failed
+INFO:parser:[MED] -> @medvietnam: 4/9 ok, 5 failed
+INFO:parser:Total: 100 channels. Listening...
+INFO:parser:[CHAT poll] starting — 51 channels, every 240s
+WARNING:parser:[CHAT poll fetch] NhaTrangchat: No user has "nhatrangchat" as username
+WARNING:parser:[CHAT poll fetch] NhaTrang55: No user has "nhatrang55" as username
+WARNING:parser:[CHAT poll fetch] NhaTrangLady: No user has "nhatranglady" as username
+WARNING:parser:[CHAT poll fetch] NhaTrangSun: No user has "nhatrangsun" as username
+WARNING:parser:[CHAT poll fetch] Danang_Viet: No user has "danang_viet" as username
+WARNING:parser:[CHAT poll fetch] danang_women: No user has "danang_women" as username
+WARNING:parser:[CHAT poll fetch] danangchat_ask: No user has "danangchat_ask" as username
+WARNING:parser:[CHAT poll fetch] zhenskiy_danang: No user has "zhenskiy_danang" as username
+WARNING:parser:[CHAT poll fetch] Danang_people: No user has "danang_people" as username
+WARNING:parser:[CHAT poll fetch] Vietnam_Danang1: No user has "vietnam_danang1" as username
+WARNING:parser:[CHAT poll fetch] chat_danang: No user has "chat_danang" as username
+WARNING:parser:[CHAT poll fetch] danang_chats: No user has "danang_chats" as username
+WARNING:parser:[CHAT poll fetch] phanthietchat111: No user has "phanthietchat111" as username
+WARNING:parser:[CHAT poll fetch] Viza_Vietnam: No user has "viza_vietnam" as username
+WARNING:parser:[CHAT poll fetch] vietnam_chat1: No user has "vietnam_chat1" as username
+WARNING:parser:[CHAT poll fetch] vietnam_chats: No user has "vietnam_chats" as username
+WARNING:parser:[CHAT poll fetch] hochiminh01_bg: No user has "hochiminh01_bg" as username
+WARNING:parser:[CHAT poll fetch] phuquoc_getmir_chat: No user has "phuquoc_getmir_chat" as username
+WARNING:parser:[CHAT poll fetch] fukuok_chat: No user has "fukuok_chat" as username
+WARNING:parser:[CHAT poll fetch] chat_fukuok: No user has "chat_fukuok" as username
+WARNING:parser:[CHAT poll fetch] hanoichatvip: No user has "hanoichatvip" as username
+WARNING:parser:[CHAT poll fetch] barakholka_pkhuket: No user has "barakholka_pkhuket" as username
+WARNING:parser:[CHAT poll fetch] chats_phuket: No user has "chats_phuket" as username
+WARNING:parser:[CHAT poll fetch] rentinthai: No user has "rentinthai" as username
+WARNING:parser:[CHAT poll fetch] Bangkok_market_bg: No user has "bangkok_market_bg" as username
+WARNING:parser:[CHAT poll fetch] visa_thailand_chat: No user has "visa_thailand_chat" as username
+WARNING:parser:[CHAT poll fetch] thailand_4at: No user has "thailand_4at" as username
+WARNING:parser:[CHAT poll fetch] rent_thailand_chat: No user has "rent_thailand_chat" as username
+WARNING:parser:[CHAT poll fetch] thailand_chatt1: No user has "thailand_chatt1" as username
+WARNING:parser:[CHAT poll fetch] chat_bangkok: No user has "chat_bangkok" as username
+WARNING:parser:[CHAT poll fetch] Bangkok_chats: No user has "bangkok_chats" as username
+WARNING:parser:[CHAT poll fetch] Pattayapar: No user has "pattayapar" as username
+WARNING:parser:[CHAT poll fetch] chats_pattaya: No user has "chats_pattaya" as username
+WARNING:parser:[CHAT poll fetch] KrabiChat: No user has "krabichat" as username
+INFO:parser:[CHAT poll] first-run baseline done — 17 channels indexed
+WARNING:parser:[CHAT poll fetch] NhaTrangchat: No user has "nhatrangchat" as username
+WARNING:parser:[CHAT poll fetch] NhaTrang55: No user has "nhatrang55" as username
+WARNING:parser:[CHAT poll fetch] NhaTrangLady: No user has "nhatranglady" as username
+WARNING:parser:[CHAT poll fetch] NhaTrangSun: No user has "nhatrangsun" as username
+WARNING:parser:[CHAT poll fetch] Danang_Viet: No user has "danang_viet" as username
+WARNING:parser:[CHAT poll fetch] danang_women: No user has "danang_women" as username
+WARNING:parser:[CHAT poll fetch] danangchat_ask: No user has "danangchat_ask" as username
+WARNING:parser:[CHAT poll fetch] zhenskiy_danang: No user has "zhenskiy_danang" as username
+WARNING:parser:[CHAT poll fetch] Danang_people: No user has "danang_people" as username
+WARNING:parser:[CHAT poll fetch] Vietnam_Danang1: No user has "vietnam_danang1" as username
+WARNING:parser:[CHAT poll fetch] chat_danang: No user has "chat_danang" as username
+WARNING:parser:[CHAT poll fetch] danang_chats: No user has "danang_chats" as username
+WARNING:parser:[CHAT poll fetch] phanthietchat111: No user has "phanthietchat111" as username
+WARNING:parser:[CHAT poll fetch] Viza_Vietnam: No user has "viza_vietnam" as username
+WARNING:parser:[CHAT poll fetch] vietnam_chat1: No user has "vietnam_chat1" as username
+WARNING:parser:[CHAT poll fetch] vietnam_chats: No user has "vietnam_chats" as username
+WARNING:parser:[CHAT poll fetch] hochiminh01_bg: No user has "hochiminh01_bg" as username
+WARNING:parser:[CHAT poll fetch] phuquoc_getmir_chat: No user has "phuquoc_getmir_chat" as username
+WARNING:parser:[CHAT poll fetch] fukuok_chat: No user has "fukuok_chat" as username
+WARNING:parser:[CHAT poll fetch] chat_fukuok: No user has "chat_fukuok" as username
+WARNING:parser:[CHAT poll fetch] hanoichatvip: No user has "hanoichatvip" as username
+WARNING:parser:[CHAT poll fetch] barakholka_pkhuket: No user has "barakholka_pkhuket" as username
+WARNING:parser:[CHAT poll fetch] chats_phuket: No user has "chats_phuket" as username
+WARNING:parser:[CHAT poll fetch] rentinthai: No user has "rentinthai" as username
+WARNING:parser:[CHAT poll fetch] Bangkok_market_bg: No user has "bangkok_market_bg" as username
+WARNING:parser:[CHAT poll fetch] visa_thailand_chat: No user has "visa_thailand_chat" as username
+WARNING:parser:[CHAT poll fetch] thailand_4at: No user has "thailand_4at" as username
+WARNING:parser:[CHAT poll fetch] rent_thailand_chat: No user has "rent_thailand_chat" as username
+WARNING:parser:[CHAT poll fetch] thailand_chatt1: No user has "thailand_chatt1" as username
+WARNING:parser:[CHAT poll fetch] chat_bangkok: No user has "chat_bangkok" as username
+WARNING:parser:[CHAT poll fetch] Bangkok_chats: No user has "bangkok_chats" as username
+WARNING:parser:[CHAT poll fetch] Pattayapar: No user has "pattayapar" as username
+WARNING:parser:[CHAT poll fetch] chats_pattaya: No user has "chats_pattaya" as username
+WARNING:parser:[CHAT poll fetch] KrabiChat: No user has "krabichat" as username
+WARNING:parser:[CHAT poll fetch] NhaTrangchat: No user has "nhatrangchat" as username
+WARNING:parser:[CHAT poll fetch] NhaTrang55: No user has "nhatrang55" as username
+WARNING:parser:[CHAT poll fetch] NhaTrangLady: No user has "nhatranglady" as username
+WARNING:parser:[CHAT poll fetch] NhaTrangSun: No user has "nhatrangsun" as username
+WARNING:parser:[CHAT poll fetch] Danang_Viet: No user has "danang_viet" as username
+WARNING:parser:[CHAT poll fetch] danang_women: No user has "danang_women" as username
+WARNING:parser:[CHAT poll fetch] danangchat_ask: No user has "danangchat_ask" as username
+WARNING:parser:[CHAT poll fetch] zhenskiy_danang: No user has "zhenskiy_danang" as username
+WARNING:parser:[CHAT poll fetch] Danang_people: No user has "danang_people" as username
+INFO:     10.16.24.44:15027 - "GET / HTTP/1.1" 200 OK
+INFO:     10.16.33.124:34196 - "GET / HTTP/1.1" 200 OK
+WARNING:parser:[CHAT poll fetch] Vietnam_Danang1: No user has "vietnam_danang1" as username
+WARNING:parser:[CHAT poll fetch] chat_danang: No user has "chat_danang" as username
+WARNING:parser:[CHAT poll fetch] danang_chats: No user has "danang_chats" as username
+WARNING:parser:[CHAT poll fetch] phanthietchat111: No user has "phanthietchat111" as username
+WARNING:parser:[CHAT poll fetch] Viza_Vietnam: No user has "viza_vietnam" as username
+INFO:telethon.client.updates:Got difference for channel 2395762831 updates
+INFO:telethon.client.updates:Got difference for channel 2183244054 updates
+WARNING:parser:[CHAT poll fetch] vietnam_chat1: No user has "vietnam_chat1" as username
+WARNING:parser:[CHAT poll fetch] vietnam_chats: No user has "vietnam_chats" as username
+INFO:telethon.client.updates:Got difference for channel 1592839400 updates
+INFO:telethon.client.updates:Got difference for channel 1744819275 updates
+INFO:telethon.client.updates:Got difference for channel 2150457477 updates
+INFO:telethon.client.updates:Got difference for channel 2083603589 updates
+WARNING:parser:[CHAT poll fetch] hochiminh01_bg: No user has "hochiminh01_bg" as username
+INFO:telethon.client.updates:Got difference for channel 1920182475 updates
+WARNING:parser:[CHAT poll fetch] phuquoc_getmir_chat: No user has "phuquoc_getmir_chat" as username
+WARNING:parser:[CHAT poll fetch] fukuok_chat: No user has "fukuok_chat" as username
+INFO:telethon.client.updates:Got difference for channel 3231468971 updates
+WARNING:parser:[CHAT poll fetch] chat_fukuok: No user has "chat_fukuok" as username
+INFO:telethon.client.updates:Got difference for channel 2561613303 updates
+WARNING:parser:[CHAT poll fetch] hanoichatvip: No user has "hanoichatvip" as username
+INFO:telethon.client.downloads:Starting direct file download in chunks of 131072 at 0, stride 131072
+/app/app.py:12: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.
+  pixels = list(img.getdata())
+INFO:parser:[album] @danang_house/13997: got text from -1 (311 chars)
+WARNING:parser:Album error: No user has "dom_vn" as username
+WARNING:parser:[CHAT poll fetch] barakholka_pkhuket: No user has "barakholka_pkhuket" as username
+INFO:telethon.client.updates:Got difference for channel 1761932956 updates
+INFO:telethon.client.updates:Got difference for channel 1676417761 updates
+INFO:telethon.client.updates:Got difference for channel 1723916063 updates
+WARNING:parser:[CHAT poll fetch] chats_phuket: No user has "chats_phuket" as username
+INFO:telethon.client.downloads:Starting direct file download in chunks of 131072 at 0, stride 131072
+INFO:telethon.client.downloads:File lives in another DC
+INFO:telethon.network.mtprotosender:Connecting to 149.154.167.41:443/TcpFull...
+INFO:telethon.network.mtprotosender:Connection to 149.154.167.41:443/TcpFull complete!
+INFO:telethon.client.telegrambaseclient:Exporting auth for new borrowed sender in DcOption(id=2, ip_address='149.154.167.41', port=443, ipv6=False, media_only=False, tcpo_only=False, cdn=False, static=False, this_port_only=False, secret=None)
+INFO:parser:[album] @housephuket/9111: got text from -1 (682 chars)
+WARNING:parser:Album error: No user has "doma_th" as username
+WARNING:parser:[CHAT poll fetch] rentinthai: No user has "rentinthai" as username
+WARNING:parser:[CHAT poll fetch] Bangkok_market_bg: No user has "bangkok_market_bg" as username
+ 
