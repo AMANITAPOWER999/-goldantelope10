@@ -3574,6 +3574,9 @@ def admin_moderate():
 
         if category not in data:
             data[category] = []
+        # Недвижимость — только с фото
+        if category == 'real_estate' and not (listing.get('image_url') or listing.get('photos')):
+            return jsonify({'success': False, 'message': 'Объявление о недвижимости должно содержать фото'})
         data[category].insert(0, listing)
         save_data(country, data)
         return jsonify({'success': True, 'message': f'Объявление одобрено и добавлено в {category}'})
@@ -4224,6 +4227,10 @@ def _gavibeshub_poller():
                         photos_r = [f'/api/tgphoto/{fid}']
 
                 if not text_r and not photos_r:
+                    continue
+
+                # Недвижимость — только с фото
+                if category_r == 'real_estate' and not photos_r:
                     continue
 
                 try:
@@ -6434,6 +6441,9 @@ def _run_fetch_empty():
                     continue
                 item = build_generic_listing(msg, item_id, ch, 'real_estate')
                 if item is None:
+                    continue
+                # Недвижимость — только с фото
+                if not item.get('image_url') and not item.get('photos'):
                     continue
                 fp = viet_fp(item)
                 if fp != '||' and fp in viet_fps:
