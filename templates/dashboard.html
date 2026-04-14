@@ -9262,10 +9262,19 @@
                                             }
                                             const _ui2 = (translations[currentLang] || translations['ru']).ui;
                                             const _btnLabel = category === 'restaurants' ? (_ui2.locationMap || '📍Локация Google Maps') : '🗺 Google Maps';
+                                            const _tgGroupEnt = currentCountry === 'thailand' ? 'https://t.me/doma_th' : (category === 'restaurants' ? 'https://t.me/restoranvietnam' : 'https://t.me/razvlecheniyavietnam');
+                                            const _tgEntHref = item.telegram_link || (item.telegram ? 'https://t.me/' + item.telegram.replace('@','') : '') || tgLink || '';
                                             if (category === 'entertainment' && currentCountry === 'india' && item.telegram_link) {
-                                                return '<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">'
+                                                return '<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px;">'
                                                     + '<a href="' + mapsHref + '" target="_blank" onclick="event.stopPropagation()" style="display:block;background:transparent;border:2px solid #d4af37;color:#d4af37;padding:11px;border-radius:8px;text-align:center;text-decoration:none;font-weight:700;font-size:14px;box-sizing:border-box;">🗺 Google Maps</a>'
                                                     + '<a href="' + item.telegram_link + '" target="_blank" onclick="event.stopPropagation()" style="display:block;background:transparent;border:2px solid #d4af37;color:#d4af37;padding:11px;border-radius:8px;text-align:center;text-decoration:none;font-weight:700;font-size:14px;box-sizing:border-box;">🎟 Билеты</a>'
+                                                    + '</div>'
+                                                    + '<a href="' + _tgGroupEnt + '" target="_blank" onclick="event.stopPropagation()" style="display:block;width:100%;background:transparent;border:2px solid #0088cc;color:#0088cc;padding:10px;border-radius:8px;text-align:center;text-decoration:none;font-weight:600;font-size:14px;box-sizing:border-box;">✈️ Group TG</a>';
+                                            }
+                                            if (_tgEntHref) {
+                                                return '<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">'
+                                                    + '<a href="' + mapsHref + '" target="_blank" onclick="event.stopPropagation()" style="display:block;background:transparent;border:2px solid #d4af37;color:#d4af37;padding:11px;border-radius:8px;text-align:center;text-decoration:none;font-weight:700;font-size:14px;box-sizing:border-box;">' + _btnLabel + '</a>'
+                                                    + '<a href="' + _tgGroupEnt + '" target="_blank" onclick="event.stopPropagation()" style="display:block;background:transparent;border:2px solid #0088cc;color:#0088cc;padding:11px;border-radius:8px;text-align:center;text-decoration:none;font-weight:600;font-size:14px;box-sizing:border-box;">✈️ Group TG</a>'
                                                     + '</div>';
                                             }
                                             return '<a href="' + mapsHref + '" target="_blank" onclick="event.stopPropagation()" style="display:block;width:100%;background:transparent;border:2px solid #d4af37;color:#d4af37;padding:11px;border-radius:8px;text-align:center;text-decoration:none;font-weight:700;font-size:14px;box-sizing:border-box;">' + _btnLabel + '</a>';
