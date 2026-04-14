@@ -6190,11 +6190,12 @@ def _run_fetch_empty():
 
     # Маппинг группы → канал-получатель
     _DST_CHANNELS = {
-        'BIKE':    'bayk_vn',
-        'BIKE_TH': 'bayk_th',
-        'VIET':    'dom_vn',
-        'THAI':    'doma_th',
-        'CHAT':    'chati_vn',
+        'VIET':      'parsing_vn',
+        'THAI':      'parsing_th',
+        'BIKE':      'baikeparsing_vn',
+        'BIKE_TH':   'baikeparsing_th',
+        'CHAT':      'chatparsing_vn',
+        'ENTERTAIN': 'tusaparsing_vn',
     }
 
     def _post_to_channel(grp, item):
