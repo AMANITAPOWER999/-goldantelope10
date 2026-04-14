@@ -10,22 +10,22 @@
         "user_r1sabadzs_1776089673605",
         "user_u0nzlpzs5_1776090695842"
       ],
-      "page_views": 289,
+      "page_views": 1168,
       "countries": {
-        "india": 88,
-        "vietnam": 139,
-        "indonesia": 50,
+        "india": 191,
+        "vietnam": 913,
+        "indonesia": 52,
         "thailand": 12
       },
       "categories": {
-        "real_estate": 88,
-        "realestate": 45,
+        "real_estate": 849,
+        "realestate": 53,
         "chat": 1,
-        "entertainment": 97,
-        "tours": 14,
+        "entertainment": 204,
+        "tours": 15,
         "visas": 3,
         "transport": 9,
-        "exchange": 30,
+        "exchange": 32,
         "restaurants": 2
       },
       "hours": {
@@ -33,25 +33,53 @@
         "11": 48,
         "12": 5,
         "13": 74,
-        "14": 79
+        "14": 158,
+        "15": 129,
+        "16": 120,
+        "17": 120,
+        "18": 120,
+        "19": 120,
+        "20": 120,
+        "21": 71
       },
       "referrers": {},
       "devices": {
-        "mobile": 46,
-        "desktop": 243
+        "mobile": 94,
+        "desktop": 1074
+      }
+    },
+    "2026-04-14": {
+      "unique_visitors": [
+        "user_aazl70g7k_1776027407849"
+      ],
+      "page_views": 56,
+      "countries": {
+        "vietnam": 56
+      },
+      "categories": {
+        "real_estate": 56
+      },
+      "hours": {
+        "03": 27,
+        "04": 29
+      },
+      "referrers": {},
+      "devices": {
+        "mobile": 0,
+        "desktop": 56
       }
     }
   },
   "visitors": {
     "user_8e9xhfoz9_1775979675331": {
       "first_seen": "2026-04-13",
-      "visits": 46,
+      "visits": 94,
       "last_seen": "2026-04-13"
     },
     "user_aazl70g7k_1776027407849": {
       "first_seen": "2026-04-13",
-      "visits": 235,
-      "last_seen": "2026-04-13"
+      "visits": 1122,
+      "last_seen": "2026-04-14"
     },
     "user_wfkjt6juo_1776076058238": {
       "first_seen": "2026-04-13",

@@ -3,6 +3,40 @@
   "tours": [],
   "entertainment": [
     {
+      "id": "partyhunt_a189e1d0-9006-461f-945f-870b344360f8",
+      "title": "Thursday Protocol",
+      "description": "📅 16 Apr 2026, 21:00\n📍 Dynamo\n🗺 Survey number 213, 6, part, Vagator, Anjuna, Goa 403509, India\n🏷 Entertainment\n🎟 https://tickets.partyhunt.com/events/thursday-protocol-16-apr-2026-dynamo-buy-tickets",
+      "photos": [
+        "https://firebasestorage.googleapis.com/v0/b/partyhunt-production.appspot.com/o/eventsPicture%2Fb7139eb4-fa9e-43e6-bae3-2e6357f1971e%2Ffull_b7139eb4-fa9e-43e6-bae3-2e6357f1971e?alt=media&token=e07a46f8-6ed5-48ab-b085-f320ac8906eb"
+      ],
+      "contact": "@partyhuntgoa",
+      "source_group": "partyhuntgoa",
+      "date": "2026-04-16 21:00:00",
+      "city": "Goa",
+      "realestate_city": "goa",
+      "country": "india",
+      "telegram_link": "https://tickets.partyhunt.com/events/thursday-protocol-16-apr-2026-dynamo-buy-tickets",
+      "price": "799.00",
+      "price_display": "from ₹799.00"
+    },
+    {
+      "id": "partyhunt_a188e535-6904-453b-a0bd-e13dc6d674cb",
+      "title": "Retrodelica",
+      "description": "📅 19 Apr 2026, 18:30\n📍 SECRET CAVE- THE HOGGER'S DEN\n🗺 OGNAJ CIRCLE, Sardar Patel Ring Rd, Ognaj, Ahmedabad, Gujarat 380060, India\n🏷 Entertainment\n🎟 https://tickets.partyhunt.com/events/retrodelica-19-apr-2026-secret-cave-the-hoggers-den-buy-tickets",
+      "photos": [
+        "https://api.anbocas.com/storage/event/banner/fVU04Z81WEIVtTF9lsWmiiTfKm3tFP9rlOso4s5V.jpg"
+      ],
+      "contact": "@partyhuntgoa",
+      "source_group": "partyhuntgoa",
+      "date": "2026-04-19 18:30:00",
+      "city": "Ahmedabad",
+      "realestate_city": "ahmedabad",
+      "country": "india",
+      "telegram_link": "https://tickets.partyhunt.com/events/retrodelica-19-apr-2026-secret-cave-the-hoggers-den-buy-tickets",
+      "price": "1000.00",
+      "price_display": "from ₹1000.00"
+    },
+    {
       "id": "partyhunt_a188cbeb-06df-402c-9e9c-d60286c426b6",
       "title": "Goa Espìritu",
       "description": "📅 19 Apr 2026, 22:00\n📍 Hopping Frog Bar & Kitchen, Anjuna-Goa\n🗺 124/45, Dhakte Vorani, Monteiro Vaddo, Anjuna, Goa 403509, India\n🏷 Entertainment\n🎟 https://tickets.partyhunt.com/events/goa-espiritu-19-apr-2026-hopping-frog-bar-kitchen-anjuna-goa-buy-tickets",
@@ -135,23 +169,6 @@
       "price_display": "from ₹99.00"
     },
     {
-      "id": "partyhunt_a18667f4-f5c2-42dd-80cf-2814fda7e200",
-      "title": "Natasha Ostrovskaya",
-      "description": "📅 13 Apr 2026, 19:00\n📍 This Is It Beach Restaurant & Bar\n🗺 Khalcha, Wadda, North of Arambol Beach, Arambol, Goa 403524, India\n🏷 Entertainment\n🎟 https://tickets.partyhunt.com/events/natasha-ostrovskaya-13-apr-2026-this-is-it-beach-restaurant-bar-buy-tickets",
-      "photos": [
-        "https://api.anbocas.com/storage/event/banner/XCRBo72Qtu2ATqlFbuftRj5wZULIdX0FvbTRu3fk.jpg"
-      ],
-      "contact": "@partyhuntgoa",
-      "source_group": "partyhuntgoa",
-      "date": "2026-04-13 19:00:00",
-      "city": "Goa",
-      "realestate_city": "goa",
-      "country": "india",
-      "telegram_link": "https://tickets.partyhunt.com/events/natasha-ostrovskaya-13-apr-2026-this-is-it-beach-restaurant-bar-buy-tickets",
-      "price": "99.00",
-      "price_display": "from ₹99.00"
-    },
-    {
       "id": "partyhunt_a18655e4-87e2-48ac-8e46-dd6e90ca4f10",
       "title": "Ecstatic Dance",
       "description": "📅 14 Apr 2026, 19:00\n📍 Arambolians\n🗺 116/3 Deulwada, Next to Pirata Pizzeria, Wildeflower Road Pernem, Road, Arambol, Goa 403524, India\n🏷 Entertainment\n🎟 https://tickets.partyhunt.com/events/ecstatic-dance-14-apr-2026-arambolians-buy-tickets",
@@ -182,23 +199,6 @@
       "realestate_city": "goa",
       "country": "india",
       "telegram_link": "https://tickets.partyhunt.com/events/harmonic-decibels-18-apr-2026-house-of-chapora-by-the-bay-buy-tickets"
-    },
-    {
-      "id": "partyhunt_a173f8d8-341a-4163-acbd-a43345ba7879",
-      "title": "Hungover Monday",
-      "description": "📅 13 Apr 2026, 21:00\n📍 Dynamo\n🗺 Survey number 213, 6, part, Vagator, Anjuna, Goa 403509, India\n🏷 Entertainment\n🎟 https://tickets.partyhunt.com/events/hungover-monday-06-apr-2026-dynamo-buy-tickets",
-      "photos": [
-        "https://firebasestorage.googleapis.com/v0/b/partyhunt-production.appspot.com/o/eventsPicture%2Ffc73e85b-bf6c-4fc9-be3e-d671d20b229a%2Ffull_fc73e85b-bf6c-4fc9-be3e-d671d20b229a?alt=media&token=35773814-496b-4ec8-a350-4d3ff78d6253"
-      ],
-      "contact": "@partyhuntgoa",
-      "source_group": "partyhuntgoa",
-      "date": "2026-04-13 21:00:00",
-      "city": "Goa",
-      "realestate_city": "goa",
-      "country": "india",
-      "telegram_link": "https://tickets.partyhunt.com/events/hungover-monday-06-apr-2026-dynamo-buy-tickets",
-      "price": "499.00",
-      "price_display": "from ₹499.00"
     },
     {
       "id": "partyhunt_a1804f4d-5088-40da-8bac-3f6b0d7d6f62",
@@ -386,23 +386,6 @@
       "telegram_link": "https://tickets.partyhunt.com/events/baisakhi-utsav-14-apr-2026-fiturr-buy-tickets",
       "price": "800.00",
       "price_display": "from ₹800.00"
-    },
-    {
-      "id": "partyhunt_a17fdf09-e844-4900-a351-e2ec9fdfc6ce",
-      "title": "Full Spectrum 89.0",
-      "description": "📅 13 Apr 2026, 20:00\n📍 House of Chapora by the bay\n🗺 Chapora Jetty , H.No 340/2 Village Anjuna-Caisua, Chapora, Goa 403509, India\n🏷 Entertainment\n🎟 https://tickets.partyhunt.com/events/full-spectrum-890-13-apr-2026-house-of-chapora-by-the-bay-buy-tickets",
-      "photos": [
-        "https://api.anbocas.com/storage/event/banner/ArKY56ln4hn3h3sOVG5cgJcbMniKU8r9EMMduBSi.jpg"
-      ],
-      "contact": "@partyhuntgoa",
-      "source_group": "partyhuntgoa",
-      "date": "2026-04-13 20:00:00",
-      "city": "Goa",
-      "realestate_city": "goa",
-      "country": "india",
-      "telegram_link": "https://tickets.partyhunt.com/events/full-spectrum-890-13-apr-2026-house-of-chapora-by-the-bay-buy-tickets",
-      "price": "1000.00",
-      "price_display": "from ₹1000.00"
     },
     {
       "id": "partyhunt_a1765f5e-d9e3-4924-9a13-8d2239f19c57",
