@@ -4249,18 +4249,39 @@ def _gavibeshub_poller():
                 orig_username = orig_username or chat_username
                 orig_msg_id = orig_msg_id or msg_id
 
-                # Получаем прямую ссылку на фото через getFile (браузер грузит напрямую)
+                # Получаем прямую ссылку на фото через getFile (браузер грузит напрямую с CDN)
                 photos_r = []
                 photo_list = cp.get('photo', [])
                 if photo_list and msg_id:
-                    largest = max(photo_list, key=lambda p: p.get('file_size', 0))
-                    fid = largest.get('file_id', '')
-                    if fid:
+                    _bot_tok = os.environ.get('TELEGRAM_BOT_TOKEN', '').strip()
+                    for _ph in sorted(photo_list, key=lambda p: p.get('file_size', 0), reverse=True):
+                        fid = _ph.get('file_id', '')
+                        if not fid:
+                            continue
                         with _msg_to_file_id_lock:
                             _msg_to_file_id[(chat_username, msg_id)] = fid
-                        # Храним file_id → браузер редиректится через /api/tgphoto/
-                        # (токен НЕ попадает в JSON, нет серверного скачивания)
-                        photos_r = [f'/api/tgphoto/{fid}']
+                        # Сначала проверяем кэш file_path
+                        with _file_path_cache_lock:
+                            _fp = _file_path_cache.get(fid)
+                        if not _fp and _bot_tok:
+                            try:
+                                _gf = requests.get(
+                                    f'https://api.telegram.org/bot{_bot_tok}/getFile',
+                                    params={'file_id': fid}, timeout=8
+                                )
+                                if _gf.status_code == 200 and _gf.json().get('ok'):
+                                    _fp = _gf.json()['result']['file_path']
+                                    with _file_path_cache_lock:
+                                        _file_path_cache[fid] = _fp
+                            except Exception:
+                                pass
+                        if _fp and _bot_tok:
+                            # Прямая CDN ссылка — браузер загружает напрямую, без серверного скачивания
+                            photos_r = [f'https://api.telegram.org/file/bot{_bot_tok}/{_fp}']
+                        else:
+                            # Fallback: редирект-прокси (работает пока сервер запущен)
+                            photos_r = [f'/api/tgphoto/{fid}']
+                        break
 
                 if not text_r and not photos_r:
                     continue

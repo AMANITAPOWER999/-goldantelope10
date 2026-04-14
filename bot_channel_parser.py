@@ -419,6 +419,12 @@ def run():
         # Добавляем новые посты (которых нет в существующих)
         n_added = 0
         SKIP_TITLES = {'channel created', 'канал создан', 'channel photo updated', 'telegram'}
+        SPAM_KEYWORDS = [
+            'high-roller', 'likesyou', 'high roller', 'casino', 'казино',
+            'поднял', 'рекорд', 'впн', 'vpn', '18+', 'работа для молодых',
+            'пpибыльнaя', 'ρaҕoτa', 'извиняюсь что не по теме',
+            'есть работа', 'заработок', 'пассивный доход', 'зарабатывай',
+        ]
         for msg_id in sorted(scraped.keys(), reverse=True):
             item_id = f'{channel}_{msg_id}'
             if item_id in existing_ids:
@@ -429,10 +435,17 @@ def run():
             if not raw_title or raw_title in SKIP_TITLES:
                 logger.info(f'[{channel}] Пропуск системного поста {msg_id}: «{raw_title}»')
                 continue
-            # Запрет: недвижимость без фото не добавляем
-            if category == 'real_estate' and not post.get('photos'):
-                logger.info(f'[{channel}] Пропуск real_estate без фото: msg_id={msg_id}')
+            # Спам-фильтр для всех категорий
+            post_text_lower = (post.get('text', '') or '').lower()
+            if any(kw in post_text_lower for kw in SPAM_KEYWORDS):
+                logger.info(f'[{channel}] Пропуск спама {msg_id}')
                 continue
+            # Запрет: недвижимость без CDN-фото не добавляем
+            if category == 'real_estate':
+                cdn_photos = [p for p in (post.get('photos') or []) if p and p.startswith('http')]
+                if not cdn_photos:
+                    logger.info(f'[{channel}] Пропуск real_estate без CDN-фото: msg_id={msg_id}')
+                    continue
             new_item = make_listing(channel, msg_id, post, category, country, logo_fps=logo_fps)
             updated_listings.insert(0, new_item)
             existing_ids.add(item_id)
