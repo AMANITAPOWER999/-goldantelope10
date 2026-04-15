@@ -3,6 +3,23 @@
   "tours": [],
   "entertainment": [
     {
+      "id": "partyhunt_a18c2084-3c9c-4f84-ac19-79782b47440f",
+      "title": "New Moon Tribal Gathering",
+      "description": "📅 18 Apr 2026, 19:00\n📍 Arambolians\n🗺 116/3 Deulwada, Next to Pirata Pizzeria, Wildeflower Road Pernem, Road, Arambol, Goa 403524, India\n🏷 Entertainment\n🎟 https://tickets.partyhunt.com/events/new-moon-tribal-gathering-18-apr-2026-arambolians-buy-tickets",
+      "photos": [
+        "https://api.anbocas.com/storage/event/banner/XFQ9CxUDdu1BU7A88jW6ok3GC24ROl7FNBWpeMuN.jpg"
+      ],
+      "contact": "@partyhuntgoa",
+      "source_group": "partyhuntgoa",
+      "date": "2026-04-18 19:00:00",
+      "city": "Goa",
+      "realestate_city": "goa",
+      "country": "india",
+      "telegram_link": "https://tickets.partyhunt.com/events/new-moon-tribal-gathering-18-apr-2026-arambolians-buy-tickets",
+      "price": "700.00",
+      "price_display": "from ₹700.00"
+    },
+    {
       "id": "partyhunt_4e3d1183-684c-4bad-aa31-848a78adf8fc",
       "title": "PARTY HUNT - Tix!",
       "description": "📅 01 Apr 2027, 20:00\n📍 Arambol\n🗺 Arambol, Goa 403519, India\n🏷 Entertainment\n🎟 https://tickets.partyhunt.com/events/party-hunt-tix-4qjgxz",

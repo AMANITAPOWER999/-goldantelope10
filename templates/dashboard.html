@@ -6056,6 +6056,12 @@
             let title = item.title || item.name || 'Предложение';
             let desc = (item.description || item.text || '').substring(0, 2000);
             let dateStr = item.date ? new Date(item.date).toLocaleDateString('ru-RU') : (item.created_at ? new Date(item.created_at).toLocaleDateString('ru-RU') : '');
+
+            if (category === 'real_estate') {
+                const stripEmoji = str => str.replace(/[\u{1F000}-\u{1FFFF}]|[\u{2600}-\u{27BF}]|[\u{FE00}-\u{FE0F}]|[\u{1FA00}-\u{1FAFF}]|[\u200D\u20E3\uFE0F]/gu, '').replace(/[#*0-9]\uFE0F?\u20E3/gu, '');
+                title = stripEmoji(title).replace(/\s+/g, ' ').trim();
+                desc = stripEmoji(desc).replace(/\s+/g, ' ').trim();
+            }
             
             let contactsHtml = '';
             if (category === 'visas' || category === 'tours') {
@@ -6128,7 +6134,7 @@
                 ${sliderHtml}
                 <div style="padding:14px;flex:1;display:flex;flex-direction:column;">
                     <h3 style="margin:0 0 10px 0;font-size:16px;font-weight:700;color:#333;line-height:1.3;">${titleHtml}</h3>
-                    <p style="margin:0;font-size:13px;color:#555;line-height:1.5;white-space:pre-wrap;overflow-y:auto;max-height:26em;scrollbar-width:thin;-webkit-overflow-scrolling:touch;touch-action:pan-y;overscroll-behavior:contain;">${desc}</p>
+                    <p style="margin:0;font-size:13px;color:#555;line-height:1.5;white-space:${category === 'real_estate' ? 'normal' : 'pre-wrap'};overflow-y:auto;max-height:26em;scrollbar-width:thin;-webkit-overflow-scrolling:touch;touch-action:pan-y;overscroll-behavior:contain;">${desc}</p>
                     ${contactsHtml}
                 </div>
             </div>`;
