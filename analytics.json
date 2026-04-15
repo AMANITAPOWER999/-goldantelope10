@@ -66,18 +66,18 @@
         "user_v9bk2fywt_1776184349977",
         "user_tbjsp7w1c_1776184912416"
       ],
-      "page_views": 1204,
+      "page_views": 1832,
       "countries": {
-        "vietnam": 1182,
-        "thailand": 20,
+        "vietnam": 1809,
+        "thailand": 21,
         "india": 2
       },
       "categories": {
-        "real_estate": 797,
+        "real_estate": 1424,
         "entertainment": 232,
         "tours": 25,
         "transport": 4,
-        "realestate": 95,
+        "realestate": 96,
         "restaurants": 15,
         "visas": 3,
         "exchange": 4,
@@ -97,12 +97,38 @@
         "13": 130,
         "14": 110,
         "15": 112,
-        "16": 115
+        "16": 138,
+        "17": 125,
+        "18": 120,
+        "19": 120,
+        "20": 120,
+        "21": 120
       },
       "referrers": {},
       "devices": {
-        "mobile": 22,
-        "desktop": 1182
+        "mobile": 30,
+        "desktop": 1802
+      }
+    },
+    "2026-04-15": {
+      "unique_visitors": [
+        "user_aazl70g7k_1776027407849",
+        "user_5q6ruj0hb_1776231782285"
+      ],
+      "page_views": 13,
+      "countries": {
+        "vietnam": 13
+      },
+      "categories": {
+        "real_estate": 13
+      },
+      "hours": {
+        "05": 13
+      },
+      "referrers": {},
+      "devices": {
+        "mobile": 0,
+        "desktop": 13
       }
     }
   },
@@ -114,8 +140,8 @@
     },
     "user_aazl70g7k_1776027407849": {
       "first_seen": "2026-04-13",
-      "visits": 2233,
-      "last_seen": "2026-04-14"
+      "visits": 2864,
+      "last_seen": "2026-04-15"
     },
     "user_wfkjt6juo_1776076058238": {
       "first_seen": "2026-04-13",
@@ -174,7 +200,7 @@
     },
     "user_62d1h384o_1776172461081": {
       "first_seen": "2026-04-14",
-      "visits": 21,
+      "visits": 29,
       "last_seen": "2026-04-14"
     },
     "user_7gw0kaw37_1776174900459": {
@@ -211,6 +237,11 @@
       "first_seen": "2026-04-14",
       "visits": 1,
       "last_seen": "2026-04-14"
+    },
+    "user_5q6ruj0hb_1776231782285": {
+      "first_seen": "2026-04-15",
+      "visits": 2,
+      "last_seen": "2026-04-15"
     }
   }
 }

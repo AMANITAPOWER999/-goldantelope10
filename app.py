@@ -1730,14 +1730,16 @@ def get_listings(category):
                 def _re_city_match(x):
                     item_city = str(x.get('city', '')).lower()
                     item_city_ru = str(x.get('city_ru', '')).lower()
-                    # Страновой уровень — показываем для любого города страны
-                    if any(cl in item_city or cl in item_city_ru for cl in _country_lvl):
-                        return True
-                    # Проверяем city/city_ru
-                    if any(t in item_city or t in item_city_ru for t in targets):
-                        return True
-                    # Проверяем в тексте объявления
+                    item_re_city = str(x.get('realestate_city', '') or '').lower()
                     _txt = (str(x.get('title', '')) + ' ' + str(x.get('text', ''))).lower()
+                    # Если задан realestate_city — проверяем точно
+                    if item_re_city and any(t in item_re_city for t in targets):
+                        return True
+                    # Проверяем city/city_ru (только специфичные, не страновые)
+                    if not any(cl in item_city or cl in item_city_ru for cl in _country_lvl):
+                        if any(t in item_city or t in item_city_ru for t in targets):
+                            return True
+                    # Всегда проверяем в тексте объявления
                     return any(t in _txt for t in targets)
                 filtered = [x for x in filtered if _re_city_match(x)]
         
@@ -4294,6 +4296,31 @@ def _gavibeshub_poller():
                     from vietnamparsing_parser import atomic_add_listing
                     from datetime import datetime as _dt, timezone as _tz
                     title_r = text_r[:120].replace('\n', ' ').strip() if text_r else f'Пост {orig_msg_id}'
+                    # Определяем город из текста
+                    _txt_low = (text_r or '').lower()
+                    _vn_cities = {
+                        'nhatrang':  ['нячанг', 'nha trang', 'nhatrang', 'камрань', 'cam ranh', 'bắc nha trang'],
+                        'hochiminh': ['хошимин', 'сайгон', 'saigon', 'ho chi minh', 'hcm'],
+                        'danang':    ['дананг', 'da nang', 'danang'],
+                        'hanoi':     ['ханой', 'hanoi', 'ha noi'],
+                        'phuquoc':   ['фукуок', 'phu quoc', 'phuquoc'],
+                        'dalat':     ['далат', 'da lat', 'dalat'],
+                        'muine':     ['муйне', 'mui ne'],
+                        'hoian':     ['хойан', 'hoi an'],
+                    }
+                    _th_cities = {
+                        'pattaya':  ['паттайя', 'pattaya', 'wongamat', 'jomtien'],
+                        'phuket':   ['пхукет', 'phuket', 'rawai', 'patong', 'karon', 'kata'],
+                        'bangkok':  ['бангкок', 'bangkok'],
+                        'samui':    ['самуи', 'samui', 'ko samui'],
+                        'chiangmai':['чиангмай', 'chiang mai'],
+                    }
+                    _city_map_r = _vn_cities if country_r == 'vietnam' else _th_cities
+                    _re_city = ''
+                    for _cs, _kws in _city_map_r.items():
+                        if any(_kw in _txt_low for _kw in _kws):
+                            _re_city = _cs
+                            break
                     item_r = {
                         'id': f'{orig_username}_{orig_msg_id}',
                         'title': title_r,
@@ -4303,6 +4330,7 @@ def _gavibeshub_poller():
                         'price_display': '',
                         'city': 'Вьетнам' if country_r == 'vietnam' else 'Таиланд',
                         'city_ru': 'Вьетнам' if country_r == 'vietnam' else 'Таиланд',
+                        'realestate_city': _re_city,
                         'date': _dt.now(_tz.utc).isoformat(),
                         'contact': f'@{orig_username}',
                         'contact_name': orig_username,

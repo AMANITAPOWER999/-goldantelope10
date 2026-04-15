@@ -28,6 +28,32 @@ TH_CHANNELS = [
     'phuket_nedvizhimost_rent', 'phuketsk_for_rent',
 ]
 
+CITY_MAP_VN = {
+    'nhatrang':  ['нячанг', 'nha trang', 'nhatrang', 'камрань', 'cam ranh', 'bắc nha trang'],
+    'hochiminh': ['хошимин', 'сайгон', 'saigon', 'ho chi minh', 'hcm'],
+    'danang':    ['дананг', 'da nang', 'danang'],
+    'hanoi':     ['ханой', 'hanoi', 'ha noi'],
+    'phuquoc':   ['фукуок', 'phu quoc', 'phuquoc'],
+    'dalat':     ['далат', 'da lat', 'dalat'],
+    'muine':     ['муйне', 'mui ne'],
+    'hoian':     ['хойан', 'hoi an'],
+}
+CITY_MAP_TH = {
+    'pattaya':   ['паттайя', 'pattaya', 'wongamat', 'jomtien'],
+    'phuket':    ['пхукет', 'phuket', 'rawai', 'patong', 'karon', 'kata'],
+    'bangkok':   ['бангкок', 'bangkok'],
+    'samui':     ['самуи', 'samui', 'ko samui'],
+    'chiangmai': ['чиангмай', 'chiang mai'],
+}
+
+def detect_city(text: str, country: str) -> str:
+    t = text.lower()
+    city_map = CITY_MAP_VN if country == 'vietnam' else CITY_MAP_TH
+    for slug, keywords in city_map.items():
+        if any(kw in t for kw in keywords):
+            return slug
+    return ''
+
 SPAM_KEYWORDS = [
     'high-roller', 'likesyou', 'casino', 'казино', '18+',
     'работа для молодых', 'пpибыльнaя', 'ρaҕoτa', 'поднял', 'рекорд',
@@ -56,6 +82,7 @@ def make_listing(channel: str, msg_id: int, post: dict, country: str) -> dict:
         'price_display': '',
         'city': 'Вьетнам' if country == 'vietnam' else 'Таиланд',
         'city_ru': 'Вьетнам' if country == 'vietnam' else 'Таиланд',
+        'realestate_city': detect_city(text, country),
         'date': post.get('date') or datetime.now(timezone.utc).isoformat(),
         'contact': f'@{src_ch}',
         'contact_name': src_ch,
