@@ -3,21 +3,6 @@
   "tours": [],
   "entertainment": [
     {
-      "id": "partyhunt_a18c1f15-0b37-485c-beb2-d8b387642644",
-      "title": "Araam Project",
-      "description": "📅 17 Apr 2026, 20:00\n📍 Arambolians\n🗺 116/3 Deulwada, Next to Pirata Pizzeria, Wildeflower Road Pernem, Road, Arambol, Goa 403524, India\n🏷 Entertainment\n🎟 https://tickets.partyhunt.com/events/araam-project-17-apr-2026-arambolians-buy-tickets",
-      "photos": [
-        "https://api.anbocas.com/storage/event/banner/3c8Mt26Nx68ZTmRG8Niz194r7Deldq3ahwoS4CBl.jpg"
-      ],
-      "contact": "@partyhuntgoa",
-      "source_group": "partyhuntgoa",
-      "date": "2026-04-17 20:00:00",
-      "city": "Goa",
-      "realestate_city": "goa",
-      "country": "india",
-      "telegram_link": "https://tickets.partyhunt.com/events/araam-project-17-apr-2026-arambolians-buy-tickets"
-    },
-    {
       "id": "partyhunt_4e3d1183-684c-4bad-aa31-848a78adf8fc",
       "title": "PARTY HUNT - Tix!",
       "description": "📅 01 Apr 2027, 20:00\n📍 Arambol\n🗺 Arambol, Goa 403519, India\n🏷 Entertainment\n🎟 https://tickets.partyhunt.com/events/party-hunt-tix-4qjgxz",
@@ -369,6 +354,21 @@
       "telegram_link": "https://tickets.partyhunt.com/events/joginis-jungle-01-may-2026-shambhala-the-higher-dimension-buy-tickets",
       "price": "1500.00",
       "price_display": "from ₹1500.00"
+    },
+    {
+      "id": "partyhunt_a18c1f15-0b37-485c-beb2-d8b387642644",
+      "title": "Araam Project",
+      "description": "📅 17 Apr 2026, 20:00\n📍 Arambolians\n🗺 116/3 Deulwada, Next to Pirata Pizzeria, Wildeflower Road Pernem, Road, Arambol, Goa 403524, India\n🏷 Entertainment\n🎟 https://tickets.partyhunt.com/events/araam-project-17-apr-2026-arambolians-buy-tickets",
+      "photos": [
+        "https://api.anbocas.com/storage/event/banner/3c8Mt26Nx68ZTmRG8Niz194r7Deldq3ahwoS4CBl.jpg"
+      ],
+      "contact": "@partyhuntgoa",
+      "source_group": "partyhuntgoa",
+      "date": "2026-04-17 20:00:00",
+      "city": "Goa",
+      "realestate_city": "goa",
+      "country": "india",
+      "telegram_link": "https://tickets.partyhunt.com/events/araam-project-17-apr-2026-arambolians-buy-tickets"
     },
     {
       "id": "partyhunt_a18c1dc2-8602-4346-a632-3c663dc140e1",

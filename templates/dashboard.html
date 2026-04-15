@@ -6350,6 +6350,10 @@
         }, 10000);
 
         function switchCountry(country) {
+            // Запоминаем активную вкладку ДО смены страны
+            const _prevActiveContent = document.querySelector('.content.active');
+            const _prevTab = _prevActiveContent ? _prevActiveContent.id : null;
+
             // Если админ авторизован, он может работать только со своей страной (кроме супер-админа)
             if (adminAuthenticated && adminCountry && adminCountry !== 'all' && country !== adminCountry) {
                 const countryNames = {
@@ -6478,8 +6482,15 @@
             // Сбрасываем фильтр даты развлечений и перестраиваем бар при смене страны
             currentEntertainmentDate = '';
             if (typeof buildEntDateBar === 'function') buildEntDateBar();
-            loadListings('restaurants');
-            loadListings('real_estate');
+
+            // Переключаем активную вкладку обратно (если пользователь был в какой-то категории)
+            const _validTabs = new Set(['realestate','restaurants','entertainment','transport','exchange','tours','visas','chat','settings','news','medicine','marketplace']);
+            if (_prevTab && _validTabs.has(_prevTab)) {
+                switchTab(_prevTab);
+            } else {
+                loadListings('restaurants');
+                loadListings('real_estate');
+            }
         }
         
         // Погода по странам
