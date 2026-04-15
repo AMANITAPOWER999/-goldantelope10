@@ -1380,6 +1380,15 @@ def get_listings(category):
             x.get('source_group', '').lower() in _GA_TRUSTED_SOURCES or
             any(kw in (x.get('description', '') or x.get('title', '') or '').lower() for kw in _ENT_KEYWORDS)
         ]
+        # Только объявления с фото
+        def _ent_has_photo(x):
+            photos = x.get('photos') or x.get('all_images') or []
+            if photos:
+                return True
+            if x.get('image_url') or x.get('photo') or x.get('photo_url'):
+                return True
+            return False
+        filtered = [x for x in filtered if _ent_has_photo(x)]
 
     subcategory = request.args.get('subcategory')
     if subcategory:
@@ -8185,6 +8194,9 @@ _SPAM_WORDS = [
     'перманентный макияж', 'татуаж', 'наращивание ресниц', 'маникюр педикюр',
     'для получения клиентов', 'разместить сообщение', 'размещение рекламы',
     'продвижение в чатах', 'рекламные услуги', 'привлечение клиентов',
+    'запусти свою рекламу', 'запустить рекламу', 'свяжись с нами',
+    'реклама в чате', 'реклама в нашем чате', 'рекламируй', 'рекламируйте',
+    'разместить объявление', 'размести объявление', 'размещение объявлений',
 ]
 
 import re as _re

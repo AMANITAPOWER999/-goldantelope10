@@ -115,22 +115,23 @@
         "user_aazl70g7k_1776027407849",
         "user_5q6ruj0hb_1776231782285"
       ],
-      "page_views": 25,
+      "page_views": 33,
       "countries": {
-        "vietnam": 24,
+        "vietnam": 32,
         "thailand": 1
       },
       "categories": {
-        "real_estate": 24,
-        "realestate": 1
+        "real_estate": 26,
+        "realestate": 1,
+        "entertainment": 6
       },
       "hours": {
-        "05": 25
+        "05": 33
       },
       "referrers": {},
       "devices": {
         "mobile": 0,
-        "desktop": 25
+        "desktop": 33
       }
     }
   },
@@ -142,7 +143,7 @@
     },
     "user_aazl70g7k_1776027407849": {
       "first_seen": "2026-04-13",
-      "visits": 2873,
+      "visits": 2881,
       "last_seen": "2026-04-15"
     },
     "user_wfkjt6juo_1776076058238": {

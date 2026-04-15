@@ -446,6 +446,12 @@ def run():
                 if not cdn_photos:
                     logger.info(f'[{channel}] Пропуск real_estate без CDN-фото: msg_id={msg_id}')
                     continue
+            # Запрет: развлечения без фото не добавляем
+            if category == 'entertainment':
+                any_photos = [p for p in (post.get('photos') or []) if p]
+                if not any_photos:
+                    logger.info(f'[{channel}] Пропуск entertainment без фото: msg_id={msg_id}')
+                    continue
             new_item = make_listing(channel, msg_id, post, category, country, logo_fps=logo_fps)
             updated_listings.insert(0, new_item)
             existing_ids.add(item_id)
