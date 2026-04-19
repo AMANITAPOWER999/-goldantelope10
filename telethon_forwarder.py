@@ -151,8 +151,10 @@ async def _run(sess_str):
             chat = await e.get_chat()
             un = chat.username.lower() if hasattr(chat, 'username') and chat.username else str(e.chat_id)
             grp = next((g for g, l in SOURCES.items() if any(x.lower() == un for x in l)), 'VIET')
-            msg = f'Источник: @{un}\nСсылка: https://t.me/{un}/{e.id}\n\n{_cl(t)}'
-            await client.send_message(DEST[grp], msg[:1020], file=e.media, parse_mode=None)
+            footer = f'\n\n📌 @{un} | ID: {e.id}\n🔗 https://t.me/{un}/{e.id}'
+            body = _cl(t)
+            msg = (body[:1020 - len(footer)] + footer) if body else footer.strip()
+            await client.send_message(DEST[grp], msg, file=e.media, parse_mode=None)
             STATS['forwarded'][grp]['messages'] += 1
             STATS['forwarded'][grp]['photos'] += 1
             STATS['total_messages'] += 1
@@ -169,8 +171,10 @@ async def _run(sess_str):
             chat = await e.get_chat()
             un = chat.username.lower() if hasattr(chat, 'username') and chat.username else str(e.chat_id)
             grp = next((g for g, l in SOURCES.items() if any(x.lower() == un for x in l)), 'VIET')
-            msg = f'Источник: @{un}\nСсылка: https://t.me/{un}/{e.messages[0].id}\n\n{_cl(e.text)}'
-            await client.send_message(DEST[grp], msg[:1020], file=p, parse_mode=None)
+            footer = f'\n\n📌 @{un} | ID: {e.messages[0].id}\n🔗 https://t.me/{un}/{e.messages[0].id}'
+            body = _cl(e.text)
+            msg = (body[:1020 - len(footer)] + footer) if body else footer.strip()
+            await client.send_message(DEST[grp], msg, file=p, parse_mode=None)
             STATS['forwarded'][grp]['messages'] += 1
             STATS['forwarded'][grp]['photos'] += len(p)
             STATS['forwarded'][grp]['albums'] += 1

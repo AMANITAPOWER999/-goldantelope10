@@ -28,6 +28,14 @@ app = Flask(__name__, static_folder='static', static_url_path='/static')
 app.secret_key = os.environ.get("SESSION_SECRET")
 Compress(app)
 
+from datetime import datetime as _dt
+@app.template_filter('timestamp_to_date')
+def _ts_to_date(ts):
+    try:
+        return _dt.utcfromtimestamp(int(ts)).strftime('%d.%m.%Y %H:%M')
+    except Exception:
+        return ''
+
 online_users = {}
 ONLINE_TIMEOUT = 60
 BASE_ONLINE = 287
@@ -1013,12 +1021,95 @@ def get_realestate_groups():
     return jsonify(sorted(groups))
 
 
+_INTERNAL_CHANNELS = {
+    'parsing_in', 'parsing_indo', 'parsing_th', 'parsing_vn',
+    'dom_vn', 'doma_th',
+    'bikeparsing_vn', 'bikeparsing_th', 'bikeparsing_in', 'bikeparsing_indo',
+    'chatparsing_vn', 'chatparsing_in',
+    'tusaparsing_vn', 'tusaparsing_th', 'tusaparsing_in', 'tusaparsing_indo',
+    'vietnamparsing', 'thailandparsing',
+    'media_vn', 'banner_vn',
+    'excursii_vn', 'excursii_th',
+    'restoranparsing_all',
+}
+
+def _mask_internal_channels(items):
+    """Скрывает внутренние агрегаторные каналы из всех публичных полей перед отдачей пользователю."""
+    import re as _re
+    # Паттерн для ссылок вида t.me/parsing_vn или t.me/parsing_vn/123
+    _tme_pat = _re.compile(
+        r'https?://t\.me/(' + '|'.join(_INTERNAL_CHANNELS) + r')(/\d+)?\S*',
+        _re.IGNORECASE
+    )
+    # Паттерн для @username внутренних каналов
+    _at_pat = _re.compile(
+        r'@(' + '|'.join(_INTERNAL_CHANNELS) + r')\b',
+        _re.IGNORECASE
+    )
+
+    for item in items:
+        # Поля contact/contact_name — зачищаем если совпадает с внутренним каналом
+        for field in ('contact', 'contact_name'):
+            val = (item.get(field) or '').lstrip('@').lower()
+            if val in _INTERNAL_CHANNELS:
+                item[field] = ''
+
+        # Поля с ссылками — зачищаем целиком если содержат t.me/internal_ch/
+        for field in ('telegram', 'telegram_link', 'link', 'url', 'source_link'):
+            tg = (item.get(field) or '')
+            for ch in _INTERNAL_CHANNELS:
+                if f't.me/{ch}' in tg.lower():
+                    item[field] = ''
+                    break
+
+        # source_group / source_channel / channel_id — скрываем если внутренний канал
+        for sf in ('source_group', 'source_channel', 'channel_username'):
+            sv = (item.get(sf) or '').lstrip('@').lower()
+            if sv in _INTERNAL_CHANNELS:
+                item[sf] = ''
+        # channel_id — скрываем числовые ID наших каналов
+        _OUR_CHANNEL_IDS = {
+            '-1003987939980', '-1003411602924', '-1003948057945', '-1003872341008',
+            '-1003922185577', '-1003894914160', '-1003811252596', '-1003603825848',
+        }
+        cid = str(item.get('channel_id') or '')
+        if cid in _OUR_CHANNEL_IDS:
+            item['channel_id'] = ''
+
+        # Описание, заголовок и text — вырезаем t.me/parsing_vn/... и @parsing_vn
+        for field in ('description', 'title', 'text'):
+            txt = item.get(field) or ''
+            if not txt:
+                continue
+            txt = _tme_pat.sub('', txt)
+            txt = _at_pat.sub('', txt)
+            txt = txt.strip()
+            if txt != (item.get(field) or ''):
+                item[field] = txt
+
+
+def _gurl(ch, pid):
+    """Нейтральный URL фото: /g/<alias>/<msg_id>  (имя канала скрыто)."""
+    # _CHANNEL_ALIAS определён ниже по файлу, читается при вызове функции
+    alias = globals().get('_CHANNEL_ALIAS', {}).get(ch, ch)
+    return f'/g/{alias}/{pid}'
+
+def _ggurl(ch, pid, idx):
+    """Нейтральный URL группового фото: /gg/<alias>/<msg_id>/<idx>."""
+    alias = globals().get('_CHANNEL_ALIAS', {}).get(ch, ch)
+    return f'/gg/{alias}/{pid}/{idx}'
+
+
 def _enrich_tg_images(items):
     """Подставляет рабочие URL фото для ресторанов и других объявлений.
-    Для ресторанов @restoranvietnam: приоритет photo_msg_ids → tg_file_ids.
-    Для остальных: tg_file_ids → image_url как есть."""
+    api.telegram.org URL передаются напрямую (файл отдаётся через /tg_file/ redirect).
+    CDN telesco.pe URL конвертируются через /g/ прокси (CDN истекает через ~24ч).
+    Для ресторанов @restoranvietnam: приоритет photo_msg_ids → tg_file_ids."""
     for item in items:
         url = item.get('image_url', '') or ''
+        # Прямые Bot API ссылки (api.telegram.org) оставляем как есть — /tg_file/ redirect
+        is_bot_api_direct = 'api.telegram.org' in url
+        # CDN telesco.pe истекают → нужен прокси /tg_img/
         need_replace = not url or 'telesco.pe' in url
 
         # Рестораны: фото берём из публичного канала @restoranvietnam по ID поста
@@ -1039,7 +1130,7 @@ def _enrich_tg_images(items):
         if msg_ids and is_restaurant:
             base_pid = msg_ids[0]
             if need_replace:
-                item['image_url'] = f'/tg_img/restoranvietnam/{base_pid}'
+                item['image_url'] = _gurl('restoranvietnam', base_pid)
             # Реальное количество фото из кэш-файла (после первого скрапа) или оценка из photo_count
             count_path = os.path.join(_TG_DISK_CACHE_DIR, f'restoranvietnam_{base_pid}_grp_count.txt')
             if os.path.exists(count_path):
@@ -1052,7 +1143,7 @@ def _enrich_tg_images(items):
                 n_photos = item.get('photo_count') or 4
             n_photos = min(max(int(n_photos), 1), 4)
             # Все фото через групповой прокси (один запрос к t.me/s/ = все CDN URL)
-            grp_urls = [f'/tg_img_grp/restoranvietnam/{base_pid}/{i}' for i in range(n_photos)]
+            grp_urls = [_ggurl('restoranvietnam', base_pid, i) for i in range(n_photos)]
             item['all_images'] = grp_urls
             item['photo_msg_ids'] = [base_pid]  # для совместимости JS
             item['photo_album_urls'] = grp_urls  # явный список для JS
@@ -1060,9 +1151,26 @@ def _enrich_tg_images(items):
                 item[key] = grp_urls
             continue
 
-        # Real estate: convert expired telesco.pe CDN URLs to /tg_img/ proxy
+        # Real estate: прямые CDN/BotAPI URL оставляем как есть — браузер грузит напрямую
+        # Прокси /tg_img/ используем только если нет прямой ссылки
         item_id = item.get('id', '') or ''
         tg_link = item.get('telegram_link', '') or ''
+
+        # api.telegram.org URL — прямые ссылки, не трогаем (кроме неполных base-URL)
+        if is_bot_api_direct:
+            for key in ('photos', 'all_images', 'images'):
+                lst = item.get(key)
+                if isinstance(lst, list):
+                    item[key] = [u for u in lst if u]
+            # Если image_url — базовый путь без файла, берём первый фото из photos
+            is_incomplete = not url or url.endswith('/') or '.' not in url.rsplit('/', 1)[-1]
+            if is_incomplete:
+                best = next((u for u in (item.get('photos') or []) + (item.get('all_images') or [])
+                             if u and ('api.telegram.org' in u or 'telesco.pe' in u) and '.' in u.rsplit('/', 1)[-1]), '')
+                if best:
+                    item['image_url'] = best
+            continue
+
         m_vn = re.search(r't\.me/(vietnamparsing|dom_vn)/(\d+)', tg_link)
         if not m_vn:
             m_vn = re.match(r'(vietnamparsing|dom_vn)_(\d+)', item_id)
@@ -1070,19 +1178,82 @@ def _enrich_tg_images(items):
         if not m_th:
             m_th = re.match(r'(thailandparsing|doma_th)_(\d+)', item_id)
         m_chan = m_vn or m_th
+
+        # Fallback: use source_group + source_id for any channel not matched above
+        _AGGREGATOR_CH = {'parsing_vn', 'parsing_th', 'parsing_in', 'parsing_indo',
+                          'bikeparsing_vn', 'bikeparsing_th'}
+        if not m_chan:
+            source_channel_raw = (item.get('source_channel') or '').strip()
+            source_grp = (item.get('source_group') or '').strip()
+            # For aggregator channels use source_channel + message_id (not source_group)
+            if source_channel_raw in _AGGREGATOR_CH:
+                source_grp = source_channel_raw
+            source_id_raw = item.get('source_id') or ''
+            if not source_id_raw and item_id:
+                # For aggregator channels, msg_id is stored directly on item
+                if source_channel_raw in _AGGREGATOR_CH and item.get('message_id'):
+                    source_id_raw = str(item['message_id'])
+                else:
+                    parts = item_id.rsplit('_', 1)
+                    source_id_raw = parts[-1] if len(parts) == 2 else ''
+            if source_grp and source_id_raw:
+                try:
+                    fb_pid = int(source_id_raw)
+                    iu_fb = item.get('image_url', '') or ''
+                    # Также конвертируем сырые t.me/{internal_ch}/ ссылки в прокси
+                    _tme_img_m = re.match(r'^https://t\.me/([^/]+)/(\d+)$', iu_fb)
+                    needs_conv = ('api.telegram.org' in iu_fb or 'telesco.pe' in iu_fb
+                                  or 'cdn' in iu_fb.lower()
+                                  or (_tme_img_m and _tme_img_m.group(1).lower() in _INTERNAL_CHANNELS))
+                    if needs_conv:
+                        if _tme_img_m and _tme_img_m.group(1).lower() in _INTERNAL_CHANNELS:
+                            item['image_url'] = _gurl(_tme_img_m.group(1), int(_tme_img_m.group(2)))
+                        else:
+                            item['image_url'] = _gurl(source_grp, fb_pid)
+                    for key in ('photos', 'all_images', 'images'):
+                        lst = item.get(key)
+                        if isinstance(lst, list) and lst:
+                            fixed_fb = []
+                            for i_fb, u_fb in enumerate(lst):
+                                if u_fb and ('api.telegram.org' in u_fb
+                                             or 'telesco.pe' in u_fb
+                                             or 'cdn' in str(u_fb).lower()):
+                                    fixed_fb.append(_gurl(source_grp, fb_pid + i_fb))
+                                elif u_fb and isinstance(u_fb, str) and (u_fb.startswith('/tg_img/') or u_fb.startswith('/g/')):
+                                    # Конвертируем старые /tg_img/ URL в /g/
+                                    if u_fb.startswith('/tg_img/'):
+                                        parts = u_fb.split('/')
+                                        if len(parts) >= 4:
+                                            fixed_fb.append(_gurl(parts[2], int(parts[3])))
+                                        else:
+                                            fixed_fb.append(u_fb)
+                                    else:
+                                        fixed_fb.append(u_fb)
+                                elif u_fb and isinstance(u_fb, str) and re.match(r'^https://t\.me/([^/]+)/(\d+)$', u_fb):
+                                    tm_fb = re.match(r'^https://t\.me/([^/]+)/(\d+)$', u_fb)
+                                    fixed_fb.append(_gurl(tm_fb.group(1), int(tm_fb.group(2))))
+                                else:
+                                    fixed_fb.append(u_fb)
+                            item[key] = fixed_fb
+                except (ValueError, TypeError):
+                    pass
+
         if m_chan:
             chan = m_chan.group(1)
             base_pid = int(m_chan.group(2))
             def _fix_telesco(urls, chan, base_pid):
                 fixed = []
                 for i, u in enumerate(urls):
-                    if u and ('telesco.pe' in u or 'cdn' in str(u)):
-                        fixed.append(f'/tg_img/{chan}/{base_pid + i}')
+                    if u and ('telesco.pe' in u or 'cdn' in str(u) or 'api.telegram.org' in str(u)):
+                        fixed.append(_gurl(chan, base_pid + i))
                     elif u and isinstance(u, str) and u.startswith('/tg_img/'):
+                        parts = u.split('/')
+                        fixed.append(_gurl(parts[2], int(parts[3])) if len(parts) >= 4 else u)
+                    elif u and isinstance(u, str) and u.startswith('/g/'):
                         fixed.append(u)
                     elif u and isinstance(u, str) and re.match(r'^https://t\.me/([^/]+)/(\d+)$', u):
                         tm = re.match(r'^https://t\.me/([^/]+)/(\d+)$', u)
-                        fixed.append(f'/tg_img/{tm.group(1)}/{tm.group(2)}')
+                        fixed.append(_gurl(tm.group(1), int(tm.group(2))))
                     else:
                         fixed.append(u)
                 return fixed
@@ -1091,11 +1262,11 @@ def _enrich_tg_images(items):
                 if isinstance(lst, list) and lst:
                     item[key] = _fix_telesco(lst, chan, base_pid)
             iu = item.get('image_url', '') or ''
-            if iu and ('telesco.pe' in iu or 'cdn' in iu.lower()):
-                item['image_url'] = f'/tg_img/{chan}/{base_pid}'
+            if iu and ('telesco.pe' in iu or 'cdn' in iu.lower() or 'api.telegram.org' in iu):
+                item['image_url'] = _gurl(chan, base_pid)
             elif iu and re.match(r'^https://t\.me/([^/]+)/(\d+)$', iu):
                 tm = re.match(r'^https://t\.me/([^/]+)/(\d+)$', iu)
-                item['image_url'] = f'/tg_img/{tm.group(1)}/{tm.group(2)}'
+                item['image_url'] = _gurl(tm.group(1), int(tm.group(2)))
 
         # Остальные: используем tg_file_ids как запасной вариант
         fids = item.get('tg_file_ids') or []
@@ -1279,7 +1450,18 @@ def get_listings(category):
         return jsonify([])
     
     listings = data[category]
-    
+
+    # Дедупликация по id (на случай повторов в JSON)
+    _seen_ids = set()
+    _deduped = []
+    for _it in listings:
+        _iid = _it.get('id', '')
+        if _iid and _iid in _seen_ids:
+            continue
+        _seen_ids.add(_iid)
+        _deduped.append(_it)
+    listings = _deduped
+
     # Фильтры
     filters = request.args
     
@@ -1298,13 +1480,13 @@ def get_listings(category):
     if category == 'tours' and country == 'vietnam':
         filtered = [x for x in filtered if x.get('source_group') == 'GAtours_vn']
 
-    # Недвижимость — убираем посты от самих каналов-агрегаторов (не из источника)
-    _OWN_PARSE_CH = {'@parsing_vn', '@parsing_th', '@baikeparsing_vn', '@baikeparsing_th',
-                     '@chatparsing_vn', '@tusaparsing_vn'}
+    # Недвижимость — убираем посты где contact совпадает с каналом-агрегатором
+    # (старые записи до миграции; parsing_vn/parsing_th — теперь легитимные агрегаторы)
+    _OWN_PARSE_CH = {'@chatparsing_vn', '@tusaparsing_vn'}
     if category == 'real_estate':
         filtered = [x for x in filtered if x.get('contact', '').lower() not in {c.lower() for c in _OWN_PARSE_CH}]
 
-    # Недвижимость — определяем логотип канала (фото встречающееся в 3+ объявлениях) и удаляем его
+    # Недвижимость — определяем логотип канала (фото встречающееся в 30+ объявлениях) и удаляем его
     if category == 'real_estate':
         from collections import Counter as _Counter
         _fp_counter = _Counter()
@@ -1317,7 +1499,7 @@ def get_listings(category):
                 if _fp not in _seen:
                     _fp_counter[_fp] += 1
                     _seen.add(_fp)
-        _logo_fps = {fp for fp, cnt in _fp_counter.items() if cnt >= 3}
+        _logo_fps = {fp for fp, cnt in _fp_counter.items() if cnt >= 30}
 
         def _strip_logos(item):
             if not _logo_fps:
@@ -1840,6 +2022,7 @@ def get_listings(category):
         if limit > 0:
             filtered = filtered[offset:offset + limit]
         _enrich_tg_images(filtered)
+        _mask_internal_channels(filtered)
         return jsonify(filtered)
     
     # Для категории chat — подмешиваем живые данные из chatiparsing
@@ -1906,6 +2089,7 @@ def get_listings(category):
         filtered = filtered[offset:offset + limit]
     
     _enrich_tg_images(filtered)
+    _mask_internal_channels(filtered)
     return jsonify(filtered)
 
 @app.route('/api/add-listing', methods=['POST'])
@@ -2047,7 +2231,7 @@ def _prewarm_banner_cache(data):
 _BANNER_EXCLUDE_IDS = {4}
 
 def _do_sync_media_vn_banners():
-    """Скрейпит t.me/s/media_vn, получает свежие CDN URLs и сохраняет их в banner_data.json."""
+    """Скрейпит t.me/s/banner_vn, получает свежие CDN URLs и сохраняет их в banner_data.json."""
     import time as _t
     try:
         from bs4 import BeautifulSoup as _BS
@@ -2146,7 +2330,7 @@ def _banner_refresh_scheduler():
 
 threading.Thread(target=_sync_media_vn_banners, daemon=True, name='BannerMediaVnSync').start()
 threading.Thread(target=_banner_refresh_scheduler, daemon=True, name='BannerRefreshScheduler').start()
-logger.info('[banner_sync] Синхронизация баннеров из @media_vn запущена (обновление каждые 6ч)')
+logger.info('[banner_sync] Синхронизация баннеров из @banner_vn запущена (обновление каждые 6ч)')
 
 _banner_og_cache = {}
 
@@ -2212,7 +2396,7 @@ def get_banners():
 
 @app.route('/api/admin/sync-banners', methods=['POST'])
 def admin_sync_banners():
-    """Ручной запуск синка баннеров из @media_vn."""
+    """Ручной запуск синка баннеров из @banner_vn."""
     password = request.json.get('password', '') if request.json else request.form.get('password', '')
     if not password:
         return jsonify({'error': 'Unauthorized'}), 401
@@ -4018,12 +4202,12 @@ def tg_photo_redirect(file_id):
 
 @app.route('/tg_file/<path:file_id>')
 def tg_file_proxy(file_id):
-    """Get direct Telegram file via Bot API (admin) and stream to browser. No CDN."""
+    """Redirect browser to direct Telegram file URL via Bot API. No server-side download."""
+    from flask import redirect as _redirect
     bot_token = os.environ.get('TELEGRAM_BOT_TOKEN', '').strip()
     if not bot_token:
         return Response(status=503)
     try:
-        # Check cached file_path first
         with _file_path_cache_lock:
             file_path = _file_path_cache.get(file_id)
 
@@ -4042,16 +4226,7 @@ def tg_file_proxy(file_id):
                     _save_file_path_cache(dict(_file_path_cache))
 
         tg_url = f'https://api.telegram.org/file/bot{bot_token}/{file_path}'
-        img = requests.get(tg_url, timeout=15, stream=True)
-        if img.status_code == 200:
-            ext = file_path.rsplit('.', 1)[-1].lower() if '.' in file_path else 'jpg'
-            ct_map = {'jpg': 'image/jpeg', 'jpeg': 'image/jpeg', 'png': 'image/png', 'webp': 'image/webp'}
-            content_type = ct_map.get(ext, 'image/jpeg')
-            return Response(
-                img.content,
-                status=200,
-                headers={'Content-Type': content_type, 'Cache-Control': 'public, max-age=86400'}
-            )
+        return _redirect(tg_url, code=302)
     except Exception as e:
         logger.warning(f'tg_file_proxy error for {file_id}: {e}')
     return Response(status=404)
@@ -4097,6 +4272,34 @@ def _build_msg_to_file_id_index():
 threading.Thread(target=_build_msg_to_file_id_index, daemon=True, name='FileIdIndexer').start()
 
 
+def _save_file_id_index():
+    """Сохраняет _msg_to_file_id в file_id_index.json (периодически, чтобы пережить рестарт)."""
+    try:
+        with _msg_to_file_id_lock:
+            snapshot = dict(_msg_to_file_id)
+        # Сериализуем: ключ (channel, msg_id) → строка "channel_msg_id"
+        out = {f'{ch}_{mid}': fid for (ch, mid), fid in snapshot.items()}
+        tmp = 'file_id_index.json.tmp'
+        with open(tmp, 'w', encoding='utf-8') as f:
+            json.dump(out, f, ensure_ascii=False)
+        os.replace(tmp, 'file_id_index.json')
+        logger.debug(f'[file_id_index] Сохранено {len(out)} пар')
+    except Exception as e:
+        logger.warning(f'[file_id_index] Ошибка сохранения: {e}')
+
+
+def _file_id_autosave_loop():
+    """Раз в 5 минут сохраняем file_id индекс на диск."""
+    import time as _t
+    _t.sleep(60)  # первое сохранение через минуту
+    while True:
+        _save_file_id_index()
+        _t.sleep(300)
+
+
+threading.Thread(target=_file_id_autosave_loop, daemon=True, name='FileIdAutosave').start()
+
+
 def _auto_delete_webhook():
     """Удаляет webhook бота при запуске, чтобы работал polling через getUpdates."""
     import time as _time
@@ -4122,7 +4325,7 @@ def _auto_delete_webhook():
 threading.Thread(target=_auto_delete_webhook, daemon=True, name='BotWebhookDelete').start()
 
 
-# ============ ФОНОВЫЙ ПОЛЛЕР КАНАЛА @media_vn ============
+# ============ ФОНОВЫЙ ПОЛЛЕР КАНАЛА @banner_vn ============
 
 _gavibeshub_poll_offset = 0
 _gavibeshub_poll_lock = threading.Lock()
@@ -4175,6 +4378,13 @@ def _gavibeshub_poller():
                     if upd_id >= _gavibeshub_poll_offset:
                         _gavibeshub_poll_offset = upd_id + 1
 
+                # Передаём обновление в tg_feed (единственный getUpdates — этот поллер)
+                try:
+                    import tg_feed as _tf_mod
+                    _tf_mod.handle_update(upd)
+                except Exception:
+                    pass
+
                 cp = upd.get('channel_post', {})
                 if not cp:
                     continue
@@ -4208,8 +4418,13 @@ def _gavibeshub_poller():
                     # Агрегаторы-приёмники (HF Space пересылает сюда)
                     'parsing_vn':      ('real_estate',   'vietnam'),
                     'parsing_th':      ('real_estate',   'thailand'),
+                    'parsing_in':      ('real_estate',   'india'),
+                    'parsing_indo':    ('real_estate',   'indonesia'),
                     'chatparsing_vn':  ('chat',          'vietnam'),
                     'tusaparsing_vn':  ('entertainment', 'vietnam'),
+                    'tusaparsing_th':  ('entertainment', 'thailand'),
+                    'excursii_th':     ('entertainment', 'thailand'),
+                    'tusaparsing_indo':('entertainment', 'indonesia'),
                 }
                 route = _CH_ROUTE.get(chat_username)
                 if not route:
@@ -4221,7 +4436,8 @@ def _gavibeshub_poller():
 
                 # Первоисточник: forward_from_chat → ссылки в entities → ссылки в тексте
                 _AGGR = {'parsing_vn', 'parsing_th', 'chatparsing_vn', 'tusaparsing_vn',
-                         'baikeparsing_vn', 'baikeparsing_th', 'dom_vn', 'doma_th'}
+                         'baikeparsing_vn', 'baikeparsing_th', 'dom_vn', 'doma_th',
+                         'tusaparsing_th', 'excursii_th', 'tusaparsing_indo'}
                 orig_username, orig_msg_id = '', 0
 
                 # 1) Telegram forward header
@@ -4324,12 +4540,29 @@ def _gavibeshub_poller():
                         'samui':    ['самуи', 'samui', 'ko samui'],
                         'chiangmai':['чиангмай', 'chiang mai'],
                     }
-                    _city_map_r = _vn_cities if country_r == 'vietnam' else _th_cities
+                    _in_cities = {
+                        'goa':       ['гоа', 'goa', 'arambol', 'арамболь', 'anjuna', 'анджуна', 'calangute', 'morjim', 'морджим', 'baga', 'panjim', 'siolim'],
+                        'mumbai':    ['мумбай', 'mumbai', 'bombay'],
+                        'delhi':     ['дели', 'delhi', 'new delhi'],
+                        'bangalore': ['бангалор', 'bangalore', 'bengaluru'],
+                    }
+                    _indo_cities = {
+                        'bali':      ['бали', 'bali', 'canggu', 'семиньяк', 'seminyak', 'ubud', 'убуд', 'kuta', 'кута', 'sanur', 'nusa dua', 'uluwatu'],
+                        'jakarta':   ['джакарта', 'jakarta'],
+                        'lombok':    ['ломбок', 'lombok'],
+                    }
+                    _country_city_default = {
+                        'vietnam': 'Вьетнам', 'thailand': 'Таиланд',
+                        'india': 'Индия', 'indonesia': 'Индонезия',
+                    }
+                    _city_map_r = {'vietnam': _vn_cities, 'thailand': _th_cities,
+                                   'india': _in_cities, 'indonesia': _indo_cities}.get(country_r, {})
                     _re_city = ''
                     for _cs, _kws in _city_map_r.items():
                         if any(_kw in _txt_low for _kw in _kws):
                             _re_city = _cs
                             break
+                    _city_display = _country_city_default.get(country_r, country_r.capitalize())
                     item_r = {
                         'id': f'{orig_username}_{orig_msg_id}',
                         'title': title_r,
@@ -4337,8 +4570,8 @@ def _gavibeshub_poller():
                         'text': text_r,
                         'price': 0,
                         'price_display': '',
-                        'city': 'Вьетнам' if country_r == 'vietnam' else 'Таиланд',
-                        'city_ru': 'Вьетнам' if country_r == 'vietnam' else 'Таиланд',
+                        'city': _city_display,
+                        'city_ru': _city_display,
                         'realestate_city': _re_city,
                         'date': _dt.now(_tz.utc).isoformat(),
                         'contact': f'@{orig_username}',
@@ -4526,6 +4759,9 @@ _PERIODIC_SCRAPE_CHANNELS = [
     ('GAtours_vn',      'tours',          'listings_vietnam.json',  'vietnam'),
     ('vibeshub_vn',     'entertainment',  'listings_vietnam.json',  'vietnam'),
     ('restoranvietnam', 'restaurants',    'listings_vietnam.json',  'vietnam'),
+    ('tusaparsing_th',  'entertainment',  'listings_thailand.json', 'thailand'),
+    ('excursii_th',     'entertainment',  'listings_thailand.json', 'thailand'),
+    ('tusaparsing_indo','entertainment',  'listings_indonesia.json','indonesia'),
 ]
 _CHAT_SCRAPE_CHANNELS = [
     ('obmenvietnam', 'chat', 'listings_vietnam.json', 'vietnam'),
@@ -4575,6 +4811,23 @@ def _scrape_channel_latest(channel, category, target_file, country):
             os.replace(_tmp, target_file)
             data_cache.pop(country, None)
             logger.info('[periodic_scraper] @%s +%d → %s', channel, added, category)
+            # Немедленно обновляем баннер если добавлены entertainment-посты с фото
+            if category == 'entertainment' and country in ('thailand', 'indonesia'):
+                try:
+                    _cfg = load_banner_config()
+                    _imgs = [
+                        it.get('image_url', '') or it.get('image', '')
+                        for it in file_data.get('entertainment', [])
+                        if (it.get('image_url', '') or it.get('image', '')).startswith('http')
+                    ]
+                    _imgs = list(dict.fromkeys(_imgs))  # уникальные, порядок сохранён
+                    if _imgs:
+                        _cfg.setdefault(country, {})['web'] = _imgs
+                        _cfg[country]['mobile'] = _imgs
+                        save_banner_config(_cfg)
+                        logger.info('[periodic_scraper] Баннер %s обновлён: %d фото', country, len(_imgs))
+                except Exception as _be:
+                    logger.warning('[periodic_scraper] Banner update error: %s', _be)
         return added
     except Exception as _se:
         logger.warning('[periodic_scraper] @%s error: %s', channel, _se)
@@ -4888,6 +5141,44 @@ threading.Thread(target=_partyhunt_poller, daemon=True, name='PartyHuntPoller').
 logger.info('PartyHunt Goa poller started (every %ds)', PARTYHUNT_POLL_INTERVAL)
 
 
+def _sync_entertainment_banners_th_indo():
+    """Синхронизирует баннеры Тайланда и Индонезии из раздела Развлечения (как Индия)."""
+    import time as _time
+    _INTERVAL = 900  # каждые 15 минут
+    while True:
+        try:
+            cfg = load_banner_config()
+            changed = False
+            for country, fname in [('thailand', 'listings_thailand.json'), ('indonesia', 'listings_indonesia.json')]:
+                try:
+                    with open(fname, 'r', encoding='utf-8') as _f:
+                        _data = json.load(_f)
+                except Exception:
+                    continue
+                ent_items = _data.get('entertainment', [])
+                images = []
+                for item in ent_items:
+                    img = item.get('image_url', '') or item.get('image', '') or ''
+                    if img and img.startswith('http') and img not in images:
+                        images.append(img)
+                if country not in cfg:
+                    cfg[country] = {'web': [], 'mobile': []}
+                if cfg[country].get('web') != images or cfg[country].get('mobile') != images:
+                    cfg[country]['web'] = images
+                    cfg[country]['mobile'] = images
+                    changed = True
+                    logger.info('[ent_banner_sync] %s: %d баннеров из entertainment', country, len(images))
+            if changed:
+                save_banner_config(cfg)
+        except Exception as e:
+            logger.warning('[ent_banner_sync] Ошибка: %s', e)
+        _time.sleep(_INTERVAL)
+
+
+threading.Thread(target=_sync_entertainment_banners_th_indo, daemon=True, name='EntBannerSyncThIndo').start()
+logger.info('Entertainment banner sync for Thailand/Indonesia started')
+
+
 def _bot_api_download(file_id: str, bot_token: str) -> bytes | None:
     """Скачивает файл через Bot API напрямую с api.telegram.org (без CDN)."""
     try:
@@ -4910,6 +5201,45 @@ def _bot_api_download(file_id: str, bot_token: str) -> bytes | None:
     except Exception as e:
         logger.warning(f'_bot_api_download error: {e}')
     return None
+
+
+# Нейтральные короткие коды каналов — скрывают имя канала в URL фото
+_CHANNEL_ALIAS = {
+    'parsing_vn':       'v1',
+    'parsing_th':       't1',
+    'parsing_in':       'i1',
+    'parsing_indo':     'd1',
+    'bikeparsing_vn':   'v2',
+    'bikeparsing_th':   't2',
+    'bikeparsing_in':   'i2',
+    'bikeparsing_indo': 'd2',
+    'tusaparsing_vn':   'v3',
+    'tusaparsing_th':   't3',
+    'banner_vn':        'v4',
+    'chatparsing_vn':   'v5',
+    'restoranvietnam':  'v6',
+    'dom_vn':           'v7',
+    'doma_th':          't4',
+    'media_vn':         'v8',
+    'excursii_vn':      'v9',
+    'excursii_th':      't5',
+    'restoranparsing_all': 'a1',
+}
+_ALIAS_CHANNEL = {v: k for k, v in _CHANNEL_ALIAS.items()}
+
+
+@app.route('/g/<code>/<int:post_id>')
+def g_photo_proxy(code, post_id):
+    """Нейтральный прокси фото: /g/<alias>/<msg_id> → скрывает имя канала."""
+    channel = _ALIAS_CHANNEL.get(code, code)
+    return tg_photo_proxy(channel, post_id)
+
+
+@app.route('/gg/<code>/<int:post_id>/<int:idx>')
+def g_photo_group_proxy(code, post_id, idx):
+    """Нейтральный прокси группового фото: /gg/<alias>/<msg_id>/<idx>."""
+    channel = _ALIAS_CHANNEL.get(code, code)
+    return tg_photo_group_proxy(channel, post_id, idx)
 
 
 @app.route('/tg_img/<channel>/<int:post_id>')
@@ -4938,27 +5268,41 @@ def tg_photo_proxy(channel, post_id):
     bot_token = os.environ.get('TELEGRAM_BOT_TOKEN', '').strip()
     img_data = None
 
-    # 2. CDN scraping — полноразмерные фото из публичного viewer t.me/s/channel
-    try:
-        from vietnamparsing_parser import _scrape_cdn_photos_for_post
-        cdn_urls = _scrape_cdn_photos_for_post(channel, post_id)
-        if cdn_urls:
-            resp = requests.get(cdn_urls[0], timeout=15)
-            if resp.status_code == 200 and resp.content:
-                img_data = resp.content
-                logger.debug(f'tg_photo_proxy: CDN OK {channel}/{post_id}')
-    except Exception as e:
-        logger.debug(f'tg_photo_proxy CDN error {channel}/{post_id}: {e}')
+    # 2a. Static file fallback — если фото заранее скачано в static/photos/
+    safe_ch2 = re.sub(r'[^a-zA-Z0-9_]', '', channel)
+    static_path = os.path.join('static', 'photos', f'{safe_ch2}_{post_id}.jpg')
+    if os.path.exists(static_path) and os.path.getsize(static_path) > 0:
+        try:
+            with open(static_path, 'rb') as _sf:
+                img_data = _sf.read()
+            logger.debug(f'tg_photo_proxy: static file OK {channel}/{post_id}')
+        except Exception:
+            img_data = None
 
-    # 3. Bot API fallback — file_id из индекса
+    # 2b. Bot API — file_id из индекса (работает даже для закрытых каналов)
     if not img_data and bot_token:
         with _msg_to_file_id_lock:
-            ch_key = 'restoranvietnam' if channel == 'restoranvietnam' else channel
+            ch_key = channel
             file_id = _msg_to_file_id.get((ch_key, post_id))
         if file_id:
             img_data = _bot_api_download(file_id, bot_token)
+            if img_data:
+                logger.debug(f'tg_photo_proxy: Bot API OK {channel}/{post_id}')
 
-    # 4. og:image fallback
+    # 2c. CDN scraping — полноразмерные фото из публичного viewer t.me/s/channel
+    if not img_data:
+        try:
+            from vietnamparsing_parser import _scrape_cdn_photos_for_post
+            cdn_urls = _scrape_cdn_photos_for_post(channel, post_id)
+            if cdn_urls:
+                resp = requests.get(cdn_urls[0], timeout=15)
+                if resp.status_code == 200 and resp.content:
+                    img_data = resp.content
+                    logger.debug(f'tg_photo_proxy: CDN OK {channel}/{post_id}')
+        except Exception as e:
+            logger.debug(f'tg_photo_proxy CDN error {channel}/{post_id}: {e}')
+
+    # 2d. og:image fallback (только для публичных каналов)
     if not img_data:
         try:
             og_headers = {'User-Agent': 'TelegramBot (like TwitterBot)'}
@@ -5009,6 +5353,20 @@ def tg_photo_group_proxy(channel, post_id, idx):
             })
         except Exception:
             pass
+
+    # Проверяем static/photos/ (заранее скачанные фото)
+    static_grp = os.path.join('static', 'photos', f'{safe_ch}_{post_id}_{idx}.jpg')
+    static_grp0 = os.path.join('static', 'photos', f'{safe_ch}_{post_id}.jpg')
+    for _sp in (static_grp, static_grp0):
+        if os.path.exists(_sp) and os.path.getsize(_sp) > 0:
+            try:
+                with open(_sp, 'rb') as _sf:
+                    return Response(_sf.read(), status=200, headers={
+                        'Content-Type': 'image/jpeg',
+                        'Cache-Control': 'public, max-age=2592000',
+                    })
+            except Exception:
+                pass
 
     # Скрапим все CDN URLs группы за один запрос
     try:
@@ -8042,9 +8400,11 @@ async def _fetch_history_telethon():
 
 def _start_vietnamparsing_parser():
     try:
-        from vietnamparsing_parser import start_parser_in_background
-        start_parser_in_background()
-        print("[vietnamparsing] Parser background thread started.")
+        import vietnamparsing_parser as _vp
+        # Отключаем собственный getUpdates — polling делает _gavibeshub_poller (устраняет 409)
+        _vp._external_poll_mode = True
+        _vp.start_parser_in_background()
+        print("[vietnamparsing] Parser background thread started (external poll mode).")
     except Exception as e:
         print(f"[vietnamparsing] Could not start parser: {e}")
 
@@ -8197,6 +8557,14 @@ _SPAM_WORDS = [
     'запусти свою рекламу', 'запустить рекламу', 'свяжись с нами',
     'реклама в чате', 'реклама в нашем чате', 'рекламируй', 'рекламируйте',
     'разместить объявление', 'размести объявление', 'размещение объявлений',
+    # Офтопик — еда, трансфер, валютный обмен не по теме
+    'клубника', 'strawberry', 'свежая ягода', 'фрукт свеж',
+    'трансфер из/в аэропорт', 'трансфер аэропорт', 'transfer airport',
+    'аэропорт камрань', 'camranh airport', 'cam ranh airport',
+    'русского информационного', 'russian information center',
+    'быстрым обменом валют', 'обмен валют в нячанге',
+    'помогаем с обменом', 'обменяем валюту',
+    'поможем с обменом', 'помощь с обменом',
 ]
 
 import re as _re
@@ -8857,6 +9225,7 @@ def tg_auth_india_push_hf():
         return jsonify({'ok': False, 'error': str(e)})
 
 
+
 @app.route('/tg-auth', methods=['GET'])
 def tg_auth_page():
     return '''<!DOCTYPE html><html><head><meta charset="utf-8">
@@ -9152,6 +9521,63 @@ logger.info(f'[RATES] Background rates updater started (every {RATES_UPDATE_INTE
 # NOTE: Disabled — forwarding is handled by HF Space poweramanita/indiaparsing
 # Running both simultaneously causes Telegram session conflict (same session, two IPs)
 # logger.info('[PARSER] India/Indo poller disabled — HF Space handles forwarding')
+
+# ── Telegram Feed (parsing channels → Bot API) ──────────────────────────────
+import tg_feed as _tg_feed
+# Отключаем собственный getUpdates — обновления приходят из _gavibeshub_poller
+_tg_feed._external_poll_mode = True
+_tg_feed.start()
+
+@app.route('/api/tg-feed')
+def api_tg_feed():
+    channel = request.args.get('channel')
+    limit   = min(int(request.args.get('limit', 50)), 200)
+    offset  = int(request.args.get('offset', 0))
+    posts   = _tg_feed.get_posts(channel=channel, limit=limit, offset=offset)
+    return jsonify({'ok': True, 'posts': posts, 'count': len(posts)})
+
+@app.route('/api/tg-feed/stats')
+def api_tg_feed_stats():
+    return jsonify(_tg_feed.get_stats())
+
+@app.route('/tg-feed')
+def tg_feed_page():
+    channel = request.args.get('channel', '')
+    limit   = min(int(request.args.get('limit', 50)), 200)
+    posts   = _tg_feed.get_posts(channel=channel or None, limit=limit)
+    stats   = _tg_feed.get_stats()
+    channels = list(_tg_feed.CHANNELS.items())
+    return render_template('tg_feed.html',
+                           posts=posts,
+                           stats=stats,
+                           channels=channels,
+                           active_channel=channel)
+
+@app.route('/api/admin/tg-feed-import', methods=['GET', 'POST'])
+def api_tg_feed_import():
+    """
+    GET  — статус импорта по каждому каналу.
+    POST — запустить bulk import (параметр channels=ch1,ch2 или все).
+    """
+    if request.method == 'POST':
+        ch_param = request.form.get('channels', '') or request.args.get('channels', '')
+        channels = [c.strip().lstrip('@') for c in ch_param.split(',')] if ch_param else None
+        # Проверяем что уже не идёт импорт
+        status = _tg_feed.get_import_status()
+        in_progress = [c for c, s in status.items() if not s.get('done', True)]
+        if in_progress:
+            return jsonify({'ok': False, 'error': f'Импорт уже идёт: {in_progress}'})
+        def _run():
+            _tg_feed.run_bulk_import(channels)
+        threading.Thread(target=_run, daemon=True, name='TgFeedBulkImport').start()
+        targets = channels or list(_tg_feed.CHANNELS.keys())
+        return jsonify({'ok': True, 'started': targets,
+                        'limits': {c: _tg_feed.CHANNEL_IMPORT_LIMITS.get(c, 'все') for c in targets}})
+    # GET — статус
+    status = _tg_feed.get_import_status()
+    stats  = _tg_feed.get_stats()
+    return jsonify({'ok': True, 'import_status': status, 'feed_stats': stats})
+
 
 if __name__ == '__main__':
     import threading
