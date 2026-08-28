@@ -1,0 +1,2 @@
+- [Telegram entertainment visibility](telegram-entertainment-visibility.md) — listings must retain an internal Telegram-verification marker independent of API-masked source fields.
+- [GitHub snapshot sync](github-snapshot-sync.md) — shallow local histories may require a root snapshot commit; keep local Telegram sessions out of remote trees.
